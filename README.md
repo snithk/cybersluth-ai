@@ -84,9 +84,55 @@ The system can be configured through the `.env` file or environment variables:
 4. Push to the branch
 5. Create a Pull Request
 
+## Git Commands
+
+### 🔧 Initial Setup
+```cmd
+git init
+git remote add origin https://github.com/yourusername/cybersluth.git
+```
+
+### ✅ Stage & Commit Changes
+```cmd
+git add .
+git commit -m "your commit message"
+```
+
+### 🚀 Push to GitHub
+```cmd
+git push origin main
+```
+
+### 📥 Pull Latest Changes
+```cmd
+git pull origin main
+```
+
+### 🌿 Create & Switch Branch
+```cmd
+git checkout -b feature-branch-name
+```
+
+### 🔀 Push a New Branch
+```cmd
+git push -u origin feature-branch-name
+```
+
+### 📋 Check Status
+```cmd
+git status
+git log --oneline
+```
+
+### 🔁 Full Push Workflow (One Go)
+```cmd
+git add .
+git commit -m "update: describe your changes here"
+git push origin main
+```
+
+---
+
 ## License
 
-This project is licensed under the MIT License - see the LICENSE file for details. 
-
-rensics Analyzer>  cd 'c:\Users\Srithik\OneDrive\Desktop\ad-4-2\AD 4-2\AD 4-2\AI-Driven Cyber Forensics Analyzer'
- $env:PYTHONPATH="."; .\env\Scripts\python src/main.py     "# cybersluth" 
+This project is licensed under the MIT License - see the LICENSE file for details.

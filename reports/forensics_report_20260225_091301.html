@@ -1,0 +1,3450 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cyber Forensics Analysis Report</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .header {
+            background: linear-gradient(135deg, #1a237e, #0d47a1);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .section {
+            background: white;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .subsection {
+            margin: 10px 0;
+            padding: 10px;
+            background: #f8f9fa;
+            border-radius: 5px;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+        .stat-card {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            text-align: center;
+        }
+        .stat-value {
+            font-size: 24px;
+            font-weight: bold;
+            color: #1a237e;
+        }
+        .stat-label {
+            color: #666;
+            font-size: 14px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 10px 0;
+        }
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #f8f9fa;
+            font-weight: 600;
+        }
+        .threat-high {
+            color: #d32f2f;
+        }
+        .threat-medium {
+            color: #f57c00;
+        }
+        .threat-low {
+            color: #388e3c;
+        }
+        .recommendation {
+            border-left: 4px solid #1a237e;
+            padding: 10px 20px;
+            margin: 10px 0;
+            background: #f8f9fa;
+        }
+        .recommendation.high {
+            border-left-color: #d32f2f;
+        }
+        .recommendation.medium {
+            border-left-color: #f57c00;
+        }
+        .recommendation.low {
+            border-left-color: #388e3c;
+        }
+        .process-list {
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        .badge {
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        .badge-secure {
+            background-color: #c8e6c9;
+            color: #388e3c;
+        }
+        .badge-risk {
+            background-color: #ffcdd2;
+            color: #d32f2f;
+        }
+        .threat-details {
+            margin: 20px 0;
+            padding: 15px;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .mitigation-steps {
+            margin-top: 15px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 5px;
+        }
+        .mitigation-steps h4 {
+            color: #1a237e;
+            margin-top: 0;
+        }
+        .mitigation-steps ol {
+            margin: 10px 0;
+            padding-left: 20px;
+        }
+        .mitigation-steps li {
+            margin: 5px 0;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Cyber Forensics Analysis Report</h1>
+        <p>Generated on: 2026-02-25 09:13:50</p>
+        <p>Analysis Duration: 30 minutes</p>
+        <p>Analysis Period: 2026-02-25 08:43:06 to 2026-02-25 09:13:06</p>
+    </div>
+
+    <!-- Executive Summary -->
+    <div class="section">
+        <h2>Executive Summary</h2>
+        <div class="grid">
+            <div class="stat-card">
+                <div class="stat-value">0</div>
+                <div class="stat-label">Total Threats Detected</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">0</div>
+                <div class="stat-label">High Priority Threats</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">0</div>
+                <div class="stat-label">Medium Priority Threats</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">0</div>
+                <div class="stat-label">Low Priority Threats</div>
+            </div>
+        </div>
+        <div class="subsection">
+            <p><strong>Network Status:</strong> Normal</p>
+            <p><strong>System Security Status:</strong> 
+                <span class="badge badge-secure">
+                    Secure
+                </span>
+            </p>
+            <p><strong>Threat Level:</strong> Low</p>
+            <p><strong>Recommended Actions:</strong> Monitor</p>
+        </div>
+    </div>
+
+    <!-- System Information -->
+    <div class="section">
+        <h2>System Information</h2>
+        <div class="grid">
+            <div class="stat-card">
+                <div class="stat-value">64.9%</div>
+                <div class="stat-label">CPU Usage</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">80.9%</div>
+                <div class="stat-label">Memory Usage</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">58.1%</div>
+                <div class="stat-label">Disk Usage</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">269</div>
+                <div class="stat-label">Active Processes</div>
+            </div>
+        </div>
+        <div class="subsection">
+            <p><strong>Operating System:</strong> Windows 10.0.26200</p>
+            <p><strong>Architecture:</strong> AMD64</p>
+            <p><strong>System Boot Time:</strong> 2026-02-24 08:15:26</p>
+        </div>
+    </div>
+
+    <!-- Process Analysis -->
+    <div class="section">
+        <h2>Process Analysis</h2>
+        <div class="process-list">
+            <table>
+                <thead>
+                    <tr>
+                        <th>PID</th>
+                        <th>Name</th>
+                        <th>CPU %</th>
+                        <th>Memory %</th>
+                        <th>Status</th>
+                        <th>Start Time</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    
+                    <tr>
+                        <td>0</td>
+                        <td>System Idle Process</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>running</td>
+                        <td>1970-01-01 05:30:00</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>4</td>
+                        <td>System</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>running</td>
+                        <td>1970-01-01 05:30:00</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>140</td>
+                        <td></td>
+                        <td>0.0%</td>
+                        <td>0.5%</td>
+                        <td>stopped</td>
+                        <td>2026-02-24 08:15:27</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>184</td>
+                        <td>Registry</td>
+                        <td>0.0%</td>
+                        <td>0.1%</td>
+                        <td>running</td>
+                        <td>2026-02-24 08:15:27</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>272</td>
+                        <td>svchost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>running</td>
+                        <td>2026-02-24 08:17:11</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>396</td>
+                        <td>dllhost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>running</td>
+                        <td>2026-02-24 19:19:15</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>632</td>
+                        <td>smss.exe</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>running</td>
+                        <td>2026-02-24 08:15:30</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>680</td>
+                        <td>WmiPrvSE.exe</td>
+                        <td>0.0%</td>
+                        <td>0.2%</td>
+                        <td>running</td>
+                        <td>2026-02-25 09:11:45</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>776</td>
+                        <td>csrss.exe</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>running</td>
+                        <td>2026-02-24 08:15:40</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>972</td>
+                        <td>Antigravity.exe</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>running</td>
+                        <td>2026-02-24 23:02:07</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>1108</td>
+                        <td>wininit.exe</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>running</td>
+                        <td>2026-02-24 08:15:41</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>1116</td>
+                        <td>csrss.exe</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>running</td>
+                        <td>2026-02-24 08:15:41</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>1152</td>
+                        <td>svchost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>running</td>
+                        <td>2026-02-24 08:20:38</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>1180</td>
+                        <td>winlogon.exe</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>running</td>
+                        <td>2026-02-24 08:15:41</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>1244</td>
+                        <td>svchost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.1%</td>
+                        <td>running</td>
+                        <td>2026-02-24 08:15:41</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>1248</td>
+                        <td>services.exe</td>
+                        <td>0.0%</td>
+                        <td>0.1%</td>
+                        <td>running</td>
+                        <td>2026-02-24 08:15:41</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>1260</td>
+                        <td>LsaIso.exe</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>running</td>
+                        <td>2026-02-24 08:15:41</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>1276</td>
+                        <td>lsass.exe</td>
+                        <td>0.0%</td>
+                        <td>0.2%</td>
+                        <td>running</td>
+                        <td>2026-02-24 08:15:41</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>1408</td>
+                        <td>svchost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.2%</td>
+                        <td>running</td>
+                        <td>2026-02-24 08:15:41</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>1440</td>
+                        <td>fontdrvhost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>running</td>
+                        <td>2026-02-24 08:15:41</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>1448</td>
+                        <td>fontdrvhost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>running</td>
+                        <td>2026-02-24 08:15:41</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>1540</td>
+                        <td>svchost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.1%</td>
+                        <td>running</td>
+                        <td>2026-02-24 08:15:41</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>1564</td>
+                        <td>svchost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>running</td>
+                        <td>2026-02-24 08:15:41</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>1592</td>
+                        <td>svchost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>running</td>
+                        <td>2026-02-24 08:15:41</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>1684</td>
+                        <td>dwm.exe</td>
+                        <td>0.0%</td>
+                        <td>0.4%</td>
+                        <td>running</td>
+                        <td>2026-02-24 08:15:41</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>1812</td>
+                        <td>svchost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>running</td>
+                        <td>2026-02-24 08:15:41</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>1820</td>
+                        <td>svchost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>running</td>
+                        <td>2026-02-24 08:15:41</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>1888</td>
+                        <td>MiPhoneHelper.exe</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>running</td>
+                        <td>2026-02-24 08:20:03</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>1920</td>
+                        <td>svchost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>running</td>
+                        <td>2026-02-24 08:15:41</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>1928</td>
+                        <td>msedgewebview2.exe</td>
+                        <td>0.0%</td>
+                        <td>0.7%</td>
+                        <td>running</td>
+                        <td>2026-02-24 08:20:59</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>1940</td>
+                        <td>msedgewebview2.exe</td>
+                        <td>0.0%</td>
+                        <td>0.5%</td>
+                        <td>running</td>
+                        <td>2026-02-25 09:12:41</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>1948</td>
+                        <td>svchost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>running</td>
+                        <td>2026-02-24 08:15:41</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>1952</td>
+                        <td>svchost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>running</td>
+                        <td>2026-02-24 08:15:41</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>1964</td>
+                        <td>svchost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.1%</td>
+                        <td>running</td>
+                        <td>2026-02-24 08:15:41</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>2092</td>
+                        <td>Antigravity.exe</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>running</td>
+                        <td>2026-02-24 23:01:47</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>2096</td>
+                        <td>ProtonVPNService.exe</td>
+                        <td>0.0%</td>
+                        <td>0.3%</td>
+                        <td>running</td>
+                        <td>2026-02-24 08:19:41</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>2128</td>
+                        <td>msedgewebview2.exe</td>
+                        <td>0.0%</td>
+                        <td>0.3%</td>
+                        <td>running</td>
+                        <td>2026-02-24 08:21:00</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>2132</td>
+                        <td>svchost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.1%</td>
+                        <td>running</td>
+                        <td>2026-02-24 08:15:41</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>2140</td>
+                        <td>svchost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>running</td>
+                        <td>2026-02-24 08:15:41</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>2168</td>
+                        <td>svchost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.2%</td>
+                        <td>running</td>
+                        <td>2026-02-24 08:15:41</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>2196</td>
+                        <td>svchost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>running</td>
+                        <td>2026-02-24 08:15:41</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>2216</td>
+                        <td>msedgewebview2.exe</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>running</td>
+                        <td>2026-02-24 08:20:59</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>2308</td>
+                        <td>svchost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>running</td>
+                        <td>2026-02-24 08:15:41</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>2360</td>
+                        <td>IntelCpHDCPSvc.exe</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>running</td>
+                        <td>2026-02-24 08:15:41</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>2372</td>
+                        <td>svchost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>running</td>
+                        <td>2026-02-24 08:15:41</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>2516</td>
+                        <td>svchost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>running</td>
+                        <td>2026-02-24 08:15:41</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>2616</td>
+                        <td>Antigravity.exe</td>
+                        <td>0.0%</td>
+                        <td>0.2%</td>
+                        <td>running</td>
+                        <td>2026-02-24 23:01:53</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>2708</td>
+                        <td>svchost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>running</td>
+                        <td>2026-02-24 08:15:41</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>2800</td>
+                        <td>svchost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.1%</td>
+                        <td>running</td>
+                        <td>2026-02-24 08:17:49</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>2852</td>
+                        <td>svchost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>running</td>
+                        <td>2026-02-24 08:15:41</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>2888</td>
+                        <td>svchost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>running</td>
+                        <td>2026-02-24 08:15:41</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>2900</td>
+                        <td>svchost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>running</td>
+                        <td>2026-02-24 08:15:41</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>2964</td>
+                        <td>svchost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.1%</td>
+                        <td>running</td>
+                        <td>2026-02-24 08:17:11</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>2996</td>
+                        <td>svchost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>running</td>
+                        <td>2026-02-24 08:15:41</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>3068</td>
+                        <td>svchost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>running</td>
+                        <td>2026-02-24 08:15:41</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>3080</td>
+                        <td>svchost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.1%</td>
+                        <td>running</td>
+                        <td>2026-02-24 08:15:41</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>3092</td>
+                        <td>igfxCUIServiceN.exe</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>running</td>
+                        <td>2026-02-24 08:15:41</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>3284</td>
+                        <td>svchost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.1%</td>
+                        <td>running</td>
+                        <td>2026-02-24 08:15:42</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>3336</td>
+                        <td>msedgewebview2.exe</td>
+                        <td>0.0%</td>
+                        <td>0.1%</td>
+                        <td>running</td>
+                        <td>2026-02-24 08:21:00</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>3456</td>
+                        <td>svchost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>running</td>
+                        <td>2026-02-24 08:15:42</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>3468</td>
+                        <td>svchost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>running</td>
+                        <td>2026-02-24 08:15:42</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>3476</td>
+                        <td>svchost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.1%</td>
+                        <td>running</td>
+                        <td>2026-02-24 08:15:42</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>3488</td>
+                        <td>svchost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>running</td>
+                        <td>2026-02-24 08:15:42</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>3500</td>
+                        <td>svchost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.1%</td>
+                        <td>running</td>
+                        <td>2026-02-24 08:15:42</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>3512</td>
+                        <td>ProtonVPN.WireGuardService.exe</td>
+                        <td>0.0%</td>
+                        <td>0.3%</td>
+                        <td>running</td>
+                        <td>2026-02-25 09:06:18</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>3604</td>
+                        <td>MemCompression</td>
+                        <td>0.0%</td>
+                        <td>0.3%</td>
+                        <td>running</td>
+                        <td>2026-02-24 08:15:42</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>3616</td>
+                        <td>svchost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>running</td>
+                        <td>2026-02-24 08:15:42</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>3624</td>
+                        <td>svchost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>running</td>
+                        <td>2026-02-24 08:15:42</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>3740</td>
+                        <td>svchost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.1%</td>
+                        <td>running</td>
+                        <td>2026-02-24 08:15:42</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>3748</td>
+                        <td>RuntimeBroker.exe</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>running</td>
+                        <td>2026-02-24 08:20:37</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>3768</td>
+                        <td>RtkAudUService64.exe</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>running</td>
+                        <td>2026-02-24 08:15:43</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>3796</td>
+                        <td>svchost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.1%</td>
+                        <td>running</td>
+                        <td>2026-02-24 08:15:42</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>3848</td>
+                        <td>svchost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>running</td>
+                        <td>2026-02-24 08:15:42</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>3892</td>
+                        <td>svchost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>running</td>
+                        <td>2026-02-24 08:15:42</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>4048</td>
+                        <td>svchost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.1%</td>
+                        <td>running</td>
+                        <td>2026-02-24 08:23:03</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>4076</td>
+                        <td>svchost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.1%</td>
+                        <td>running</td>
+                        <td>2026-02-24 08:15:42</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>4112</td>
+                        <td>OSDService.exe</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>running</td>
+                        <td>2026-02-24 08:15:43</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>4140</td>
+                        <td>svchost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>running</td>
+                        <td>2026-02-24 08:15:42</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>4212</td>
+                        <td>msedge.exe</td>
+                        <td>0.0%</td>
+                        <td>0.1%</td>
+                        <td>running</td>
+                        <td>2026-02-25 09:01:54</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>4280</td>
+                        <td>RtkAudUService64.exe</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>running</td>
+                        <td>2026-02-24 08:15:50</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>4288</td>
+                        <td>svchost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>running</td>
+                        <td>2026-02-24 08:17:50</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>4308</td>
+                        <td>splunkd.exe</td>
+                        <td>0.0%</td>
+                        <td>1.3%</td>
+                        <td>running</td>
+                        <td>2026-02-24 08:15:43</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>4312</td>
+                        <td>spoolsv.exe</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>running</td>
+                        <td>2026-02-24 08:15:42</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>4372</td>
+                        <td>svchost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>running</td>
+                        <td>2026-02-24 08:15:43</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>4532</td>
+                        <td>OneDrive.exe</td>
+                        <td>0.0%</td>
+                        <td>0.1%</td>
+                        <td>running</td>
+                        <td>2026-02-24 08:18:03</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>4568</td>
+                        <td>svchost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>running</td>
+                        <td>2026-02-24 08:15:42</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>4624</td>
+                        <td>remoting_host.exe</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>running</td>
+                        <td>2026-02-24 08:15:42</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>4632</td>
+                        <td>DSAService.exe</td>
+                        <td>0.0%</td>
+                        <td>0.1%</td>
+                        <td>running</td>
+                        <td>2026-02-24 08:15:42</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>4644</td>
+                        <td>svchost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.1%</td>
+                        <td>running</td>
+                        <td>2026-02-24 08:15:42</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>4660</td>
+                        <td>svchost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.2%</td>
+                        <td>running</td>
+                        <td>2026-02-24 08:15:42</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>4668</td>
+                        <td>OfficeClickToRun.exe</td>
+                        <td>0.0%</td>
+                        <td>0.1%</td>
+                        <td>running</td>
+                        <td>2026-02-24 08:15:42</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>4676</td>
+                        <td>DSAUpdateService.exe</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>running</td>
+                        <td>2026-02-24 08:15:42</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>4684</td>
+                        <td>svchost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.2%</td>
+                        <td>running</td>
+                        <td>2026-02-24 08:15:42</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>4720</td>
+                        <td>OneApp.IGCC.WinService.exe</td>
+                        <td>0.0%</td>
+                        <td>0.1%</td>
+                        <td>running</td>
+                        <td>2026-02-24 08:15:42</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>4732</td>
+                        <td>DtsApo4Service.exe</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>running</td>
+                        <td>2026-02-24 08:15:42</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>4748</td>
+                        <td>esif_uf.exe</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>running</td>
+                        <td>2026-02-24 08:15:42</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>4768</td>
+                        <td>IntelAudioService.exe</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>running</td>
+                        <td>2026-02-24 08:15:42</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>4776</td>
+                        <td>svchost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.1%</td>
+                        <td>running</td>
+                        <td>2026-02-24 08:15:42</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>4856</td>
+                        <td>LMS.exe</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>running</td>
+                        <td>2026-02-24 08:15:42</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>4880</td>
+                        <td>MAFSvr.exe</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>running</td>
+                        <td>2026-02-24 08:15:42</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>4920</td>
+                        <td>MiService.exe</td>
+                        <td>0.0%</td>
+                        <td>0.1%</td>
+                        <td>running</td>
+                        <td>2026-02-24 08:15:42</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>4928</td>
+                        <td>MpDefenderCoreService.exe</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>running</td>
+                        <td>2026-02-24 08:15:43</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>5000</td>
+                        <td>mysqld.exe</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>running</td>
+                        <td>2026-02-24 08:15:43</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>5008</td>
+                        <td>mongod.exe</td>
+                        <td>0.0%</td>
+                        <td>0.3%</td>
+                        <td>running</td>
+                        <td>2026-02-24 08:15:43</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>5096</td>
+                        <td>svchost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>running</td>
+                        <td>2026-02-24 08:15:43</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>5140</td>
+                        <td>svchost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>running</td>
+                        <td>2026-02-25 08:47:35</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>5176</td>
+                        <td>svchost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>running</td>
+                        <td>2026-02-24 08:15:43</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>5204</td>
+                        <td>python3.9.exe</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>running</td>
+                        <td>2026-02-24 08:16:54</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>5252</td>
+                        <td>remoting_host.exe</td>
+                        <td>0.0%</td>
+                        <td>0.1%</td>
+                        <td>running</td>
+                        <td>2026-02-24 08:15:43</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>5276</td>
+                        <td>svchost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.1%</td>
+                        <td>running</td>
+                        <td>2026-02-24 08:15:43</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>5284</td>
+                        <td>WMIRegistrationService.exe</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>running</td>
+                        <td>2026-02-24 08:15:43</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>5312</td>
+                        <td>svchost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.1%</td>
+                        <td>running</td>
+                        <td>2026-02-24 08:15:43</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>5328</td>
+                        <td>wslservice.exe</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>running</td>
+                        <td>2026-02-24 08:15:43</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>5384</td>
+                        <td>msedgewebview2.exe</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>running</td>
+                        <td>2026-02-24 08:21:00</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>5488</td>
+                        <td>MsMpEng.exe</td>
+                        <td>0.0%</td>
+                        <td>2.5%</td>
+                        <td>running</td>
+                        <td>2026-02-24 08:15:43</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>5544</td>
+                        <td>jusched.exe</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>running</td>
+                        <td>2026-02-24 08:21:26</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>5564</td>
+                        <td>svchost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>running</td>
+                        <td>2026-02-24 08:15:43</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>5768</td>
+                        <td>RuntimeBroker.exe</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>running</td>
+                        <td>2026-02-24 08:20:58</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>5816</td>
+                        <td>mysqld.exe</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>running</td>
+                        <td>2026-02-24 08:15:43</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>5904</td>
+                        <td>WidgetService.exe</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>running</td>
+                        <td>2026-02-24 08:17:53</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>5916</td>
+                        <td>jhi_service.exe</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>running</td>
+                        <td>2026-02-24 08:15:43</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>5984</td>
+                        <td>conhost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>running</td>
+                        <td>2026-02-24 08:15:43</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>6496</td>
+                        <td>svchost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.1%</td>
+                        <td>running</td>
+                        <td>2026-02-24 08:20:38</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>6508</td>
+                        <td>svchost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>running</td>
+                        <td>2026-02-24 08:15:43</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>6580</td>
+                        <td>WUDFHost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>running</td>
+                        <td>2026-02-24 08:15:43</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>6868</td>
+                        <td>svchost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>running</td>
+                        <td>2026-02-24 08:15:44</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>6928</td>
+                        <td>Antigravity.exe</td>
+                        <td>0.0%</td>
+                        <td>1.0%</td>
+                        <td>running</td>
+                        <td>2026-02-25 09:10:07</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>7256</td>
+                        <td>svchost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>running</td>
+                        <td>2026-02-24 08:17:47</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>7324</td>
+                        <td>compsup.exe</td>
+                        <td>0.0%</td>
+                        <td>0.2%</td>
+                        <td>running</td>
+                        <td>2026-02-24 08:22:01</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>7568</td>
+                        <td>ApplicationFrameHost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>running</td>
+                        <td>2026-02-24 13:03:58</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>7628</td>
+                        <td>svchost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>running</td>
+                        <td>2026-02-24 08:17:50</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>7696</td>
+                        <td>conhost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>running</td>
+                        <td>2026-02-24 08:15:44</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>7712</td>
+                        <td>WUDFHost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>running</td>
+                        <td>2026-02-24 08:15:44</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>7820</td>
+                        <td>splunk-winevtlog.exe</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>running</td>
+                        <td>2026-02-24 08:16:54</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>8080</td>
+                        <td>svchost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.1%</td>
+                        <td>running</td>
+                        <td>2026-02-24 08:15:46</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>8168</td>
+                        <td>backgroundTaskHost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>stopped</td>
+                        <td>2026-02-25 09:05:08</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>8232</td>
+                        <td>svchost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>running</td>
+                        <td>2026-02-24 08:15:46</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>8248</td>
+                        <td>svchost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>running</td>
+                        <td>2026-02-24 08:17:04</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>8364</td>
+                        <td>explorer.exe</td>
+                        <td>0.0%</td>
+                        <td>1.3%</td>
+                        <td>running</td>
+                        <td>2026-02-24 08:15:47</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>8536</td>
+                        <td>sihost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.2%</td>
+                        <td>running</td>
+                        <td>2026-02-24 08:15:47</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>8552</td>
+                        <td>svchost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.1%</td>
+                        <td>running</td>
+                        <td>2026-02-24 08:15:47</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>8600</td>
+                        <td>svchost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>running</td>
+                        <td>2026-02-24 08:15:47</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>8652</td>
+                        <td>svchost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>running</td>
+                        <td>2026-02-24 08:15:47</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>8740</td>
+                        <td>Antigravity.exe</td>
+                        <td>0.0%</td>
+                        <td>0.3%</td>
+                        <td>running</td>
+                        <td>2026-02-24 23:01:57</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>8808</td>
+                        <td>igfxEMN.exe</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>running</td>
+                        <td>2026-02-24 08:15:47</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>8824</td>
+                        <td>svchost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.2%</td>
+                        <td>running</td>
+                        <td>2026-02-24 08:15:47</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>8856</td>
+                        <td>svchost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.1%</td>
+                        <td>running</td>
+                        <td>2026-02-24 08:15:47</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>8880</td>
+                        <td>SearchFilterHost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.1%</td>
+                        <td>running</td>
+                        <td>2026-02-25 09:10:08</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>8968</td>
+                        <td>taskhostw.exe</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>running</td>
+                        <td>2026-02-24 08:15:47</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>9072</td>
+                        <td>svchost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>running</td>
+                        <td>2026-02-24 08:15:47</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>9232</td>
+                        <td>msedgewebview2.exe</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>running</td>
+                        <td>2026-02-24 22:47:30</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>9304</td>
+                        <td>agent-manager.exe</td>
+                        <td>0.0%</td>
+                        <td>0.1%</td>
+                        <td>running</td>
+                        <td>2026-02-24 08:22:02</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>9328</td>
+                        <td>SearchIndexer.exe</td>
+                        <td>0.0%</td>
+                        <td>0.2%</td>
+                        <td>running</td>
+                        <td>2026-02-24 08:17:51</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>9348</td>
+                        <td>RuntimeBroker.exe</td>
+                        <td>0.0%</td>
+                        <td>0.1%</td>
+                        <td>running</td>
+                        <td>2026-02-25 09:01:54</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>9408</td>
+                        <td>svchost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.1%</td>
+                        <td>running</td>
+                        <td>2026-02-24 08:15:48</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>9416</td>
+                        <td>svchost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.1%</td>
+                        <td>running</td>
+                        <td>2026-02-24 08:15:48</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>9484</td>
+                        <td>svchost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>running</td>
+                        <td>2026-02-24 08:15:48</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>9512</td>
+                        <td>OSDUtility.exe</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>running</td>
+                        <td>2026-02-24 08:17:33</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>9564</td>
+                        <td>ProtonDrive.exe</td>
+                        <td>0.0%</td>
+                        <td>0.1%</td>
+                        <td>running</td>
+                        <td>2026-02-24 08:18:33</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>9604</td>
+                        <td>svchost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>running</td>
+                        <td>2026-02-24 13:03:59</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>9684</td>
+                        <td>CrossDeviceResume.exe</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>running</td>
+                        <td>2026-02-24 08:15:48</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>9708</td>
+                        <td>svchost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>running</td>
+                        <td>2026-02-25 04:34:37</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>9756</td>
+                        <td>unsecapp.exe</td>
+                        <td>0.0%</td>
+                        <td>0.1%</td>
+                        <td>running</td>
+                        <td>2026-02-24 08:15:48</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>9764</td>
+                        <td>svchost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>running</td>
+                        <td>2026-02-24 12:01:48</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>9860</td>
+                        <td>AggregatorHost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>running</td>
+                        <td>2026-02-24 08:15:48</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>9976</td>
+                        <td>svchost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>running</td>
+                        <td>2026-02-24 08:15:50</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>10320</td>
+                        <td>svchost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.1%</td>
+                        <td>running</td>
+                        <td>2026-02-24 08:15:50</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>10360</td>
+                        <td>python.exe</td>
+                        <td>0.0%</td>
+                        <td>3.2%</td>
+                        <td>running</td>
+                        <td>2026-02-25 09:09:20</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>10736</td>
+                        <td>smartscreen.exe</td>
+                        <td>0.0%</td>
+                        <td>0.1%</td>
+                        <td>running</td>
+                        <td>2026-02-25 04:34:33</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>10744</td>
+                        <td>msedgewebview2.exe</td>
+                        <td>0.0%</td>
+                        <td>0.1%</td>
+                        <td>running</td>
+                        <td>2026-02-24 08:15:53</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>10828</td>
+                        <td>SearchHost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.1%</td>
+                        <td>running</td>
+                        <td>2026-02-24 08:15:51</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>10836</td>
+                        <td>StartMenuExperienceHost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.2%</td>
+                        <td>running</td>
+                        <td>2026-02-24 08:15:51</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>11004</td>
+                        <td>msedge.exe</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>running</td>
+                        <td>2026-02-25 08:57:56</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>11052</td>
+                        <td>RuntimeBroker.exe</td>
+                        <td>0.0%</td>
+                        <td>0.1%</td>
+                        <td>running</td>
+                        <td>2026-02-24 08:15:51</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>11076</td>
+                        <td>svchost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>running</td>
+                        <td>2026-02-24 08:15:51</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>11148</td>
+                        <td>RuntimeBroker.exe</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>running</td>
+                        <td>2026-02-24 08:20:23</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>11188</td>
+                        <td>Widgets.exe</td>
+                        <td>0.0%</td>
+                        <td>0.2%</td>
+                        <td>running</td>
+                        <td>2026-02-24 08:15:52</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>11408</td>
+                        <td>AIoT.exe</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>running</td>
+                        <td>2026-02-24 08:17:02</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>11416</td>
+                        <td>msedgewebview2.exe</td>
+                        <td>0.0%</td>
+                        <td>0.1%</td>
+                        <td>running</td>
+                        <td>2026-02-24 08:15:53</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>11476</td>
+                        <td>ShellExperienceHost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>stopped</td>
+                        <td>2026-02-24 08:15:52</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>11584</td>
+                        <td>msedgewebview2.exe</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>running</td>
+                        <td>2026-02-24 08:15:54</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>11608</td>
+                        <td>conhost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>running</td>
+                        <td>2026-02-24 23:03:28</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>11636</td>
+                        <td>TextInputHost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.3%</td>
+                        <td>running</td>
+                        <td>2026-02-24 08:16:01</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>11704</td>
+                        <td>msedgewebview2.exe</td>
+                        <td>0.0%</td>
+                        <td>0.1%</td>
+                        <td>running</td>
+                        <td>2026-02-24 08:15:54</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>11808</td>
+                        <td>msedgewebview2.exe</td>
+                        <td>0.0%</td>
+                        <td>0.2%</td>
+                        <td>running</td>
+                        <td>2026-02-24 08:15:53</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>11972</td>
+                        <td>msedgewebview2.exe</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>running</td>
+                        <td>2026-02-24 08:15:53</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>12020</td>
+                        <td>NisSrv.exe</td>
+                        <td>0.0%</td>
+                        <td>0.1%</td>
+                        <td>running</td>
+                        <td>2026-02-24 08:15:59</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>12100</td>
+                        <td>PhoneExperienceHost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.2%</td>
+                        <td>running</td>
+                        <td>2026-02-24 08:21:19</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>12388</td>
+                        <td>dllhost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>running</td>
+                        <td>2026-02-24 23:32:56</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>12544</td>
+                        <td>msedge.exe</td>
+                        <td>0.0%</td>
+                        <td>1.7%</td>
+                        <td>running</td>
+                        <td>2026-02-25 08:57:56</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>12592</td>
+                        <td>ctfmon.exe</td>
+                        <td>0.0%</td>
+                        <td>0.1%</td>
+                        <td>running</td>
+                        <td>2026-02-24 08:15:56</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>12612</td>
+                        <td>identity.exe</td>
+                        <td>0.0%</td>
+                        <td>0.1%</td>
+                        <td>running</td>
+                        <td>2026-02-24 08:22:02</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>12832</td>
+                        <td>svchost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>running</td>
+                        <td>2026-02-24 08:17:50</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>12852</td>
+                        <td>BraveCrashHandler.exe</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>running</td>
+                        <td>2026-02-24 08:15:57</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>12900</td>
+                        <td>conhost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>running</td>
+                        <td>2026-02-24 23:35:33</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>12952</td>
+                        <td>BraveCrashHandler64.exe</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>running</td>
+                        <td>2026-02-24 08:15:58</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>13044</td>
+                        <td>msedgewebview2.exe</td>
+                        <td>0.0%</td>
+                        <td>2.5%</td>
+                        <td>running</td>
+                        <td>2026-02-24 08:21:03</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>13608</td>
+                        <td>conhost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>running</td>
+                        <td>2026-02-24 23:35:32</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>13640</td>
+                        <td>python3.9.exe</td>
+                        <td>0.0%</td>
+                        <td>0.1%</td>
+                        <td>running</td>
+                        <td>2026-02-25 09:03:35</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>13752</td>
+                        <td>DSATray.exe</td>
+                        <td>0.0%</td>
+                        <td>0.1%</td>
+                        <td>running</td>
+                        <td>2026-02-24 08:16:11</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>13836</td>
+                        <td>pyrefly.exe</td>
+                        <td>0.0%</td>
+                        <td>0.9%</td>
+                        <td>running</td>
+                        <td>2026-02-24 23:36:21</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>14064</td>
+                        <td>SecurityHealthSystray.exe</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>running</td>
+                        <td>2026-02-24 08:16:23</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>14304</td>
+                        <td>msedge.exe</td>
+                        <td>0.0%</td>
+                        <td>0.3%</td>
+                        <td>running</td>
+                        <td>2026-02-25 09:06:24</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>14404</td>
+                        <td>splunkd.exe</td>
+                        <td>0.0%</td>
+                        <td>0.2%</td>
+                        <td>running</td>
+                        <td>2026-02-24 08:16:56</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>14772</td>
+                        <td>msedgewebview2.exe</td>
+                        <td>0.0%</td>
+                        <td>0.9%</td>
+                        <td>running</td>
+                        <td>2026-02-25 09:12:39</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>15060</td>
+                        <td>RuntimeBroker.exe</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>running</td>
+                        <td>2026-02-24 08:16:24</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>15140</td>
+                        <td>SecurityHealthService.exe</td>
+                        <td>0.0%</td>
+                        <td>0.1%</td>
+                        <td>running</td>
+                        <td>2026-02-24 08:16:23</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>15564</td>
+                        <td>svchost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>running</td>
+                        <td>2026-02-24 08:17:51</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>15588</td>
+                        <td>Antigravity.exe</td>
+                        <td>0.0%</td>
+                        <td>0.6%</td>
+                        <td>running</td>
+                        <td>2026-02-24 23:01:43</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>15680</td>
+                        <td>svchost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.1%</td>
+                        <td>running</td>
+                        <td>2026-02-24 08:17:51</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>15948</td>
+                        <td>mongod.exe</td>
+                        <td>0.0%</td>
+                        <td>0.6%</td>
+                        <td>running</td>
+                        <td>2026-02-24 08:16:43</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>16012</td>
+                        <td>Copilot.exe</td>
+                        <td>0.0%</td>
+                        <td>0.2%</td>
+                        <td>running</td>
+                        <td>2026-02-24 08:20:13</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>16228</td>
+                        <td>svchost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>running</td>
+                        <td>2026-02-24 12:57:43</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>16268</td>
+                        <td>RtkAudUService64.exe</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>running</td>
+                        <td>2026-02-24 08:16:32</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>16672</td>
+                        <td>AppActions.exe</td>
+                        <td>0.0%</td>
+                        <td>0.1%</td>
+                        <td>running</td>
+                        <td>2026-02-24 08:25:48</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>16692</td>
+                        <td>RuntimeBroker.exe</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>running</td>
+                        <td>2026-02-25 09:05:08</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>16780</td>
+                        <td>WhatsApp.Root.exe</td>
+                        <td>0.0%</td>
+                        <td>0.8%</td>
+                        <td>running</td>
+                        <td>2026-02-24 08:20:56</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>16828</td>
+                        <td>ProtonVPN.Client.exe</td>
+                        <td>0.0%</td>
+                        <td>2.3%</td>
+                        <td>running</td>
+                        <td>2026-02-24 08:19:33</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>16856</td>
+                        <td>msedgewebview2.exe</td>
+                        <td>0.0%</td>
+                        <td>0.1%</td>
+                        <td>running</td>
+                        <td>2026-02-24 08:17:56</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>16884</td>
+                        <td>msedgewebview2.exe</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>running</td>
+                        <td>2026-02-24 08:17:56</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>16968</td>
+                        <td>FileCoAuth.exe</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>running</td>
+                        <td>2026-02-24 22:53:09</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>16972</td>
+                        <td>CrossDeviceService.exe</td>
+                        <td>0.0%</td>
+                        <td>0.1%</td>
+                        <td>running</td>
+                        <td>2026-02-24 08:20:36</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>17040</td>
+                        <td>Antigravity.exe</td>
+                        <td>0.0%</td>
+                        <td>1.8%</td>
+                        <td>running</td>
+                        <td>2026-02-24 23:35:19</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>17156</td>
+                        <td>msedgewebview2.exe</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>running</td>
+                        <td>2026-02-24 08:17:56</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>17168</td>
+                        <td>msedgewebview2.exe</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>running</td>
+                        <td>2026-02-24 08:17:56</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>17224</td>
+                        <td>msedgewebview2.exe</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>running</td>
+                        <td>2026-02-24 08:17:57</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>17392</td>
+                        <td>msedgewebview2.exe</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>running</td>
+                        <td>2026-02-24 08:17:57</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>17428</td>
+                        <td>python.exe</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>running</td>
+                        <td>2026-02-25 09:09:20</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>17456</td>
+                        <td>Antigravity.exe</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>running</td>
+                        <td>2026-02-24 23:36:21</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>17460</td>
+                        <td>ShellHost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.1%</td>
+                        <td>running</td>
+                        <td>2026-02-25 08:15:35</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>17600</td>
+                        <td>Antigravity.exe</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>running</td>
+                        <td>2026-02-24 23:01:49</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>17628</td>
+                        <td>msedge.exe</td>
+                        <td>0.0%</td>
+                        <td>1.6%</td>
+                        <td>running</td>
+                        <td>2026-02-25 08:57:55</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>17648</td>
+                        <td>SystemSettings.exe</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>stopped</td>
+                        <td>2026-02-24 13:03:58</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>17908</td>
+                        <td>svchost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>running</td>
+                        <td>2026-02-25 08:57:59</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>17980</td>
+                        <td>svchost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>running</td>
+                        <td>2026-02-24 08:23:02</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>17996</td>
+                        <td>msedge.exe</td>
+                        <td>0.0%</td>
+                        <td>0.1%</td>
+                        <td>running</td>
+                        <td>2026-02-25 09:06:10</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>18064</td>
+                        <td>Antigravity.exe</td>
+                        <td>0.0%</td>
+                        <td>0.9%</td>
+                        <td>running</td>
+                        <td>2026-02-24 23:01:48</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>18192</td>
+                        <td>OneDrive.Sync.Service.exe</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>running</td>
+                        <td>2026-02-24 08:22:51</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>18228</td>
+                        <td>dllhost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>running</td>
+                        <td>2026-02-24 23:32:55</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>18284</td>
+                        <td>conhost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>running</td>
+                        <td>2026-02-24 23:36:21</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>18352</td>
+                        <td>svchost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>running</td>
+                        <td>2026-02-24 08:23:03</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>18448</td>
+                        <td>msedgewebview2.exe</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>running</td>
+                        <td>2026-02-24 19:47:34</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>18504</td>
+                        <td>Antigravity.exe</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>running</td>
+                        <td>2026-02-24 23:02:07</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>18608</td>
+                        <td>powershell.exe</td>
+                        <td>0.0%</td>
+                        <td>0.1%</td>
+                        <td>running</td>
+                        <td>2026-02-24 23:35:33</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>18760</td>
+                        <td>Antigravity.exe</td>
+                        <td>0.0%</td>
+                        <td>5.4%</td>
+                        <td>running</td>
+                        <td>2026-02-24 23:01:48</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>18820</td>
+                        <td>msedge.exe</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>running</td>
+                        <td>2026-02-25 08:57:56</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>19232</td>
+                        <td>powershell.exe</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>running</td>
+                        <td>2026-02-24 23:02:16</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>19360</td>
+                        <td>conhost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>running</td>
+                        <td>2026-02-24 23:02:16</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>19592</td>
+                        <td>UserOOBEBroker.exe</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>running</td>
+                        <td>2026-02-24 13:03:59</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>19888</td>
+                        <td>jucheck.exe</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>running</td>
+                        <td>2026-02-24 21:41:14</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>20152</td>
+                        <td>Antigravity.exe</td>
+                        <td>0.0%</td>
+                        <td>0.2%</td>
+                        <td>running</td>
+                        <td>2026-02-24 23:35:19</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>20236</td>
+                        <td>msedge.exe</td>
+                        <td>0.0%</td>
+                        <td>0.8%</td>
+                        <td>running</td>
+                        <td>2026-02-25 09:06:41</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>20404</td>
+                        <td>Antigravity.exe</td>
+                        <td>0.0%</td>
+                        <td>0.2%</td>
+                        <td>running</td>
+                        <td>2026-02-24 23:01:48</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>20432</td>
+                        <td>SearchProtocolHost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.1%</td>
+                        <td>running</td>
+                        <td>2026-02-25 09:11:13</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>20856</td>
+                        <td>Antigravity.exe</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>running</td>
+                        <td>2026-02-24 23:36:19</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>20872</td>
+                        <td>dllhost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>running</td>
+                        <td>2026-02-24 23:32:55</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>21156</td>
+                        <td>powershell.exe</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>running</td>
+                        <td>2026-02-24 23:03:28</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>21188</td>
+                        <td>python.exe</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>running</td>
+                        <td>2026-02-25 09:00:41</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>21608</td>
+                        <td>language_server_windows_x64.exe</td>
+                        <td>0.0%</td>
+                        <td>6.6%</td>
+                        <td>running</td>
+                        <td>2026-02-24 23:35:33</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>21616</td>
+                        <td>conhost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>running</td>
+                        <td>2026-02-24 23:35:34</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>21912</td>
+                        <td>svchost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.1%</td>
+                        <td>running</td>
+                        <td>2026-02-24 23:59:30</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>22276</td>
+                        <td>powershell.exe</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>running</td>
+                        <td>2026-02-24 23:35:32</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>22668</td>
+                        <td>msedge.exe</td>
+                        <td>0.0%</td>
+                        <td>0.1%</td>
+                        <td>running</td>
+                        <td>2026-02-25 09:06:53</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>22840</td>
+                        <td>python.exe</td>
+                        <td>0.0%</td>
+                        <td>0.1%</td>
+                        <td>running</td>
+                        <td>2026-02-25 09:00:41</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>22932</td>
+                        <td>msedge.exe</td>
+                        <td>0.0%</td>
+                        <td>0.5%</td>
+                        <td>running</td>
+                        <td>2026-02-25 09:12:50</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>23652</td>
+                        <td>msedge.exe</td>
+                        <td>0.0%</td>
+                        <td>0.4%</td>
+                        <td>running</td>
+                        <td>2026-02-25 08:57:56</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>24020</td>
+                        <td>taskhostw.exe</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>running</td>
+                        <td>2026-02-25 08:22:25</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>24168</td>
+                        <td>svchost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>running</td>
+                        <td>2026-02-25 08:02:38</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>24432</td>
+                        <td>msedge.exe</td>
+                        <td>0.0%</td>
+                        <td>1.0%</td>
+                        <td>running</td>
+                        <td>2026-02-25 09:01:09</td>
+                    </tr>
+                    
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- System Calls Analysis -->
+    <div class="section">
+        <h2>System Calls Analysis</h2>
+        <div class="grid">
+            <div class="stat-card">
+                <div class="stat-value">3882</div>
+                <div class="stat-label">Total System Calls</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">2831</div>
+                <div class="stat-label">File Operations</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">89</div>
+                <div class="stat-label">Network Operations</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">256</div>
+                <div class="stat-label">Process Operations</div>
+            </div>
+        </div>
+        
+        <div class="subsection">
+            <h3>Most Frequent System Calls</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>System Call</th>
+                        <th>Count</th>
+                        <th>Category</th>
+                        <th>Risk Level</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    
+                    <tr>
+                        <td>CreateFile</td>
+                        <td>2831</td>
+                        <td>File Operations</td>
+                        <td>
+                            <span class="badge badge-secure">
+                                Low
+                            </span>
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td>ReadFile/WriteFile</td>
+                        <td>2264</td>
+                        <td>File Operations</td>
+                        <td>
+                            <span class="badge badge-secure">
+                                Low
+                            </span>
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td>Socket Operations</td>
+                        <td>89</td>
+                        <td>Network Operations</td>
+                        <td>
+                            <span class="badge badge-warning">
+                                Medium
+                            </span>
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td>Process Creation</td>
+                        <td>256</td>
+                        <td>Process Operations</td>
+                        <td>
+                            <span class="badge badge-risk">
+                                High
+                            </span>
+                        </td>
+                    </tr>
+                    
+                </tbody>
+            </table>
+        </div>
+
+        <div class="subsection">
+            <h3>Suspicious System Call Patterns</h3>
+            <div class="patterns-list">
+                
+                <div class="pattern-item">
+                    <h4>High File Operation Activity</h4>
+                    <p><strong>Description:</strong> Unusually high number of file operations detected</p>
+                    <p><strong>Frequency:</strong> 2831 operations</p>
+                    <p><strong>Risk Level:</strong> 
+                        <span class="badge badge-warning">
+                            Medium
+                        </span>
+                    </p>
+                    <div class="mitigation-steps">
+                        <h4>Recommended Actions:</h4>
+                        <ol>
+                            
+                            <li>Monitor file access patterns</li>
+                            
+                            <li>Check for potential data exfiltration</li>
+                            
+                            <li>Review file access permissions</li>
+                            
+                            <li>Implement file access auditing</li>
+                            
+                        </ol>
+                    </div>
+                </div>
+            
+                <div class="pattern-item">
+                    <h4>High Process Creation Activity</h4>
+                    <p><strong>Description:</strong> Unusual number of child processes detected</p>
+                    <p><strong>Frequency:</strong> 256 processes</p>
+                    <p><strong>Risk Level:</strong> 
+                        <span class="badge badge-risk">
+                            High
+                        </span>
+                    </p>
+                    <div class="mitigation-steps">
+                        <h4>Recommended Actions:</h4>
+                        <ol>
+                            
+                            <li>Investigate process creation patterns</li>
+                            
+                            <li>Check for unauthorized process spawning</li>
+                            
+                            <li>Review process creation permissions</li>
+                            
+                            <li>Implement process creation monitoring</li>
+                            
+                        </ol>
+                    </div>
+                </div>
+            
+            </div>
+        </div>
+    </div>
+
+    <!-- Network Analysis -->
+    <div class="section">
+        <h2>Network Analysis</h2>
+        <!-- Add Network Packet Statistics -->
+        <div class="grid">
+            <div class="stat-card">
+                <div class="stat-value">35,161</div>
+                <div class="stat-label">Packets Sent</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">50,768</div>
+                <div class="stat-label">Packets Received</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">21.48 MB</div>
+                <div class="stat-label">Data Sent</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">28.95 MB</div>
+                <div class="stat-label">Data Received</div>
+            </div>
+        </div>
+
+        <div class="subsection">
+            <h3>Packet Analysis</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Protocol</th>
+                        <th>Packets Count</th>
+                        <th>Data Volume</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    
+                    <tr>
+                        <td>TCP</td>
+                        <td>24,612</td>
+                        <td>15.03 MB</td>
+                        <td>
+                            <span class="badge badge-secure">
+                                Normal
+                            </span>
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td>UDP</td>
+                        <td>7,032</td>
+                        <td>4.30 MB</td>
+                        <td>
+                            <span class="badge badge-secure">
+                                Normal
+                            </span>
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td>ICMP</td>
+                        <td>3,516</td>
+                        <td>2.15 MB</td>
+                        <td>
+                            <span class="badge badge-secure">
+                                Normal
+                            </span>
+                        </td>
+                    </tr>
+                    
+                </tbody>
+            </table>
+        </div>
+
+        <div class="subsection">
+            <h3>Network Traffic Patterns</h3>
+            <p><strong>Peak Activity Time:</strong> 09:13:06</p>
+            <p><strong>Average Bandwidth Usage:</strong> 21.48 MB/s</p>
+            <p><strong>Most Active Process:</strong> System</p>
+            <p><strong>Unusual Patterns:</strong> None detected</p>
+            <p><strong>Total Active Connections:</strong> 214</p>
+            <p><strong>Average Packet Size:</strong> 615.36 bytes</p>
+        </div>
+
+        <div class="subsection">
+            <h3>Top Network Connections</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Process</th>
+                        <th>Local Address</th>
+                        <th>Remote Address</th>
+                        <th>Packets Sent</th>
+                        <th>Packets Received</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    
+                    <tr>
+                        <td>splunkd.exe</td>
+                        <td>0.0.0.0:8089</td>
+                        <td>N/A</td>
+                        <td>164</td>
+                        <td>237</td>
+                        <td>
+                            <span class="badge badge-risk">
+                                LISTEN
+                            </span>
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td>Unknown</td>
+                        <td>127.0.0.1:53905</td>
+                        <td>127.0.0.1:5000</td>
+                        <td>164</td>
+                        <td>237</td>
+                        <td>
+                            <span class="badge badge-risk">
+                                TIME_WAIT
+                            </span>
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td>Unknown</td>
+                        <td>127.0.0.1:56125</td>
+                        <td>127.0.0.1:57891</td>
+                        <td>164</td>
+                        <td>237</td>
+                        <td>
+                            <span class="badge badge-risk">
+                                TIME_WAIT
+                            </span>
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td>mongod.exe</td>
+                        <td>127.0.0.1:61357</td>
+                        <td>127.0.0.1:8191</td>
+                        <td>164</td>
+                        <td>237</td>
+                        <td>
+                            <span class="badge badge-risk">
+                                ESTABLISHED
+                            </span>
+                        </td>
+                    </tr>
+                    
+                    <tr>
+                        <td>svchost.exe</td>
+                        <td>0.0.0.0:59200</td>
+                        <td>N/A</td>
+                        <td>164</td>
+                        <td>237</td>
+                        <td>
+                            <span class="badge badge-risk">
+                                NONE
+                            </span>
+                        </td>
+                    </tr>
+                    
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Log Analysis -->
+    <div class="section">
+        <h2>Log Analysis</h2>
+        <div class="grid">
+            <div class="stat-card">
+                <div class="stat-value">11</div>
+                <div class="stat-label">Total Events</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">0</div>
+                <div class="stat-label">Critical Events</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">0</div>
+                <div class="stat-label">Warning Events</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">0</div>
+                <div class="stat-label">Info Events</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Artifact Analysis -->
+    <div class="section">
+        <h2>Artifact Analysis</h2>
+        <div class="grid">
+            <div class="stat-card">
+                <div class="stat-value">55</div>
+                <div class="stat-label">Total Files Analyzed</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">55</div>
+                <div class="stat-label">Suspicious Files</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">0</div>
+                <div class="stat-label">Suspicious Images</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">40</div>
+                <div class="stat-label">Suspicious Text Files</div>
+            </div>
+        </div>
+        
+        
+        <div class="subsection">
+            <h3>Suspicious Files Detailed</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Path</th>
+                        <th>Type</th>
+                        <th>Size</th>
+                        <th>Hash</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    
+                    <tr>
+                        <td style="word-break: break-all;">C:\Users\Srithik\OneDrive\Desktop\ad-4-2\AD 4-2\AD 4-2\AI-Driven Cyber Forensics Analyzer\.env</td>
+                        <td>application/octet-stream</td>
+                        <td>0.79 KB</td>
+                        <td style="font-family: monospace; font-size: 11px;">ac8a965a839de665...</td>
+                    </tr>
+                    
+                    <tr>
+                        <td style="word-break: break-all;">C:\Users\Srithik\OneDrive\Desktop\ad-4-2\AD 4-2\AD 4-2\AI-Driven Cyber Forensics Analyzer\.env.example</td>
+                        <td>application/octet-stream</td>
+                        <td>0.75 KB</td>
+                        <td style="font-family: monospace; font-size: 11px;">c81520024dcaf7c6...</td>
+                    </tr>
+                    
+                    <tr>
+                        <td style="word-break: break-all;">C:\Users\Srithik\OneDrive\Desktop\ad-4-2\AD 4-2\AD 4-2\AI-Driven Cyber Forensics Analyzer\README.md</td>
+                        <td>application/octet-stream</td>
+                        <td>2.38 KB</td>
+                        <td style="font-family: monospace; font-size: 11px;">8d1733fe0c162b68...</td>
+                    </tr>
+                    
+                    <tr>
+                        <td style="word-break: break-all;">C:\Users\Srithik\OneDrive\Desktop\ad-4-2\AD 4-2\AD 4-2\AI-Driven Cyber Forensics Analyzer\requirements.txt</td>
+                        <td>text/plain</td>
+                        <td>0.5 KB</td>
+                        <td style="font-family: monospace; font-size: 11px;">d301afcc2ca81312...</td>
+                    </tr>
+                    
+                    <tr>
+                        <td style="word-break: break-all;">C:\Users\Srithik\OneDrive\Desktop\ad-4-2\AD 4-2\AD 4-2\AI-Driven Cyber Forensics Analyzer\reports\forensics_report_20250222_141943.html</td>
+                        <td>application/octet-stream</td>
+                        <td>518.49 KB</td>
+                        <td style="font-family: monospace; font-size: 11px;">5480fcd3fde9ecb1...</td>
+                    </tr>
+                    
+                    <tr>
+                        <td style="word-break: break-all;">C:\Users\Srithik\OneDrive\Desktop\ad-4-2\AD 4-2\AD 4-2\AI-Driven Cyber Forensics Analyzer\reports\forensics_report_20250222_142801.html</td>
+                        <td>application/octet-stream</td>
+                        <td>520.47 KB</td>
+                        <td style="font-family: monospace; font-size: 11px;">5e21ccc9b071fec4...</td>
+                    </tr>
+                    
+                    <tr>
+                        <td style="word-break: break-all;">C:\Users\Srithik\OneDrive\Desktop\ad-4-2\AD 4-2\AD 4-2\AI-Driven Cyber Forensics Analyzer\reports\forensics_report_20250222_142924.html</td>
+                        <td>application/octet-stream</td>
+                        <td>519.16 KB</td>
+                        <td style="font-family: monospace; font-size: 11px;">5a88a48a77ad6d24...</td>
+                    </tr>
+                    
+                    <tr>
+                        <td style="word-break: break-all;">C:\Users\Srithik\OneDrive\Desktop\ad-4-2\AD 4-2\AD 4-2\AI-Driven Cyber Forensics Analyzer\reports\forensics_report_20250222_164231.html</td>
+                        <td>application/octet-stream</td>
+                        <td>519.47 KB</td>
+                        <td style="font-family: monospace; font-size: 11px;">5b8f98518ba4eeae...</td>
+                    </tr>
+                    
+                    <tr>
+                        <td style="word-break: break-all;">C:\Users\Srithik\OneDrive\Desktop\ad-4-2\AD 4-2\AD 4-2\AI-Driven Cyber Forensics Analyzer\reports\forensics_report_20250222_165139.html</td>
+                        <td>application/octet-stream</td>
+                        <td>9.17 KB</td>
+                        <td style="font-family: monospace; font-size: 11px;">c493d4e2f5dfdb50...</td>
+                    </tr>
+                    
+                    <tr>
+                        <td style="word-break: break-all;">C:\Users\Srithik\OneDrive\Desktop\ad-4-2\AD 4-2\AD 4-2\AI-Driven Cyber Forensics Analyzer\reports\forensics_report_20250222_171149 - Copy.html</td>
+                        <td>application/octet-stream</td>
+                        <td>100.94 KB</td>
+                        <td style="font-family: monospace; font-size: 11px;">25405046ec34f99e...</td>
+                    </tr>
+                    
+                    <tr>
+                        <td style="word-break: break-all;">C:\Users\Srithik\OneDrive\Desktop\ad-4-2\AD 4-2\AD 4-2\AI-Driven Cyber Forensics Analyzer\reports\forensics_report_20250222_171149.html</td>
+                        <td>application/octet-stream</td>
+                        <td>100.94 KB</td>
+                        <td style="font-family: monospace; font-size: 11px;">25405046ec34f99e...</td>
+                    </tr>
+                    
+                    <tr>
+                        <td style="word-break: break-all;">C:\Users\Srithik\OneDrive\Desktop\ad-4-2\AD 4-2\AD 4-2\AI-Driven Cyber Forensics Analyzer\reports\forensics_report_20250222_171710.html</td>
+                        <td>application/octet-stream</td>
+                        <td>101.61 KB</td>
+                        <td style="font-family: monospace; font-size: 11px;">8800eb473458bb9d...</td>
+                    </tr>
+                    
+                    <tr>
+                        <td style="word-break: break-all;">C:\Users\Srithik\OneDrive\Desktop\ad-4-2\AD 4-2\AD 4-2\AI-Driven Cyber Forensics Analyzer\reports\forensics_report_20250222_172006.html</td>
+                        <td>application/octet-stream</td>
+                        <td>104.77 KB</td>
+                        <td style="font-family: monospace; font-size: 11px;">05f354637d54c5ba...</td>
+                    </tr>
+                    
+                    <tr>
+                        <td style="word-break: break-all;">C:\Users\Srithik\OneDrive\Desktop\ad-4-2\AD 4-2\AD 4-2\AI-Driven Cyber Forensics Analyzer\reports\forensics_report_20250222_172551.html</td>
+                        <td>application/octet-stream</td>
+                        <td>110.28 KB</td>
+                        <td style="font-family: monospace; font-size: 11px;">bd982fcec06c1856...</td>
+                    </tr>
+                    
+                    <tr>
+                        <td style="word-break: break-all;">C:\Users\Srithik\OneDrive\Desktop\ad-4-2\AD 4-2\AD 4-2\AI-Driven Cyber Forensics Analyzer\reports\forensics_report_20250222_175324.html</td>
+                        <td>application/octet-stream</td>
+                        <td>117.52 KB</td>
+                        <td style="font-family: monospace; font-size: 11px;">636f189d0aaf2996...</td>
+                    </tr>
+                    
+                    <tr>
+                        <td style="word-break: break-all;">C:\Users\Srithik\OneDrive\Desktop\ad-4-2\AD 4-2\AD 4-2\AI-Driven Cyber Forensics Analyzer\reports\forensics_report_20250222_180627.html</td>
+                        <td>application/octet-stream</td>
+                        <td>116.56 KB</td>
+                        <td style="font-family: monospace; font-size: 11px;">76641a953d8380a8...</td>
+                    </tr>
+                    
+                    <tr>
+                        <td style="word-break: break-all;">C:\Users\Srithik\OneDrive\Desktop\ad-4-2\AD 4-2\AD 4-2\AI-Driven Cyber Forensics Analyzer\reports\forensics_report_20250222_181026 - Copy.html</td>
+                        <td>application/octet-stream</td>
+                        <td>115.56 KB</td>
+                        <td style="font-family: monospace; font-size: 11px;">57e06a84156bd62b...</td>
+                    </tr>
+                    
+                    <tr>
+                        <td style="word-break: break-all;">C:\Users\Srithik\OneDrive\Desktop\ad-4-2\AD 4-2\AD 4-2\AI-Driven Cyber Forensics Analyzer\reports\forensics_report_20250222_181026.html</td>
+                        <td>application/octet-stream</td>
+                        <td>115.56 KB</td>
+                        <td style="font-family: monospace; font-size: 11px;">57e06a84156bd62b...</td>
+                    </tr>
+                    
+                    <tr>
+                        <td style="word-break: break-all;">C:\Users\Srithik\OneDrive\Desktop\ad-4-2\AD 4-2\AD 4-2\AI-Driven Cyber Forensics Analyzer\reports\forensics_report_20250222_185846 - Copy.html</td>
+                        <td>application/octet-stream</td>
+                        <td>116.62 KB</td>
+                        <td style="font-family: monospace; font-size: 11px;">34a6715c9635b2fc...</td>
+                    </tr>
+                    
+                    <tr>
+                        <td style="word-break: break-all;">C:\Users\Srithik\OneDrive\Desktop\ad-4-2\AD 4-2\AD 4-2\AI-Driven Cyber Forensics Analyzer\reports\forensics_report_20250222_185846.html</td>
+                        <td>application/octet-stream</td>
+                        <td>116.62 KB</td>
+                        <td style="font-family: monospace; font-size: 11px;">34a6715c9635b2fc...</td>
+                    </tr>
+                    
+                    <tr>
+                        <td style="word-break: break-all;">C:\Users\Srithik\OneDrive\Desktop\ad-4-2\AD 4-2\AD 4-2\AI-Driven Cyber Forensics Analyzer\reports\forensics_report_20250319_140753 - Copy.html</td>
+                        <td>application/octet-stream</td>
+                        <td>102.67 KB</td>
+                        <td style="font-family: monospace; font-size: 11px;">8a7edfad64237ed9...</td>
+                    </tr>
+                    
+                    <tr>
+                        <td style="word-break: break-all;">C:\Users\Srithik\OneDrive\Desktop\ad-4-2\AD 4-2\AD 4-2\AI-Driven Cyber Forensics Analyzer\reports\forensics_report_20250319_140753.html</td>
+                        <td>application/octet-stream</td>
+                        <td>102.67 KB</td>
+                        <td style="font-family: monospace; font-size: 11px;">8a7edfad64237ed9...</td>
+                    </tr>
+                    
+                    <tr>
+                        <td style="word-break: break-all;">C:\Users\Srithik\OneDrive\Desktop\ad-4-2\AD 4-2\AD 4-2\AI-Driven Cyber Forensics Analyzer\reports\forensics_report_20250406_133003 - Copy.html</td>
+                        <td>application/octet-stream</td>
+                        <td>117.65 KB</td>
+                        <td style="font-family: monospace; font-size: 11px;">38adad1c62e3e1f1...</td>
+                    </tr>
+                    
+                    <tr>
+                        <td style="word-break: break-all;">C:\Users\Srithik\OneDrive\Desktop\ad-4-2\AD 4-2\AD 4-2\AI-Driven Cyber Forensics Analyzer\reports\forensics_report_20250406_133003.html</td>
+                        <td>application/octet-stream</td>
+                        <td>117.65 KB</td>
+                        <td style="font-family: monospace; font-size: 11px;">38adad1c62e3e1f1...</td>
+                    </tr>
+                    
+                    <tr>
+                        <td style="word-break: break-all;">C:\Users\Srithik\OneDrive\Desktop\ad-4-2\AD 4-2\AD 4-2\AI-Driven Cyber Forensics Analyzer\reports\forensics_report_20250406_163827.html</td>
+                        <td>application/octet-stream</td>
+                        <td>49567.45 KB</td>
+                        <td style="font-family: monospace; font-size: 11px;">bd85c982210dedb4...</td>
+                    </tr>
+                    
+                    <tr>
+                        <td style="word-break: break-all;">C:\Users\Srithik\OneDrive\Desktop\ad-4-2\AD 4-2\AD 4-2\AI-Driven Cyber Forensics Analyzer\reports\forensics_report_20260225_090155.html</td>
+                        <td>application/octet-stream</td>
+                        <td>133.59 KB</td>
+                        <td style="font-family: monospace; font-size: 11px;">536c6215434f4dfc...</td>
+                    </tr>
+                    
+                    <tr>
+                        <td style="word-break: break-all;">C:\Users\Srithik\OneDrive\Desktop\ad-4-2\AD 4-2\AD 4-2\AI-Driven Cyber Forensics Analyzer\reports\report_20250218_104839\report.html</td>
+                        <td>application/octet-stream</td>
+                        <td>4.43 KB</td>
+                        <td style="font-family: monospace; font-size: 11px;">e88ebb344f5b52d2...</td>
+                    </tr>
+                    
+                    <tr>
+                        <td style="word-break: break-all;">C:\Users\Srithik\OneDrive\Desktop\ad-4-2\AD 4-2\AD 4-2\AI-Driven Cyber Forensics Analyzer\reports\report_20250218_104839\report.json</td>
+                        <td>application/octet-stream</td>
+                        <td>1.89 KB</td>
+                        <td style="font-family: monospace; font-size: 11px;">4daec48a0e2b135f...</td>
+                    </tr>
+                    
+                    <tr>
+                        <td style="word-break: break-all;">C:\Users\Srithik\OneDrive\Desktop\ad-4-2\AD 4-2\AD 4-2\AI-Driven Cyber Forensics Analyzer\reports\report_20250222_135723\report.html</td>
+                        <td>application/octet-stream</td>
+                        <td>2.59 KB</td>
+                        <td style="font-family: monospace; font-size: 11px;">f30ec2b3afbd29c8...</td>
+                    </tr>
+                    
+                    <tr>
+                        <td style="word-break: break-all;">C:\Users\Srithik\OneDrive\Desktop\ad-4-2\AD 4-2\AD 4-2\AI-Driven Cyber Forensics Analyzer\reports\report_20250222_135857\report.html</td>
+                        <td>application/octet-stream</td>
+                        <td>2.59 KB</td>
+                        <td style="font-family: monospace; font-size: 11px;">3c5e04b9827d2f68...</td>
+                    </tr>
+                    
+                    <tr>
+                        <td style="word-break: break-all;">C:\Users\Srithik\OneDrive\Desktop\ad-4-2\AD 4-2\AD 4-2\AI-Driven Cyber Forensics Analyzer\reports\report_20250222_135923\report.html</td>
+                        <td>application/octet-stream</td>
+                        <td>2.59 KB</td>
+                        <td style="font-family: monospace; font-size: 11px;">c4609d36cd96d003...</td>
+                    </tr>
+                    
+                    <tr>
+                        <td style="word-break: break-all;">C:\Users\Srithik\OneDrive\Desktop\ad-4-2\AD 4-2\AD 4-2\AI-Driven Cyber Forensics Analyzer\reports\report_20250222_135938\report.html</td>
+                        <td>application/octet-stream</td>
+                        <td>2.59 KB</td>
+                        <td style="font-family: monospace; font-size: 11px;">d92e7a420822b692...</td>
+                    </tr>
+                    
+                    <tr>
+                        <td style="word-break: break-all;">C:\Users\Srithik\OneDrive\Desktop\ad-4-2\AD 4-2\AD 4-2\AI-Driven Cyber Forensics Analyzer\reports\report_20250222_140225\report.html</td>
+                        <td>application/octet-stream</td>
+                        <td>2.59 KB</td>
+                        <td style="font-family: monospace; font-size: 11px;">a13478e869947c72...</td>
+                    </tr>
+                    
+                    <tr>
+                        <td style="word-break: break-all;">C:\Users\Srithik\OneDrive\Desktop\ad-4-2\AD 4-2\AD 4-2\AI-Driven Cyber Forensics Analyzer\reports\report_20250222_140418\report.html</td>
+                        <td>application/octet-stream</td>
+                        <td>3.91 KB</td>
+                        <td style="font-family: monospace; font-size: 11px;">c89ce7dc5e44c578...</td>
+                    </tr>
+                    
+                    <tr>
+                        <td style="word-break: break-all;">C:\Users\Srithik\OneDrive\Desktop\ad-4-2\AD 4-2\AD 4-2\AI-Driven Cyber Forensics Analyzer\src\app.py</td>
+                        <td>application/octet-stream</td>
+                        <td>10.73 KB</td>
+                        <td style="font-family: monospace; font-size: 11px;">823d6adeea574e2b...</td>
+                    </tr>
+                    
+                    <tr>
+                        <td style="word-break: break-all;">C:\Users\Srithik\OneDrive\Desktop\ad-4-2\AD 4-2\AD 4-2\AI-Driven Cyber Forensics Analyzer\src\main.py</td>
+                        <td>application/octet-stream</td>
+                        <td>3.01 KB</td>
+                        <td style="font-family: monospace; font-size: 11px;">9edef9a97100faa0...</td>
+                    </tr>
+                    
+                    <tr>
+                        <td style="word-break: break-all;">C:\Users\Srithik\OneDrive\Desktop\ad-4-2\AD 4-2\AD 4-2\AI-Driven Cyber Forensics Analyzer\src\__init__.py</td>
+                        <td>application/octet-stream</td>
+                        <td>0.05 KB</td>
+                        <td style="font-family: monospace; font-size: 11px;">9a4678c478627144...</td>
+                    </tr>
+                    
+                    <tr>
+                        <td style="word-break: break-all;">C:\Users\Srithik\OneDrive\Desktop\ad-4-2\AD 4-2\AD 4-2\AI-Driven Cyber Forensics Analyzer\src\analyzers\artifact_analyzer.py</td>
+                        <td>application/octet-stream</td>
+                        <td>8.29 KB</td>
+                        <td style="font-family: monospace; font-size: 11px;">3122d06e8b42fc0a...</td>
+                    </tr>
+                    
+                    <tr>
+                        <td style="word-break: break-all;">C:\Users\Srithik\OneDrive\Desktop\ad-4-2\AD 4-2\AD 4-2\AI-Driven Cyber Forensics Analyzer\src\analyzers\log_analyzer.py</td>
+                        <td>application/octet-stream</td>
+                        <td>5.53 KB</td>
+                        <td style="font-family: monospace; font-size: 11px;">b9dace1e7be95d52...</td>
+                    </tr>
+                    
+                    <tr>
+                        <td style="word-break: break-all;">C:\Users\Srithik\OneDrive\Desktop\ad-4-2\AD 4-2\AD 4-2\AI-Driven Cyber Forensics Analyzer\src\analyzers\network_analyzer.py</td>
+                        <td>application/octet-stream</td>
+                        <td>6.48 KB</td>
+                        <td style="font-family: monospace; font-size: 11px;">f9b666e46d51feaf...</td>
+                    </tr>
+                    
+                    <tr>
+                        <td style="word-break: break-all;">C:\Users\Srithik\OneDrive\Desktop\ad-4-2\AD 4-2\AD 4-2\AI-Driven Cyber Forensics Analyzer\src\analyzers\__init__.py</td>
+                        <td>application/octet-stream</td>
+                        <td>0.06 KB</td>
+                        <td style="font-family: monospace; font-size: 11px;">965071908c3f9718...</td>
+                    </tr>
+                    
+                    <tr>
+                        <td style="word-break: break-all;">C:\Users\Srithik\OneDrive\Desktop\ad-4-2\AD 4-2\AD 4-2\AI-Driven Cyber Forensics Analyzer\src\config\config.json</td>
+                        <td>application/octet-stream</td>
+                        <td>1.76 KB</td>
+                        <td style="font-family: monospace; font-size: 11px;">0be2d419deb800b4...</td>
+                    </tr>
+                    
+                    <tr>
+                        <td style="word-break: break-all;">C:\Users\Srithik\OneDrive\Desktop\ad-4-2\AD 4-2\AD 4-2\AI-Driven Cyber Forensics Analyzer\src\models\ml_models.py</td>
+                        <td>application/octet-stream</td>
+                        <td>7.88 KB</td>
+                        <td style="font-family: monospace; font-size: 11px;">9ca83a2fc53d0c9e...</td>
+                    </tr>
+                    
+                    <tr>
+                        <td style="word-break: break-all;">C:\Users\Srithik\OneDrive\Desktop\ad-4-2\AD 4-2\AD 4-2\AI-Driven Cyber Forensics Analyzer\src\models\threat_detector.py</td>
+                        <td>application/octet-stream</td>
+                        <td>4.82 KB</td>
+                        <td style="font-family: monospace; font-size: 11px;">6d66849643112e13...</td>
+                    </tr>
+                    
+                    <tr>
+                        <td style="word-break: break-all;">C:\Users\Srithik\OneDrive\Desktop\ad-4-2\AD 4-2\AD 4-2\AI-Driven Cyber Forensics Analyzer\src\models\__init__.py</td>
+                        <td>application/octet-stream</td>
+                        <td>0.05 KB</td>
+                        <td style="font-family: monospace; font-size: 11px;">2d3e67a031450279...</td>
+                    </tr>
+                    
+                    <tr>
+                        <td style="word-break: break-all;">C:\Users\Srithik\OneDrive\Desktop\ad-4-2\AD 4-2\AD 4-2\AI-Driven Cyber Forensics Analyzer\src\reports\forensics_report_20250222_181955.html</td>
+                        <td>application/octet-stream</td>
+                        <td>114.92 KB</td>
+                        <td style="font-family: monospace; font-size: 11px;">1b04a5ab4a04a243...</td>
+                    </tr>
+                    
+                    <tr>
+                        <td style="word-break: break-all;">C:\Users\Srithik\OneDrive\Desktop\ad-4-2\AD 4-2\AD 4-2\AI-Driven Cyber Forensics Analyzer\src\reports\forensics_report_20250222_182357.html</td>
+                        <td>application/octet-stream</td>
+                        <td>421.9 KB</td>
+                        <td style="font-family: monospace; font-size: 11px;">8fc2b707e2b287ac...</td>
+                    </tr>
+                    
+                    <tr>
+                        <td style="word-break: break-all;">C:\Users\Srithik\OneDrive\Desktop\ad-4-2\AD 4-2\AD 4-2\AI-Driven Cyber Forensics Analyzer\src\reports\forensics_report_20250222_182718.html</td>
+                        <td>application/octet-stream</td>
+                        <td>115.52 KB</td>
+                        <td style="font-family: monospace; font-size: 11px;">7f6e27d5663e59b7...</td>
+                    </tr>
+                    
+                    <tr>
+                        <td style="word-break: break-all;">C:\Users\Srithik\OneDrive\Desktop\ad-4-2\AD 4-2\AD 4-2\AI-Driven Cyber Forensics Analyzer\src\reports\forensics_report_20250222_182925.html</td>
+                        <td>application/octet-stream</td>
+                        <td>115.2 KB</td>
+                        <td style="font-family: monospace; font-size: 11px;">909f95062b042659...</td>
+                    </tr>
+                    
+                    <tr>
+                        <td style="word-break: break-all;">C:\Users\Srithik\OneDrive\Desktop\ad-4-2\AD 4-2\AD 4-2\AI-Driven Cyber Forensics Analyzer\src\reports\forensics_report_20250222_183132.html</td>
+                        <td>application/octet-stream</td>
+                        <td>116.58 KB</td>
+                        <td style="font-family: monospace; font-size: 11px;">5be306e4a9326615...</td>
+                    </tr>
+                    
+                    <tr>
+                        <td style="word-break: break-all;">C:\Users\Srithik\OneDrive\Desktop\ad-4-2\AD 4-2\AD 4-2\AI-Driven Cyber Forensics Analyzer\src\reports\forensics_report_20250222_183456.html</td>
+                        <td>application/octet-stream</td>
+                        <td>427.35 KB</td>
+                        <td style="font-family: monospace; font-size: 11px;">0942199e69287e9d...</td>
+                    </tr>
+                    
+                    <tr>
+                        <td style="word-break: break-all;">C:\Users\Srithik\OneDrive\Desktop\ad-4-2\AD 4-2\AD 4-2\AI-Driven Cyber Forensics Analyzer\src\templates\index.html</td>
+                        <td>application/octet-stream</td>
+                        <td>22.31 KB</td>
+                        <td style="font-family: monospace; font-size: 11px;">938c228cd3896256...</td>
+                    </tr>
+                    
+                    <tr>
+                        <td style="word-break: break-all;">C:\Users\Srithik\OneDrive\Desktop\ad-4-2\AD 4-2\AD 4-2\AI-Driven Cyber Forensics Analyzer\src\utils\config.py</td>
+                        <td>application/octet-stream</td>
+                        <td>8.52 KB</td>
+                        <td style="font-family: monospace; font-size: 11px;">0ae8a0f027ec1aa3...</td>
+                    </tr>
+                    
+                    <tr>
+                        <td style="word-break: break-all;">C:\Users\Srithik\OneDrive\Desktop\ad-4-2\AD 4-2\AD 4-2\AI-Driven Cyber Forensics Analyzer\src\utils\report_generator.py</td>
+                        <td>application/octet-stream</td>
+                        <td>47.87 KB</td>
+                        <td style="font-family: monospace; font-size: 11px;">bf5a557e317a706c...</td>
+                    </tr>
+                    
+                    <tr>
+                        <td style="word-break: break-all;">C:\Users\Srithik\OneDrive\Desktop\ad-4-2\AD 4-2\AD 4-2\AI-Driven Cyber Forensics Analyzer\src\utils\__init__.py</td>
+                        <td>application/octet-stream</td>
+                        <td>0.05 KB</td>
+                        <td style="font-family: monospace; font-size: 11px;">355901c5fb23eb56...</td>
+                    </tr>
+                    
+                </tbody>
+            </table>
+        </div>
+        
+    </div>
+
+    <!-- Detected Threats -->
+    <div class="section">
+        <h2>Detected Threats</h2>
+        
+
+        
+
+        
+    </div>
+
+    <!-- Recommendations -->
+    <div class="section">
+        <h2>Security Recommendations</h2>
+        
+        <div class="recommendation high">
+            <h3>Update System Software</h3>
+            <p><strong>Priority:</strong> High</p>
+            <p>Several critical system components require updates.</p>
+        </div>
+        
+        <div class="recommendation medium">
+            <h3>Review Network Connections</h3>
+            <p><strong>Priority:</strong> Medium</p>
+            <p>Unusual network activity detected from certain processes.</p>
+        </div>
+        
+        <div class="recommendation low">
+            <h3>Enhance System Monitoring</h3>
+            <p><strong>Priority:</strong> Low</p>
+            <p>Consider implementing additional security monitoring tools.</p>
+        </div>
+        
+    </div>
+
+</body>
+</html>

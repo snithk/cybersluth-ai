@@ -1,0 +1,70 @@
+{
+    "analyzer_mode": "batch",
+    "log_level": "INFO",
+    "storage_path": "data",
+    "max_file_size": 104857600,
+    "scan_intervals": {
+        "network": 60,
+        "logs": 300,
+        "artifacts": 3600
+    },
+    "threat_intelligence": {
+        "update_interval": 3600,
+        "feeds": [
+            "https://api.threatintel.example.com/v1/indicators",
+            "https://api.malware-db.example.com/v1/signatures"
+        ]
+    },
+    "analysis_settings": {
+        "network": {
+            "packet_capture_timeout": 30,
+            "max_packets_per_ip": 10000,
+            "suspicious_ports": [
+                22,
+                23,
+                445,
+                3389,
+                4444,
+                5900
+            ]
+        },
+        "logs": {
+            "max_log_age": 604800,
+            "batch_size": 1000,
+            "critical_events": [
+                "authentication failure",
+                "privilege escalation",
+                "firewall violation"
+            ]
+        },
+        "artifacts": {
+            "max_file_count": 10000,
+            "excluded_dirs": [
+                "System Volume Information",
+                "$Recycle.Bin",
+                "Windows"
+            ],
+            "high_risk_extensions": [
+                ".exe",
+                ".dll",
+                ".sys",
+                ".ps1",
+                ".vbs",
+                ".js"
+            ]
+        }
+    },
+    "reporting": {
+        "report_format": [
+            "html",
+            "json"
+        ],
+        "max_reports": 100,
+        "cleanup_age": 2592000
+    },
+    "ml_models": {
+        "model_path": "models",
+        "update_interval": 604800,
+        "confidence_threshold": 0.75
+    }
+}

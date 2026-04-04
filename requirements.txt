@@ -1,0 +1,47 @@
+# Web Framework
+Flask
+gunicorn
+
+# Data Processing & Analysis
+numpy
+pandas
+scipy
+
+# Machine Learning & AI
+scikit-learn
+torch
+
+# Network Analysis
+scapy
+dpkt
+
+# Log Analysis
+python-json-logger
+
+# Image Processing
+Pillow
+
+# Security & Cryptography
+cryptography
+pycryptodome
+
+# Database
+SQLAlchemy
+psycopg2-binary
+
+# API & Integration
+requests
+aiohttp
+
+# Environment & Configuration
+python-dotenv
+pyyaml
+
+# Testing
+pytest
+pytest-cov
+
+# Development Tools
+black
+flake8
+isort

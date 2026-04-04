@@ -1,0 +1,292 @@
+{
+    "185.220.102.5": {
+        "reason": "Suspicious activity detected: PORT_SCAN_DETECTED",
+        "timestamp": "2026-03-27T20:54:36.672885",
+        "status": "blocked"
+    },
+    "185.220.103.4": {
+        "reason": "Suspicious activity detected: PORT_SCAN_DETECTED",
+        "timestamp": "2026-03-27T20:54:36.737263",
+        "status": "blocked"
+    },
+    "185.220.104.2": {
+        "reason": "Suspicious activity detected: PORT_SCAN_DETECTED",
+        "timestamp": "2026-03-27T20:54:36.831005",
+        "status": "blocked"
+    },
+    "185.220.108.4": {
+        "reason": "Suspicious activity detected: PORT_SCAN_DETECTED",
+        "timestamp": "2026-03-27T20:54:37.171806",
+        "status": "blocked"
+    },
+    "185.220.107.2": {
+        "reason": "Suspicious activity detected: PORT_SCAN_DETECTED",
+        "timestamp": "2026-03-27T20:54:37.348235",
+        "status": "blocked"
+    },
+    "185.220.107.3": {
+        "reason": "Suspicious activity detected: PORT_SCAN_DETECTED",
+        "timestamp": "2026-03-27T20:54:37.960901",
+        "status": "blocked"
+    },
+    "185.220.109.5": {
+        "reason": "Suspicious activity detected: PORT_SCAN_DETECTED",
+        "timestamp": "2026-03-27T20:54:38.285950",
+        "status": "blocked"
+    },
+    "185.220.101.4": {
+        "reason": "Suspicious activity detected: PORT_SCAN_DETECTED",
+        "timestamp": "2026-03-27T20:54:38.399820",
+        "status": "blocked"
+    },
+    "185.220.108.3": {
+        "reason": "Suspicious activity detected: PORT_SCAN_DETECTED",
+        "timestamp": "2026-03-27T20:54:39.487965",
+        "status": "blocked"
+    },
+    "185.220.108.2": {
+        "reason": "Suspicious activity detected: PORT_SCAN_DETECTED",
+        "timestamp": "2026-03-27T20:54:39.506591",
+        "status": "blocked"
+    },
+    "185.220.100.3": {
+        "reason": "Suspicious activity detected: PORT_SCAN_DETECTED",
+        "timestamp": "2026-03-27T20:54:39.563967",
+        "status": "blocked"
+    },
+    "185.220.103.5": {
+        "reason": "Suspicious activity detected: PORT_SCAN_DETECTED",
+        "timestamp": "2026-03-27T20:54:39.609479",
+        "status": "blocked"
+    },
+    "185.220.109.2": {
+        "reason": "Suspicious activity detected: PORT_SCAN_DETECTED",
+        "timestamp": "2026-03-27T20:54:39.794468",
+        "status": "blocked"
+    },
+    "185.220.102.4": {
+        "reason": "Suspicious activity detected: PORT_SCAN_DETECTED",
+        "timestamp": "2026-03-27T20:54:39.851588",
+        "status": "blocked"
+    },
+    "185.220.103.1": {
+        "reason": "Suspicious activity detected: PORT_SCAN_DETECTED",
+        "timestamp": "2026-03-27T20:54:39.922353",
+        "status": "blocked"
+    },
+    "185.220.103.2": {
+        "reason": "Suspicious activity detected: PORT_SCAN_DETECTED",
+        "timestamp": "2026-03-27T20:54:39.945589",
+        "status": "blocked"
+    },
+    "185.220.101.1": {
+        "reason": "Suspicious activity detected: PORT_SCAN_DETECTED",
+        "timestamp": "2026-03-27T20:54:40.001926",
+        "status": "blocked"
+    },
+    "185.220.101.2": {
+        "reason": "Suspicious activity detected: PORT_SCAN_DETECTED",
+        "timestamp": "2026-03-27T20:54:40.106124",
+        "status": "blocked"
+    },
+    "185.220.108.1": {
+        "reason": "Suspicious activity detected: PORT_SCAN_DETECTED",
+        "timestamp": "2026-03-27T20:54:40.125601",
+        "status": "blocked"
+    },
+    "185.220.100.2": {
+        "reason": "Suspicious activity detected: BRUTE_FORCE_DETECTED",
+        "timestamp": "2026-03-27T20:54:40.133456",
+        "status": "blocked"
+    },
+    "185.220.105.4": {
+        "reason": "Suspicious activity detected: BRUTE_FORCE_DETECTED",
+        "timestamp": "2026-03-27T20:54:40.190064",
+        "status": "blocked"
+    },
+    "185.220.101.3": {
+        "reason": "Suspicious activity detected: BRUTE_FORCE_DETECTED",
+        "timestamp": "2026-03-27T20:54:40.199555",
+        "status": "blocked"
+    },
+    "185.220.106.4": {
+        "reason": "Suspicious activity detected: BRUTE_FORCE_DETECTED",
+        "timestamp": "2026-03-27T20:54:40.205462",
+        "status": "blocked"
+    },
+    "185.220.106.1": {
+        "reason": "Suspicious activity detected: BRUTE_FORCE_DETECTED",
+        "timestamp": "2026-03-27T20:54:40.226956",
+        "status": "blocked"
+    },
+    "185.220.106.5": {
+        "reason": "Suspicious activity detected: BRUTE_FORCE_DETECTED",
+        "timestamp": "2026-03-27T20:54:40.278950",
+        "status": "blocked"
+    },
+    "185.220.109.4": {
+        "reason": "Suspicious activity detected: BRUTE_FORCE_DETECTED",
+        "timestamp": "2026-03-27T20:54:40.297947",
+        "status": "blocked"
+    },
+    "185.220.102.2": {
+        "reason": "Suspicious activity detected: BRUTE_FORCE_DETECTED",
+        "timestamp": "2026-03-27T20:54:40.338189",
+        "status": "blocked"
+    },
+    "185.220.105.2": {
+        "reason": "Suspicious activity detected: BRUTE_FORCE_DETECTED",
+        "timestamp": "2026-03-27T20:54:40.351702",
+        "status": "blocked"
+    },
+    "45.155.204.4": {
+        "reason": "Critical threat detected: DDOS_FLOOD_DETECTED",
+        "timestamp": "2026-03-27T20:54:40.365769",
+        "status": "blocked"
+    },
+    "45.155.206.1": {
+        "reason": "Critical threat detected: DDOS_FLOOD_DETECTED",
+        "timestamp": "2026-03-27T20:54:40.402647",
+        "status": "blocked"
+    },
+    "45.155.204.1": {
+        "reason": "Critical threat detected: DDOS_FLOOD_DETECTED",
+        "timestamp": "2026-03-27T20:54:40.451539",
+        "status": "blocked"
+    },
+    "45.155.204.5": {
+        "reason": "Critical threat detected: DDOS_FLOOD_DETECTED",
+        "timestamp": "2026-03-27T20:54:40.468500",
+        "status": "blocked"
+    },
+    "185.220.102.1": {
+        "reason": "Critical threat detected: DDOS_FLOOD_DETECTED",
+        "timestamp": "2026-03-27T20:54:40.472956",
+        "status": "blocked"
+    },
+    "45.155.201.5": {
+        "reason": "Critical threat detected: DDOS_FLOOD_DETECTED",
+        "timestamp": "2026-03-27T20:54:40.484729",
+        "status": "blocked"
+    },
+    "45.155.209.5": {
+        "reason": "Critical threat detected: DDOS_FLOOD_DETECTED",
+        "timestamp": "2026-03-27T20:54:40.526786",
+        "status": "blocked"
+    },
+    "185.220.104.1": {
+        "reason": "Critical threat detected: DDOS_FLOOD_DETECTED",
+        "timestamp": "2026-03-27T20:54:40.595282",
+        "status": "blocked"
+    },
+    "185.220.109.1": {
+        "reason": "Critical threat detected: DDOS_FLOOD_DETECTED",
+        "timestamp": "2026-03-27T20:54:40.615958",
+        "status": "blocked"
+    },
+    "45.155.202.3": {
+        "reason": "Critical threat detected: DDOS_FLOOD_DETECTED",
+        "timestamp": "2026-03-27T20:54:40.681579",
+        "status": "blocked"
+    },
+    "185.220.104.5": {
+        "reason": "Critical threat detected: DDOS_FLOOD_DETECTED",
+        "timestamp": "2026-03-27T20:54:40.846093",
+        "status": "blocked"
+    },
+    "185.220.105.1": {
+        "reason": "Critical threat detected: DDOS_FLOOD_DETECTED",
+        "timestamp": "2026-03-27T20:54:40.960318",
+        "status": "blocked"
+    },
+    "45.155.205.1": {
+        "reason": "Critical threat detected: DDOS_FLOOD_DETECTED",
+        "timestamp": "2026-03-27T20:54:41.054226",
+        "status": "blocked"
+    },
+    "45.155.201.3": {
+        "reason": "Critical threat detected: DDOS_FLOOD_DETECTED",
+        "timestamp": "2026-03-27T20:54:41.179543",
+        "status": "blocked"
+    },
+    "45.155.203.2": {
+        "reason": "Critical threat detected: DDOS_FLOOD_DETECTED",
+        "timestamp": "2026-03-27T20:54:41.338964",
+        "status": "blocked"
+    },
+    "45.155.209.2": {
+        "reason": "Critical threat detected: DDOS_FLOOD_DETECTED",
+        "timestamp": "2026-03-27T20:54:41.347343",
+        "status": "blocked"
+    },
+    "45.155.201.4": {
+        "reason": "Critical threat detected: DDOS_FLOOD_DETECTED",
+        "timestamp": "2026-03-27T20:54:41.369651",
+        "status": "blocked"
+    },
+    "45.155.201.1": {
+        "reason": "Critical threat detected: DDOS_FLOOD_DETECTED",
+        "timestamp": "2026-03-27T20:54:41.393128",
+        "status": "blocked"
+    },
+    "45.155.200.1": {
+        "reason": "Critical threat detected: DDOS_FLOOD_DETECTED",
+        "timestamp": "2026-03-27T20:54:41.434380",
+        "status": "blocked"
+    },
+    "45.155.207.5": {
+        "reason": "Critical threat detected: DDOS_FLOOD_DETECTED",
+        "timestamp": "2026-03-27T20:54:41.445176",
+        "status": "blocked"
+    },
+    "185.220.107.1": {
+        "reason": "Critical threat detected: DDOS_FLOOD_DETECTED",
+        "timestamp": "2026-03-27T20:54:41.506716",
+        "status": "blocked"
+    },
+    "45.155.205.3": {
+        "reason": "Critical threat detected: DDOS_FLOOD_DETECTED",
+        "timestamp": "2026-03-27T20:54:41.559887",
+        "status": "blocked"
+    },
+    "45.155.200.5": {
+        "reason": "Critical threat detected: DDOS_FLOOD_DETECTED",
+        "timestamp": "2026-03-27T20:54:41.754244",
+        "status": "blocked"
+    },
+    "185.220.105.3": {
+        "reason": "Critical threat detected: DDOS_FLOOD_DETECTED",
+        "timestamp": "2026-03-27T20:54:41.863414",
+        "status": "blocked"
+    },
+    "45.155.203.3": {
+        "reason": "Critical threat detected: DDOS_FLOOD_DETECTED",
+        "timestamp": "2026-03-27T20:54:41.876437",
+        "status": "blocked"
+    },
+    "185.220.109.3": {
+        "reason": "Critical threat detected: DDOS_FLOOD_DETECTED",
+        "timestamp": "2026-03-27T20:54:41.919327",
+        "status": "blocked"
+    },
+    "45.155.208.1": {
+        "reason": "Critical threat detected: DDOS_FLOOD_DETECTED",
+        "timestamp": "2026-03-27T20:54:41.968038",
+        "status": "blocked"
+    },
+    "185.220.105.5": {
+        "reason": "Suspicious activity detected: BRUTE_FORCE_DETECTED",
+        "timestamp": "2026-03-27T20:54:42.052108",
+        "status": "blocked"
+    },
+    "185.220.101.5": {
+        "reason": "Suspicious activity detected: BRUTE_FORCE_DETECTED",
+        "timestamp": "2026-03-27T20:54:42.148650",
+        "status": "blocked"
+    },
+    "185.220.102.3": {
+        "reason": "Suspicious activity detected: BRUTE_FORCE_DETECTED",
+        "timestamp": "2026-03-27T20:54:42.194423",
+        "status": "blocked"
+    }
+}

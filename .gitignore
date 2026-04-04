@@ -1,0 +1,34 @@
+# Environment & secrets
+.env
+.env.local
+.env.*.local
+
+# Virtual environments
+venv/
+env/
+.venv/
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+
+# Logs
+*.log
+attack_sim.log
+
+# Salesforce DX
+.sfdx/
+
+# Claude skills (local tooling, not project code)
+.claude/
+
+# IDE / OS
+.DS_Store
+.idea/
+.vscode/
+Thumbs.db
+
+# Build / dist
+dist/
+build/
+*.egg-info/

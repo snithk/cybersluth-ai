@@ -1,0 +1,24 @@
+{
+  "timestamp": "2025-02-18 10:48:39",
+  "threats": {
+    "high_priority": [],
+    "medium_priority": [],
+    "low_priority": []
+  },
+  "summary": {
+    "description": "No significant security threats were detected during the analysis.",
+    "total_threats": 0,
+    "high_priority_count": 0,
+    "medium_priority_count": 0,
+    "low_priority_count": 0
+  },
+  "network_summary": "\n            <h3>Network Statistics</h3>\n            <table>\n                <tr>\n                    <th>Metric</th>\n                    <th>Value</th>\n                </tr>\n                <tr>\n                    <td>Total Bytes Sent</td>\n                    <td>2,691,644</td>\n                </tr>\n                <tr>\n                    <td>Total Bytes Received</td>\n                    <td>4,907,748</td>\n                </tr>\n                <tr>\n                    <td>Total Packets Sent</td>\n                    <td>3,750</td>\n                </tr>\n                <tr>\n                    <td>Total Packets Received</td>\n                    <td>6,348</td>\n                </tr>\n                <tr>\n                    <td>Active Connections</td>\n                    <td>0</td>\n                </tr>\n            </table>\n            ",
+  "log_summary": "\n        <h3>Log Analysis Overview</h3>\n        <ul>\n            <li>Total Suspicious Events: 1385</li>\n        </ul>\n        ",
+  "artifact_summary": "\n        <h3>Artifact Analysis Overview</h3>\n        <ul>\n            <li>Total Files Analyzed: 24292</li>\n            <li>Suspicious Files Detected: 24292</li>\n        </ul>\n        ",
+  "recommendations": [
+    "Regularly update and patch all systems and applications.",
+    "Implement continuous monitoring and logging of all critical systems.",
+    "Conduct regular security awareness training for all users.",
+    "Develop and maintain an incident response plan."
+  ]
+}

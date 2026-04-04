@@ -1,0 +1,970 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CyberSleuth AI — Live Attack Demo</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Orbitron:wght@700;900&family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg:        #050d12;
+      --panel:     #0a1620;
+      --border:    #1a3550;
+      --accent:    #00d4ff;
+      --green:     #00ff88;
+      --red:       #ff3355;
+      --orange:    #ff8c00;
+      --yellow:    #ffe600;
+      --purple:    #bc5cff;
+      --text:      #c8e6f0;
+      --dim:       #3a6070;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ─── ALARM OVERLAY ─── */
+    #alarm-overlay {
+      display: none;
+      position: fixed; inset: 0;
+      background: rgba(255,0,40,.18);
+      z-index: 9999;
+      pointer-events: none;
+      animation: alarm-flash 0.5s ease-in-out infinite alternate;
+    }
+    @keyframes alarm-flash { from { opacity: 0; } to { opacity: 1; } }
+
+    #alarm-banner {
+      display: none;
+      position: fixed; top: 0; left: 0; right: 0;
+      background: linear-gradient(90deg, #ff0028, #ff5533, #ff0028);
+      background-size: 200% 100%;
+      animation: banner-slide 1s linear infinite;
+      color: #fff;
+      font-family: 'Orbitron', monospace;
+      font-size: clamp(1rem, 2vw, 1.5rem);
+      font-weight: 900;
+      text-align: center;
+      padding: 10px 0;
+      letter-spacing: 4px;
+      z-index: 10000;
+      text-shadow: 0 0 20px #fff;
+    }
+    @keyframes banner-slide { 0%{background-position:0%} 100%{background-position:200%} }
+
+    /* ─── HEADER ─── */
+    header {
+      background: linear-gradient(135deg, #0a1e2d 0%, #071521 100%);
+      border-bottom: 2px solid var(--accent);
+      padding: 14px 28px;
+      display: flex; align-items: center; justify-content: space-between;
+      position: sticky; top: 40px; z-index: 100;
+      box-shadow: 0 4px 30px rgba(0,212,255,0.15);
+    }
+    header h1 {
+      font-family: 'Orbitron', monospace;
+      font-size: clamp(1rem, 2vw, 1.55rem);
+      color: var(--accent);
+      text-shadow: 0 0 18px var(--accent);
+      letter-spacing: 2px;
+    }
+    .status-pill {
+      padding: 5px 18px; border-radius: 99px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: .78rem; font-weight: 700; letter-spacing: 1px;
+      text-transform: uppercase; border: 1.5px solid;
+    }
+    .pill-green { color: var(--green); border-color: var(--green); background: rgba(0,255,136,.08); }
+    .pill-red   { color: var(--red);   border-color: var(--red);   background: rgba(255,51,85,.1);  }
+    .pill-orange{ color: var(--orange);border-color: var(--orange);background: rgba(255,140,0,.1);  }
+
+    /* ─── MAIN GRID ─── */
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 340px;
+      grid-template-rows: auto auto auto;
+      gap: 16px;
+      padding: 16px 20px;
+      max-width: 1600px; margin: 0 auto;
+    }
+
+    /* ─── PANELS ─── */
+    .panel {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 14px 18px;
+      position: relative;
+      overflow: hidden;
+    }
+    .panel::before {
+      content:''; position:absolute; inset:0;
+      background: linear-gradient(135deg,rgba(0,212,255,.03),transparent);
+      pointer-events:none;
+    }
+    .panel-title {
+      font-family: 'Orbitron', monospace;
+      font-size: .75rem; letter-spacing: 2px;
+      text-transform: uppercase; color: var(--accent);
+      margin-bottom: 12px;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .panel-title .dot {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 8px var(--accent);
+    }
+
+    /* ─── STATS ROW ─── */
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+    }
+    .stat-card {
+      background: #061018;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 14px 16px;
+      text-align: center;
+      position: relative; overflow: hidden;
+    }
+    .stat-card .num {
+      font-family: 'Orbitron', monospace;
+      font-size: 2.2rem; font-weight: 900;
+      line-height: 1;
+    }
+    .stat-card .lbl {
+      font-size: .7rem; letter-spacing: 1.5px;
+      text-transform: uppercase; color: var(--dim);
+      margin-top: 4px;
+    }
+    .stat-card .bar {
+      position: absolute; bottom: 0; left: 0;
+      height: 3px; border-radius: 0 0 8px 8px;
+      transition: width 0.6s ease;
+    }
+    .num-blocked  { color: var(--red);    }
+    .num-packets  { color: var(--accent); }
+    .num-attacks  { color: var(--orange); }
+    .num-safe     { color: var(--green);  }
+
+    /* ─── PACKET STREAM ─── */
+    #packet-stream {
+      height: 280px;
+      overflow-y: auto;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: .76rem;
+      line-height: 1.7;
+      scroll-behavior: smooth;
+    }
+    #packet-stream::-webkit-scrollbar { width: 4px; }
+    #packet-stream::-webkit-scrollbar-track { background: transparent; }
+    #packet-stream::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+
+    .pkt { padding: 2px 0; display: flex; align-items: center; gap: 6px; animation: fadeIn .2s ease; }
+    @keyframes fadeIn { from { opacity:0; transform: translateX(-8px); } to { opacity:1; transform:none; } }
+    .pkt-time  { color: var(--dim); min-width: 68px; }
+    .pkt-src   { color: var(--accent); min-width: 120px; }
+    .pkt-arrow { color: var(--dim); }
+    .pkt-dst   { color: #79b4cc; min-width: 130px; }
+    .pkt-proto { min-width: 40px; }
+    .pkt-info  { flex: 1; }
+    .pkt-label { padding: 1px 8px; border-radius: 4px; font-size: .68rem; font-weight: 700; letter-spacing:.5px; }
+    .lbl-benign  { background: rgba(0,255,136,.12); color: var(--green); }
+    .lbl-scan    { background: rgba(255,230,0,.12);  color: var(--yellow); }
+    .lbl-brute   { background: rgba(255,140,0,.15);  color: var(--orange); }
+    .lbl-ddos    { background: rgba(255,51,85,.15);  color: var(--red); }
+    .lbl-blocked { background: rgba(188,92,255,.12); color: var(--purple); }
+    .pkt-attack  { background: rgba(255,51,85,.05); border-left: 2px solid var(--red); padding-left: 6px; }
+    .pkt-scan    { background: rgba(255,230,0,.04);  border-left: 2px solid var(--yellow); padding-left: 6px; }
+    .pkt-brute   { background: rgba(255,140,0,.05);  border-left: 2px solid var(--orange); padding-left: 6px; }
+
+    /* ─── AI DECISION PANEL ─── */
+    #ai-log {
+      height: 280px;
+      overflow-y: auto;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: .74rem;
+      line-height: 1.8;
+    }
+    #ai-log::-webkit-scrollbar { width: 4px; }
+    #ai-log::-webkit-scrollbar-track { background: transparent; }
+    #ai-log::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+    .ai-entry { padding: 2px 0; animation: fadeIn .3s ease; }
+    .ai-time  { color: var(--dim); }
+    .ai-green { color: var(--green); }
+    .ai-yellow{ color: var(--yellow);}
+    .ai-orange{ color: var(--orange);}
+    .ai-red   { color: var(--red);   }
+    .ai-purple{ color: var(--purple);}
+    .ai-cyan  { color: var(--accent);}
+
+    /* ─── BLOCKED IPs ─── */
+    #blocked-list {
+      display: flex; flex-direction: column; gap: 6px;
+      max-height: 200px; overflow-y: auto;
+    }
+    #blocked-list::-webkit-scrollbar { width: 4px; }
+    #blocked-list::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+    .blocked-ip {
+      background: rgba(255,51,85,.08);
+      border: 1px solid rgba(255,51,85,.25);
+      border-radius: 6px;
+      padding: 6px 12px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: .76rem;
+      display: flex; align-items: center; justify-content: space-between;
+      animation: slideIn .4s ease;
+    }
+    @keyframes slideIn {
+      from { opacity:0; transform: translateY(-6px); }
+      to   { opacity:1; transform: none; }
+    }
+    .blocked-ip .ip-addr { color: var(--red); font-weight: 700; }
+    .blocked-ip .ip-reason { color: var(--dim); font-size: .66rem; }
+    .blocked-ip .shield { color: var(--red); font-size: 1rem; }
+
+    /* ─── PHASE TIMELINE ─── */
+    .phase-row {
+      display: flex; align-items: center; gap: 10px;
+      padding: 8px 12px; border-radius: 8px;
+      transition: all .4s ease;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: .78rem;
+    }
+    .phase-row.active   { background: rgba(0,212,255,.08); border: 1px solid rgba(0,212,255,.3); }
+    .phase-row.done     { background: rgba(0,255,136,.04); border: 1px solid rgba(0,255,136,.15); }
+    .phase-row.pending  { background: transparent; border: 1px solid var(--border); color: var(--dim); }
+    .phase-dot {
+      width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0;
+    }
+    .phase-row.active  .phase-dot { background: var(--accent); box-shadow: 0 0 10px var(--accent); animation: pulseDot 1s ease-in-out infinite; }
+    .phase-row.done    .phase-dot { background: var(--green); }
+    .phase-row.pending .phase-dot { background: var(--border); }
+    @keyframes pulseDot { 0%,100%{transform:scale(1)} 50%{transform:scale(1.5)} }
+
+    /* ─── CONTROLS ─── */
+    .controls { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 16px; }
+    .btn {
+      padding: 9px 22px; border: none; border-radius: 7px; cursor: pointer;
+      font-family: 'Orbitron', monospace; font-size: .72rem; font-weight: 700;
+      letter-spacing: 1.5px; text-transform: uppercase;
+      transition: all .2s ease; position: relative; overflow: hidden;
+    }
+    .btn::after { content:''; position:absolute; inset:0; opacity:0; transition:.2s; background:rgba(255,255,255,.1); }
+    .btn:hover::after { opacity:1; }
+    .btn:active { transform: scale(.97); }
+    .btn-start  { background: linear-gradient(135deg,#005533,#00aa55); color: #fff; box-shadow: 0 4px 18px rgba(0,255,136,.2); }
+    .btn-attack { background: linear-gradient(135deg,#660011,#cc0033); color: #fff; box-shadow: 0 4px 18px rgba(255,51,85,.2); }
+    .btn-reset  { background: linear-gradient(135deg,#1a2a3a,#2a4050); color: var(--text); border: 1px solid var(--border); }
+    .btn:disabled { opacity: .4; cursor: not-allowed; }
+
+    /* ─── ALARM POPUP ─── */
+    #alarm-popup {
+      display: none;
+      position: fixed;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%) scale(.5);
+      background: linear-gradient(135deg, #1a0008, #300010);
+      border: 2px solid var(--red);
+      border-radius: 16px;
+      padding: 32px 48px;
+      text-align: center;
+      z-index: 20000;
+      box-shadow: 0 0 80px rgba(255,0,40,.5), 0 0 30px rgba(255,0,40,.3);
+      animation: none;
+    }
+    #alarm-popup.show {
+      display: block;
+      animation: popIn .5s cubic-bezier(.175,.885,.32,1.275) forwards;
+    }
+    @keyframes popIn {
+      from { transform: translate(-50%,-50%) scale(.5); opacity:0; }
+      to   { transform: translate(-50%,-50%) scale(1);  opacity:1; }
+    }
+    #alarm-popup .alarm-icon { font-size: 3.5rem; animation: shake .3s ease-in-out infinite alternate; }
+    @keyframes shake { from{transform:rotate(-8deg)} to{transform:rotate(8deg)} }
+    #alarm-popup h2 {
+      font-family: 'Orbitron', monospace;
+      color: var(--red); font-size: 1.6rem; margin: 10px 0 6px;
+      text-shadow: 0 0 20px var(--red);
+    }
+    #alarm-popup .alarm-detail { color: #ff8899; font-size: .9rem; margin-bottom: 18px; }
+    #alarm-popup .dismiss-btn {
+      background: rgba(255,51,85,.15); border: 1.5px solid var(--red);
+      color: var(--red); padding: 8px 28px; border-radius: 6px;
+      cursor: pointer; font-family: 'Orbitron', monospace; font-size: .7rem;
+      letter-spacing: 1px; transition: .2s;
+    }
+    #alarm-popup .dismiss-btn:hover { background: rgba(255,51,85,.3); }
+
+    /* ─── FULL REPORT ─── */
+    #report-section {
+      display: none;
+      grid-column: 1 / -1;
+    }
+    .report-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+    }
+    .report-card {
+      background: #061018;
+      border-radius: 8px; padding: 16px;
+    }
+    .report-card h3 {
+      font-family: 'Orbitron', monospace;
+      font-size: .7rem; letter-spacing: 2px;
+      text-transform: uppercase; margin-bottom: 10px;
+    }
+    .verdict {
+      grid-column: 1 / -1;
+      background: rgba(0,255,136,.04);
+      border: 1.5px solid var(--green);
+      border-radius: 10px; padding: 20px;
+      text-align: center;
+    }
+    .verdict h2 { font-family: 'Orbitron', monospace; color: var(--green); margin-bottom: 8px; }
+
+    /* ─── AI CONFIDENCE METER ─── */
+    .conf-bar {
+      width: 100%; height: 8px; border-radius: 4px;
+      background: var(--border); margin: 6px 0 2px; overflow: hidden;
+    }
+    .conf-fill {
+      height: 100%; border-radius: 4px;
+      transition: width 1.5s cubic-bezier(.4,0,.2,1);
+    }
+
+    /* ─── NETWORK VISUALIZER ─── */
+    #net-vis {
+      position: relative; height: 130px;
+      border-radius: 8px; overflow: hidden;
+      background: #040c12;
+      border: 1px solid var(--border);
+    }
+    canvas#netCanvas { width: 100%; height: 100%; }
+
+    /* Glow text */
+    .glow-red    { text-shadow: 0 0 14px var(--red);    }
+    .glow-green  { text-shadow: 0 0 14px var(--green);  }
+    .glow-accent { text-shadow: 0 0 14px var(--accent); }
+
+    .col-right { display: flex; flex-direction: column; gap: 16px; }
+    .section-full { grid-column: 1 / -1; }
+
+    @media (max-width: 900px) {
+      .grid { grid-template-columns: 1fr; }
+      .stats-row { grid-template-columns: repeat(2, 1fr); }
+      .report-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Alarm overlay -->
+<div id="alarm-overlay"></div>
+<div id="alarm-banner">🚨 &nbsp; SECURITY ALARM TRIGGERED — AI BLOCKING ATTACK &nbsp; 🚨</div>
+
+<!-- Alarm popup -->
+<div id="alarm-popup">
+  <div class="alarm-icon">🚨</div>
+  <h2 id="alarm-title">THREAT DETECTED</h2>
+  <div class="alarm-detail" id="alarm-detail">Attack blocked automatically.</div>
+  <button class="dismiss-btn" onclick="dismissAlarm()">ACKNOWLEDGE</button>
+</div>
+
+<!-- Header -->
+<header>
+  <h1>🛡 CyberSleuth AI — Live Attack Demo</h1>
+  <div style="display:flex;gap:10px;align-items:center">
+    <span class="status-pill pill-green" id="sys-status">SYSTEM ONLINE</span>
+    <span class="status-pill pill-green" id="phase-badge">STANDBY</span>
+  </div>
+</header>
+
+<div class="grid">
+
+  <!-- ─── CONTROLS + STATS ─── -->
+  <div class="section-full">
+    <div class="controls">
+      <button class="btn btn-start"  id="btn-start"  onclick="startDemo()">▶ Start Demo</button>
+      <button class="btn btn-attack" id="btn-attack" onclick="triggerAllAttacks()" disabled>⚡ Launch All Attacks</button>
+      <button class="btn btn-reset"  id="btn-reset"  onclick="resetDemo()">↺ Reset</button>
+      <button class="btn" style="background:linear-gradient(135deg,#1a1040,#301060);color:var(--purple);border:1px solid var(--purple)" id="btn-report" onclick="showReport()" disabled>📄 View Report</button>
+    </div>
+    <div class="stats-row">
+      <div class="stat-card">
+        <div class="num num-packets" id="stat-packets">0</div>
+        <div class="lbl">Packets Analyzed</div>
+        <div class="bar" style="background:var(--accent);width:0%" id="bar-packets"></div>
+      </div>
+      <div class="stat-card">
+        <div class="num num-attacks" id="stat-attacks">0</div>
+        <div class="lbl">Threats Detected</div>
+        <div class="bar" style="background:var(--orange);width:0%" id="bar-attacks"></div>
+      </div>
+      <div class="stat-card">
+        <div class="num num-blocked" id="stat-blocked">0</div>
+        <div class="lbl">IPs Blocked</div>
+        <div class="bar" style="background:var(--red);width:0%" id="bar-blocked"></div>
+      </div>
+      <div class="stat-card">
+        <div class="num num-safe" id="stat-safe">100%</div>
+        <div class="lbl">Network Safety</div>
+        <div class="bar" style="background:var(--green);width:100%" id="bar-safe"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── PACKET STREAM ─── -->
+  <div class="panel">
+    <div class="panel-title"><span class="dot"></span> Live Network Packets</div>
+    <div id="net-vis"><canvas id="netCanvas"></canvas></div>
+    <div style="margin-top:10px"></div>
+    <div id="packet-stream"></div>
+  </div>
+
+  <!-- ─── RIGHT COLUMN ─── -->
+  <div class="col-right">
+
+    <!-- Phase Timeline -->
+    <div class="panel">
+      <div class="panel-title"><span class="dot"></span> Attack Phases</div>
+      <div style="display:flex;flex-direction:column;gap:6px" id="phase-list">
+        <div class="phase-row pending" id="ph0"><span class="phase-dot"></span>System Startup</div>
+        <div class="phase-row pending" id="ph1"><span class="phase-dot"></span>Normal Traffic</div>
+        <div class="phase-row pending" id="ph2"><span class="phase-dot"></span>🟡 Port Scan Attack</div>
+        <div class="phase-row pending" id="ph3"><span class="phase-dot"></span>🟠 Brute Force Attack</div>
+        <div class="phase-row pending" id="ph4"><span class="phase-dot"></span>🔴 DDoS Flood</div>
+        <div class="phase-row pending" id="ph5"><span class="phase-dot"></span>🛡 Auto-Defense</div>
+        <div class="phase-row pending" id="ph6"><span class="phase-dot"></span>📄 Report Generated</div>
+      </div>
+    </div>
+
+    <!-- AI Decision Log -->
+    <div class="panel" style="flex:1">
+      <div class="panel-title"><span class="dot" style="background:var(--green);box-shadow:0 0 8px var(--green)"></span> AI Decision Engine</div>
+      <div id="ai-log"></div>
+    </div>
+
+  </div>
+
+  <!-- ─── BLOCKED IPs + AI CONFIDENCE ─── -->
+  <div class="panel">
+    <div class="panel-title"><span class="dot" style="background:var(--red);box-shadow:0 0 8px var(--red)"></span> Firewall — Blocked IPs</div>
+    <div id="blocked-list">
+      <div style="color:var(--dim);font-size:.78rem;font-family:'JetBrains Mono',monospace">No IPs blocked yet...</div>
+    </div>
+  </div>
+
+  <!-- AI Confidence -->
+  <div class="panel">
+    <div class="panel-title"><span class="dot" style="background:var(--purple);box-shadow:0 0 8px var(--purple)"></span> AI Model Confidence</div>
+    <div id="confidence-panel">
+      <div style="margin-bottom:8px">
+        <div style="display:flex;justify-content:space-between;font-family:'JetBrains Mono',monospace;font-size:.74rem">
+          <span>IsolationForest (Anomaly)</span><span id="conf-if" style="color:var(--accent)">—</span>
+        </div>
+        <div class="conf-bar"><div class="conf-fill" id="cfill-if" style="width:0%;background:var(--accent)"></div></div>
+      </div>
+      <div style="margin-bottom:8px">
+        <div style="display:flex;justify-content:space-between;font-family:'JetBrains Mono',monospace;font-size:.74rem">
+          <span>RandomForest (Classifier)</span><span id="conf-rf" style="color:var(--green)">—</span>
+        </div>
+        <div class="conf-bar"><div class="conf-fill" id="cfill-rf" style="width:0%;background:var(--green)"></div></div>
+      </div>
+      <div>
+        <div style="display:flex;justify-content:space-between;font-family:'JetBrains Mono',monospace;font-size:.74rem">
+          <span>Ensemble Decision</span><span id="conf-en" style="color:var(--purple)">—</span>
+        </div>
+        <div class="conf-bar"><div class="conf-fill" id="cfill-en" style="width:0%;background:var(--purple)"></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── REPORT SECTION ─── -->
+  <div id="report-section" class="section-full">
+    <div class="panel">
+      <div class="panel-title"><span class="dot" style="background:var(--purple);box-shadow:0 0 8px var(--purple)"></span> Incident Report — Generated by AI</div>
+      <div class="report-grid" id="report-grid"></div>
+    </div>
+  </div>
+
+</div><!-- /grid -->
+
+<script>
+// ═══════════════════════════════════════════════════════
+//  STATE
+// ═══════════════════════════════════════════════════════
+let demoRunning = false;
+let packetCount = 0;
+let threatCount = 0;
+let blockedIPs   = [];
+let alarmTimer   = null;
+
+const ATTACKER_IPS = [
+  "185.220.101.47", "45.155.205.233",
+  "185.220.102.8",  "94.102.49.190",  "45.155.206.11"
+];
+const BOT_IPS = [
+  "45.155.200.1","45.155.200.2","45.155.200.3",
+  "45.155.201.1","45.155.201.2","45.155.201.3",
+  "45.155.202.1","45.155.202.2","45.155.202.3",
+  "45.155.203.1","45.155.203.2","45.155.203.3",
+];
+const NORMAL_PKTS = [
+  { src:"192.168.1.10", dst:"10.0.0.5:80",   proto:"TCP",  info:"GET /index.html",   label:"BENIGN" },
+  { src:"192.168.1.22", dst:"10.0.0.5:443",  proto:"TCP",  info:"HTTPS handshake",   label:"BENIGN" },
+  { src:"192.168.1.55", dst:"8.8.8.8:53",    proto:"UDP",  info:"DNS query",         label:"BENIGN" },
+  { src:"192.168.1.44", dst:"10.0.0.5:443",  proto:"TCP",  info:"POST /login",       label:"BENIGN" },
+  { src:"192.168.1.77", dst:"10.0.0.5:80",   proto:"TCP",  info:"GET /images/logo",  label:"BENIGN" },
+  { src:"192.168.1.33", dst:"10.0.0.5:8080", proto:"TCP",  info:"REST API call",     label:"BENIGN" },
+];
+
+// ═══════════════════════════════════════════════════════
+//  UTILITY
+// ═══════════════════════════════════════════════════════
+function ts() {
+  const d = new Date();
+  return `${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}:${String(d.getSeconds()).padStart(2,'0')}`;
+}
+function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
+function rand(a,b)  { return Math.floor(Math.random()*(b-a+1)+a); }
+
+function setPhase(i) {
+  for (let k=0; k<7; k++){
+    const el = document.getElementById('ph'+k);
+    if (k < i) el.className = 'phase-row done';
+    else if (k === i) el.className = 'phase-row active';
+    else el.className = 'phase-row pending';
+  }
+}
+function setPhaseBadge(txt, cls) {
+  const b = document.getElementById('phase-badge');
+  b.textContent = txt;
+  b.className = 'status-pill ' + cls;
+}
+function updateStats() {
+  document.getElementById('stat-packets').textContent = packetCount.toLocaleString();
+  document.getElementById('stat-attacks').textContent = threatCount;
+  document.getElementById('stat-blocked').textContent  = blockedIPs.length;
+  const safety = Math.max(0, 100 - blockedIPs.length * 5);
+  document.getElementById('stat-safe').textContent = safety + '%';
+  document.getElementById('bar-packets').style.width = Math.min(100, packetCount/20) + '%';
+  document.getElementById('bar-attacks').style.width = Math.min(100, threatCount*12) + '%';
+  document.getElementById('bar-blocked').style.width  = Math.min(100, blockedIPs.length*6) + '%';
+  document.getElementById('bar-safe').style.width    = safety + '%';
+}
+
+// ─── PACKET STREAM ───
+function addPacket({src, dst, proto, info, label}) {
+  packetCount++;
+  updateStats();
+  const container = document.getElementById('packet-stream');
+  const div = document.createElement('div');
+  let labelClass = 'lbl-benign';
+  let rowClass = 'pkt';
+  if (label === 'PORT SCAN') { labelClass = 'lbl-scan';    rowClass = 'pkt pkt-scan'; }
+  if (label === 'BRUTE')     { labelClass = 'lbl-brute';   rowClass = 'pkt pkt-brute'; }
+  if (label === 'DDoS')      { labelClass = 'lbl-ddos';    rowClass = 'pkt pkt-attack'; }
+  if (label === 'BLOCKED')   { labelClass = 'lbl-blocked'; rowClass = 'pkt'; }
+  div.className = rowClass;
+  div.innerHTML = `
+    <span class="pkt-time">[${ts()}]</span>
+    <span class="pkt-src">${src}</span>
+    <span class="pkt-arrow">→</span>
+    <span class="pkt-dst">${dst}</span>
+    <span class="pkt-proto" style="color:var(--dim)">${proto}</span>
+    <span class="pkt-info" style="color:var(--dim)">${info}</span>
+    <span class="pkt-label ${labelClass}">${label}</span>`;
+  container.appendChild(div);
+  container.scrollTop = container.scrollHeight;
+  if (container.children.length > 120) container.removeChild(container.firstChild);
+}
+
+// ─── AI LOG ───
+function aiLog(msg, cls='ai-cyan') {
+  const log = document.getElementById('ai-log');
+  const div = document.createElement('div');
+  div.className = 'ai-entry';
+  div.innerHTML = `<span class="ai-time">[${ts()}]</span> <span class="${cls}">${msg}</span>`;
+  log.appendChild(div);
+  log.scrollTop = log.scrollHeight;
+  if (log.children.length > 80) log.removeChild(log.firstChild);
+}
+
+// ─── BLOCKED IP ───
+function blockIP(ip, reason) {
+  if (blockedIPs.includes(ip)) return;
+  blockedIPs.push(ip);
+  threatCount++;
+  updateStats();
+  const list = document.getElementById('blocked-list');
+  const empties = list.querySelectorAll('[data-empty]');
+  empties.forEach(e=>e.remove());
+  const div = document.createElement('div');
+  div.className = 'blocked-ip';
+  div.innerHTML = `<span class="ip-addr">🚫 ${ip}</span><span class="ip-reason">${reason}</span>`;
+  list.prepend(div);
+  aiLog(`🔒 AUTO-BLOCK: ${ip} — ${reason}`, 'ai-red');
+}
+
+// ─── ALARM ───
+function triggerAlarm(title, detail) {
+  document.getElementById('alarm-overlay').style.display = 'block';
+  document.getElementById('alarm-banner').style.display  = 'block';
+  const popup = document.getElementById('alarm-popup');
+  document.getElementById('alarm-title').textContent  = title;
+  document.getElementById('alarm-detail').textContent = detail;
+  popup.className = 'show';
+  // auto-dismiss after 5s
+  clearTimeout(alarmTimer);
+  alarmTimer = setTimeout(dismissAlarm, 5000);
+}
+function dismissAlarm() {
+  document.getElementById('alarm-overlay').style.display = 'none';
+  document.getElementById('alarm-banner').style.display  = 'none';
+  document.getElementById('alarm-popup').className        = '';
+}
+
+// ─── AI CONFIDENCE ───
+function setConfidence(model, pct) {
+  const labels = {'if': 'IsolationForest', 'rf': 'RandomForest', 'en': 'Ensemble'};
+  document.getElementById('conf-'+model).textContent   = pct+'%';
+  document.getElementById('cfill-'+model).style.width  = pct+'%';
+}
+
+// ─── CANVAS NETWORK VIZ ───
+const canvas  = document.getElementById('netCanvas');
+const ctx     = canvas.getContext('2d');
+let particles = [];
+let animFrame;
+
+function resizeCanvas() {
+  canvas.width  = canvas.offsetWidth;
+  canvas.height = canvas.offsetHeight;
+}
+resizeCanvas();
+window.addEventListener('resize', resizeCanvas);
+
+let netMode = 'normal'; // 'normal' | 'attack' | 'flood'
+
+function spawnParticle() {
+  const isAttack = (netMode !== 'normal');
+  const color = netMode === 'flood' ? '#ff3355' : netMode === 'attack' ? '#ff8c00' : '#00d4ff';
+  const speed = netMode === 'flood' ? rand(4,9) : rand(1,3);
+  particles.push({
+    x: 0, y: rand(10, canvas.height-10),
+    vx: speed, vy: (Math.random()-.5)*.5,
+    color, alpha: 1,
+    size: netMode === 'flood' ? rand(3,5) : 2,
+  });
+}
+
+function animateParticles() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  // Background grid
+  ctx.strokeStyle = 'rgba(26,53,80,0.3)';
+  ctx.lineWidth = 1;
+  for (let x=0; x<canvas.width; x+=40)  { ctx.beginPath(); ctx.moveTo(x,0); ctx.lineTo(x,canvas.height); ctx.stroke(); }
+  for (let y=0; y<canvas.height; y+=20) { ctx.beginPath(); ctx.moveTo(0,y); ctx.lineTo(canvas.width,y); ctx.stroke(); }
+
+  // Server icon on right
+  ctx.fillStyle = netMode === 'flood' ? 'rgba(255,51,85,0.3)' : 'rgba(0,212,255,0.2)';
+  ctx.beginPath(); ctx.roundRect(canvas.width-50, 10, 40, canvas.height-20, 5); ctx.fill();
+  ctx.fillStyle = netMode === 'flood' ? '#ff3355' : '#00d4ff';
+  ctx.font = '10px Inter'; ctx.textAlign = 'center';
+  ctx.fillText('SERVER', canvas.width-30, canvas.height/2);
+
+  // Spawn
+  const spawnRate = netMode === 'flood' ? 4 : 1;
+  for (let i=0; i<spawnRate; i++) spawnParticle();
+
+  particles = particles.filter(p => p.x < canvas.width && p.alpha > 0.05);
+  particles.forEach(p => {
+    p.x += p.vx; p.y += p.vy; p.alpha -= 0.008;
+    ctx.globalAlpha = p.alpha;
+    ctx.fillStyle = p.color;
+    ctx.shadowColor = p.color; ctx.shadowBlur = 6;
+    ctx.beginPath(); ctx.arc(p.x, p.y, p.size, 0, Math.PI*2); ctx.fill();
+    ctx.shadowBlur = 0;
+  });
+  ctx.globalAlpha = 1;
+  animFrame = requestAnimationFrame(animateParticles);
+}
+animateParticles();
+
+// ═══════════════════════════════════════════════════════
+//  DEMO SCENES
+// ═══════════════════════════════════════════════════════
+
+async function startDemo() {
+  if (demoRunning) return;
+  demoRunning = true;
+  document.getElementById('btn-start').disabled  = true;
+  document.getElementById('btn-attack').disabled = false;
+  document.getElementById('btn-report').disabled = true;
+
+  setPhase(0);
+  setPhaseBadge('BOOT', 'pill-green');
+  aiLog('🚀 CyberSleuth AI booting up...', 'ai-cyan');
+  await sleep(400);
+  const modules = [
+    'IsolationForest anomaly detector … READY',
+    'Random Forest threat classifier … READY',
+    'Network traffic monitor … READY',
+    'Log pattern analyzer … READY',
+    'Auto-response IP blocker … READY',
+    'Dashboard alarm system … READY',
+  ];
+  for (const m of modules) {
+    aiLog('✔ '+m, 'ai-green');
+    await sleep(300);
+  }
+  aiLog('✅ All systems ONLINE — monitoring all traffic.', 'ai-green');
+  setConfidence('if', 95);
+  setConfidence('rf', 97);
+  setConfidence('en', 98);
+
+  await sleep(500);
+  await sceneNormal();
+}
+
+async function sceneNormal() {
+  setPhase(1);
+  setPhaseBadge('NORMAL TRAFFIC', 'pill-green');
+  netMode = 'normal';
+  aiLog('📡 Monitoring live packets — all clear so far...', 'ai-cyan');
+  for (let i=0; i<6; i++) {
+    const pkt = NORMAL_PKTS[i % NORMAL_PKTS.length];
+    addPacket({...pkt, label:'BENIGN'});
+    aiLog(`✔ ${pkt.src} → ${pkt.dst} — Classified: BENIGN`, 'ai-green');
+    await sleep(400);
+  }
+  aiLog('⚠ Unusual traffic pattern detected... switching threat mode', 'ai-yellow');
+}
+
+async function triggerAllAttacks() {
+  document.getElementById('btn-attack').disabled = true;
+  await scenePortScan();
+  await sleep(800);
+  await sceneBruteForce();
+  await sleep(800);
+  await sceneDDoS();
+  await sleep(800);
+  await sceneDefense();
+  await sleep(500);
+  document.getElementById('btn-report').disabled = false;
+}
+
+async function scenePortScan() {
+  setPhase(2);
+  setPhaseBadge('PORT SCAN', 'pill-orange');
+  netMode = 'attack';
+  const attacker = ATTACKER_IPS[0];
+  aiLog('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━', 'ai-cyan');
+  aiLog(`⚡ PHASE 2: Port Scan from ${attacker}`, 'ai-yellow');
+  aiLog('📖 An attacker probes ports to find open doors.', 'ai-cyan');
+
+  const ports = [21, 22, 23, 25, 80, 110, 143, 443, 445, 3306, 3389, 8080];
+  for (const port of ports) {
+    const open = [22,80,443,3389].includes(port);
+    addPacket({
+      src: attacker,
+      dst: `10.0.0.5:${port}`,
+      proto: 'TCP',
+      info: `SYN probe → port ${port} [${open ? 'OPEN ⚠' : 'closed'}]`,
+      label: 'PORT SCAN'
+    });
+    await sleep(180);
+  }
+
+  aiLog('🧠 AI analysis: Rapid sequential SYN probes detected!', 'ai-yellow');
+  await sleep(400);
+  aiLog(`⚠ VERDICT: PORT SCAN — Confidence 91% — Severity: MEDIUM`, 'ai-orange');
+  await sleep(200);
+  triggerAlarm('PORT SCAN DETECTED', `Attacker ${attacker} scanned ${ports.length} ports in 2 seconds — IP blocked automatically`);
+  blockIP(attacker, 'PORT_SCAN_DETECTED');
+  aiLog('🔒 IP added to firewall blacklist.', 'ai-red');
+  await sleep(800);
+}
+
+async function sceneBruteForce() {
+  setPhase(3);
+  setPhaseBadge('BRUTE FORCE', 'pill-red');
+  netMode = 'attack';
+  const attacker = ATTACKER_IPS[1];
+  aiLog('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━', 'ai-cyan');
+  aiLog(`⚡ PHASE 3: Brute Force from ${attacker}`, 'ai-orange');
+  aiLog('📖 Attacker tries thousands of passwords on SSH port 22.', 'ai-cyan');
+
+  const users = ['admin','root','ubuntu','user','test','administrator','pi','guest'];
+  for (let i=0; i<users.length; i++) {
+    addPacket({
+      src: attacker,
+      dst: '10.0.0.1:22',
+      proto: 'SSH',
+      info: `Login attempt #${i+1}  user=${users[i]}  pass=****** → FAILED`,
+      label: 'BRUTE'
+    });
+    await sleep(220);
+  }
+  addPacket({ src: attacker, dst: '10.0.0.1:22', proto:'SSH', info:'... +247 more attempts in 30s ...', label:'BRUTE'});
+
+  aiLog('🧠 AI analysis: 255 failed logins in 30s — threshold exceeded!', 'ai-orange');
+  await sleep(400);
+  aiLog('⚠ VERDICT: BRUTE FORCE — Confidence 96% — Severity: HIGH', 'ai-red');
+  await sleep(200);
+  triggerAlarm('BRUTE FORCE ATTACK', `${attacker} made 255 failed SSH login attempts — blocked automatically`);
+  blockIP(attacker, 'BRUTE_FORCE — SSH port 22');
+  aiLog('🔒 SSH account lockout + IP firewall block applied.', 'ai-red');
+  await sleep(800);
+}
+
+async function sceneDDoS() {
+  setPhase(4);
+  setPhaseBadge('DDoS FLOOD 🔴', 'pill-red');
+  netMode = 'flood';
+  aiLog('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━', 'ai-cyan');
+  aiLog('⚡ PHASE 4: DDoS FLOOD — CRITICAL THREAT', 'ai-red');
+  aiLog('📖 Botnet of 12 bots flooding server with fake traffic.', 'ai-cyan');
+
+  let totalPkts = 0;
+  for (const bot of BOT_IPS) {
+    const count = rand(800, 2500);
+    totalPkts += count;
+    addPacket({
+      src: bot,
+      dst: `10.0.0.5:${[80,443,53][rand(0,2)]}`,
+      proto:'UDP',
+      info:`FLOOD  ${count.toLocaleString()} pkts/s  ████████████`,
+      label:'DDoS'
+    });
+    await sleep(150);
+  }
+  addPacket({ src:'BOTNET×12', dst:'10.0.0.5', proto:'—', info:`TOTAL: ${totalPkts.toLocaleString()} pkts/s  CPU:99%  BW:SATURATED  SITE:DOWN`, label:'DDoS' });
+
+  aiLog(`🧠 AI analysis: Volumetric flood — ${totalPkts.toLocaleString()} pkt/s total!`, 'ai-red');
+  await sleep(400);
+  aiLog('🚨 VERDICT: DDoS FLOOD — Confidence 99% — Severity: CRITICAL', 'ai-red');
+  await sleep(200);
+  triggerAlarm('DDoS FLOOD — CRITICAL', `${BOT_IPS.length} botnet IPs flooding server at ${totalPkts.toLocaleString()} pkts/s — blocking all`);
+  for (const bot of BOT_IPS) {
+    blockIP(bot, 'DDoS FLOOD');
+    await sleep(60);
+  }
+  netMode = 'normal';
+  await sleep(800);
+}
+
+async function sceneDefense() {
+  setPhase(5);
+  setPhaseBadge('AUTO-DEFENSE', 'pill-green');
+  netMode = 'normal';
+  aiLog('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━', 'ai-cyan');
+  aiLog('🛡 PHASE 5: Auto-defense fully active', 'ai-green');
+
+  const steps = [
+    ['AI classifies every packet in real-time (<1ms each)', 'ai-cyan'],
+    ['Threat type identified: PortScan / BruteForce / DDoS', 'ai-yellow'],
+    ['Confidence score checked — must exceed 70% to act', 'ai-yellow'],
+    [`All ${blockedIPs.length} attacker IPs added to blacklist`, 'ai-red'],
+    ['Dashboard alarm sent to security officer ✓', 'ai-red'],
+    ['Forensic report generated for legal evidence ✓', 'ai-purple'],
+    ['Legitimate users UNAFFECTED — traffic resumed ✓', 'ai-green'],
+  ];
+  for (const [msg, cls] of steps) {
+    aiLog('✔ '+msg, cls);
+    // also stream normal packets during defense
+    const pkt = NORMAL_PKTS[rand(0, NORMAL_PKTS.length-1)];
+    addPacket({...pkt, label:'BENIGN'});
+    await sleep(500);
+  }
+  setPhase(6);
+  setPhaseBadge('COMPLETE ✓', 'pill-green');
+  aiLog('✅ All attacks stopped. System secured.', 'ai-green');
+}
+
+// ─── REPORT ───
+function showReport() {
+  const sec = document.getElementById('report-section');
+  sec.style.display = 'block';
+  sec.scrollIntoView({behavior:'smooth'});
+
+  const now = new Date().toLocaleString();
+  const attackData = [
+    { type:'Port Scan',   sev:'MEDIUM',   color:'#ffe600', count:1, ip: ATTACKER_IPS[0], note:'Attacker probed 12 ports in 2s to find vulnerabilities.' },
+    { type:'Brute Force', sev:'HIGH',     color:'#ff8c00', count:1, ip: ATTACKER_IPS[1], note:'255 failed SSH login attempts — account takeover prevented.' },
+    { type:'DDoS Flood',  sev:'CRITICAL', color:'#ff3355', count:BOT_IPS.length, ip:'Botnet ×12', note:'Volumetric flood blocked — website protected.' },
+  ];
+
+  let html = '';
+  for (const a of attackData) {
+    html += `
+    <div class="report-card" style="border:1px solid ${a.color}22">
+      <h3 style="color:${a.color}">${a.type}</h3>
+      <div style="font-family:'JetBrains Mono',monospace;font-size:.74rem;line-height:1.9">
+        <div>Severity:  <span style="color:${a.color};font-weight:700">${a.sev}</span></div>
+        <div>Events:    <span style="color:var(--text)">${a.count}</span></div>
+        <div>Source:    <span style="color:var(--red)">${a.ip}</span></div>
+        <div style="margin-top:6px;color:var(--dim)">${a.note}</div>
+      </div>
+    </div>`;
+  }
+
+  html += `
+  <div class="report-card" style="border:1px solid var(--border)">
+    <h3 style="color:var(--accent)">Summary</h3>
+    <div style="font-family:'JetBrains Mono',monospace;font-size:.74rem;line-height:2">
+      <div>Generated:       <span style="color:var(--text)">${now}</span></div>
+      <div>Packets Analyzed:<span style="color:var(--accent)"> ${packetCount.toLocaleString()}</span></div>
+      <div>IPs Blocked:     <span style="color:var(--red)"> ${blockedIPs.length}</span></div>
+      <div>Response Time:   <span style="color:var(--green)"> &lt; 1 second</span></div>
+      <div>Legit Users:     <span style="color:var(--green)"> NOT affected</span></div>
+    </div>
+  </div>
+  <div class="report-card" style="border:1px solid var(--border)">
+    <h3 style="color:var(--purple)">Blocked IPs</h3>
+    <div style="font-family:'JetBrains Mono',monospace;font-size:.72rem;line-height:1.8">
+      ${blockedIPs.map(ip=>`<div style="color:var(--red)">🚫 ${ip}</div>`).join('')}
+    </div>
+  </div>
+  <div class="verdict">
+    <h2>✅ VERDICT: ALL ATTACKS STOPPED</h2>
+    <p style="color:var(--text);margin-bottom:8px">AI automatically detected and blocked all threats in real-time.</p>
+    <p style="color:var(--dim);font-size:.85rem">Security officer alerted instantly. Forensic evidence saved. Zero user impact.</p>
+  </div>`;
+
+  document.getElementById('report-grid').innerHTML = html;
+}
+
+// ─── RESET ───
+function resetDemo() {
+  demoRunning = false;
+  packetCount = 0; threatCount = 0; blockedIPs = [];
+  netMode = 'normal';
+  document.getElementById('packet-stream').innerHTML = '';
+  document.getElementById('ai-log').innerHTML = '';
+  document.getElementById('blocked-list').innerHTML = '<div data-empty style="color:var(--dim);font-size:.78rem;font-family:\'JetBrains Mono\',monospace">No IPs blocked yet...</div>';
+  document.getElementById('report-section').style.display = 'none';
+  document.getElementById('report-grid').innerHTML = '';
+  ['if','rf','en'].forEach(m=>{ setConfidence(m,'—'); document.getElementById('cfill-'+m).style.width='0%'; });
+  for (let i=0; i<7; i++) document.getElementById('ph'+i).className='phase-row pending';
+  setPhaseBadge('STANDBY','pill-green');
+  updateStats();
+  document.getElementById('btn-start').disabled  = false;
+  document.getElementById('btn-attack').disabled = true;
+  document.getElementById('btn-report').disabled = true;
+  dismissAlarm();
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,2800 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cyber Forensics Analysis Report</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .header {
+            background: linear-gradient(135deg, #1a237e, #0d47a1);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .section {
+            background: white;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .subsection {
+            margin: 10px 0;
+            padding: 10px;
+            background: #f8f9fa;
+            border-radius: 5px;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+        .stat-card {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            text-align: center;
+        }
+        .stat-value {
+            font-size: 24px;
+            font-weight: bold;
+            color: #1a237e;
+        }
+        .stat-label {
+            color: #666;
+            font-size: 14px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 10px 0;
+        }
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #f8f9fa;
+            font-weight: 600;
+        }
+        .threat-high {
+            color: #d32f2f;
+        }
+        .threat-medium {
+            color: #f57c00;
+        }
+        .threat-low {
+            color: #388e3c;
+        }
+        .recommendation {
+            border-left: 4px solid #1a237e;
+            padding: 10px 20px;
+            margin: 10px 0;
+            background: #f8f9fa;
+        }
+        .recommendation.high {
+            border-left-color: #d32f2f;
+        }
+        .recommendation.medium {
+            border-left-color: #f57c00;
+        }
+        .recommendation.low {
+            border-left-color: #388e3c;
+        }
+        .process-list {
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        .badge {
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        .badge-secure {
+            background-color: #c8e6c9;
+            color: #388e3c;
+        }
+        .badge-risk {
+            background-color: #ffcdd2;
+            color: #d32f2f;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Cyber Forensics Analysis Report</h1>
+        <p>Generated on: 2025-02-22 17:11:53</p>
+        <p>Analysis Duration: 30 minutes</p>
+        <p>Analysis Period: 2025-02-22 16:41:53 to 2025-02-22 17:11:53</p>
+    </div>
+
+    <!-- Executive Summary -->
+    <div class="section">
+        <h2>Executive Summary</h2>
+        <div class="grid">
+            <div class="stat-card">
+                <div class="stat-value">0</div>
+                <div class="stat-label">Total Threats Detected</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">0</div>
+                <div class="stat-label">High Priority Threats</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">0</div>
+                <div class="stat-label">Medium Priority Threats</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">0</div>
+                <div class="stat-label">Low Priority Threats</div>
+            </div>
+        </div>
+        <div class="subsection">
+            <p><strong>Network Status:</strong> Normal</p>
+            <p><strong>System Security Status:</strong> 
+                <span class="badge badge-secure">
+                    Secure
+                </span>
+            </p>
+            <p><strong>Threat Level:</strong> Low</p>
+            <p><strong>Recommended Actions:</strong> Monitor</p>
+        </div>
+    </div>
+
+    <!-- System Information -->
+    <div class="section">
+        <h2>System Information</h2>
+        <div class="grid">
+            <div class="stat-card">
+                <div class="stat-value">7.4%</div>
+                <div class="stat-label">CPU Usage</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">79.0%</div>
+                <div class="stat-label">Memory Usage</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">25.1%</div>
+                <div class="stat-label">Disk Usage</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">280</div>
+                <div class="stat-label">Active Processes</div>
+            </div>
+        </div>
+        <div class="subsection">
+            <p><strong>Operating System:</strong> Windows 10.0.26100</p>
+            <p><strong>Architecture:</strong> AMD64</p>
+            <p><strong>System Boot Time:</strong> 2025-02-20 16:30:11</p>
+        </div>
+    </div>
+
+    <!-- Process Analysis -->
+    <div class="section">
+        <h2>Process Analysis</h2>
+        <div class="process-list">
+            <table>
+                <thead>
+                    <tr>
+                        <th>PID</th>
+                        <th>Name</th>
+                        <th>CPU %</th>
+                        <th>Memory %</th>
+                        <th>Status</th>
+                        <th>Start Time</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    
+                    <tr>
+                        <td>0</td>
+                        <td>System Idle Process</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>running</td>
+                        <td>1970-01-01 05:30:00</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>4</td>
+                        <td>System</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>running</td>
+                        <td>1970-01-01 05:30:00</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>236</td>
+                        <td></td>
+                        <td>0.0%</td>
+                        <td>0.4%</td>
+                        <td>stopped</td>
+                        <td>2025-02-20 16:30:11</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>280</td>
+                        <td>Registry</td>
+                        <td>0.0%</td>
+                        <td>0.2%</td>
+                        <td>running</td>
+                        <td>2025-02-20 16:30:11</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>556</td>
+                        <td>svchost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>running</td>
+                        <td>2025-02-20 16:30:26</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>804</td>
+                        <td>smss.exe</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>running</td>
+                        <td>2025-02-20 16:30:14</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>1220</td>
+                        <td>PresentMon_x64.exe</td>
+                        <td>0.0%</td>
+                        <td>0.1%</td>
+                        <td>running</td>
+                        <td>2025-02-22 13:15:47</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>1236</td>
+                        <td>csrss.exe</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>running</td>
+                        <td>2025-02-20 16:30:25</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>1248</td>
+                        <td>PowerToys.ColorPickerUI.exe</td>
+                        <td>0.0%</td>
+                        <td>0.3%</td>
+                        <td>running</td>
+                        <td>2025-02-22 11:38:44</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>1320</td>
+                        <td>wininit.exe</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>running</td>
+                        <td>2025-02-20 16:30:26</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>1396</td>
+                        <td>services.exe</td>
+                        <td>0.0%</td>
+                        <td>0.1%</td>
+                        <td>running</td>
+                        <td>2025-02-20 16:30:26</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>1416</td>
+                        <td>LsaIso.exe</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>running</td>
+                        <td>2025-02-20 16:30:26</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>1428</td>
+                        <td>lsass.exe</td>
+                        <td>0.0%</td>
+                        <td>0.2%</td>
+                        <td>running</td>
+                        <td>2025-02-20 16:30:26</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>1564</td>
+                        <td>svchost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.2%</td>
+                        <td>running</td>
+                        <td>2025-02-20 16:30:26</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>1588</td>
+                        <td>PowerToys.PowerOCR.exe</td>
+                        <td>0.0%</td>
+                        <td>0.1%</td>
+                        <td>running</td>
+                        <td>2025-02-22 11:38:45</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>1596</td>
+                        <td>fontdrvhost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>running</td>
+                        <td>2025-02-20 16:30:26</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>1632</td>
+                        <td>WUDFHost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.1%</td>
+                        <td>running</td>
+                        <td>2025-02-20 16:30:26</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>1688</td>
+                        <td>svchost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.1%</td>
+                        <td>running</td>
+                        <td>2025-02-20 16:30:26</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>1740</td>
+                        <td>svchost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.1%</td>
+                        <td>running</td>
+                        <td>2025-02-20 16:30:26</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>1752</td>
+                        <td>svchost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>running</td>
+                        <td>2025-02-20 16:31:09</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>1808</td>
+                        <td>WUDFHost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.1%</td>
+                        <td>running</td>
+                        <td>2025-02-20 16:30:26</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>1856</td>
+                        <td>dwm.exe</td>
+                        <td>0.0%</td>
+                        <td>0.9%</td>
+                        <td>running</td>
+                        <td>2025-02-21 18:48:37</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>1944</td>
+                        <td>PowerToys.PowerAccent.exe</td>
+                        <td>0.0%</td>
+                        <td>0.3%</td>
+                        <td>running</td>
+                        <td>2025-02-22 11:38:45</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>1992</td>
+                        <td>svchost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.1%</td>
+                        <td>running</td>
+                        <td>2025-02-20 16:30:26</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>2056</td>
+                        <td>svchost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.1%</td>
+                        <td>running</td>
+                        <td>2025-02-20 16:30:26</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>2064</td>
+                        <td>svchost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.1%</td>
+                        <td>running</td>
+                        <td>2025-02-20 16:30:26</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>2072</td>
+                        <td>svchost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.1%</td>
+                        <td>running</td>
+                        <td>2025-02-20 16:30:26</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>2144</td>
+                        <td>Cursor.exe</td>
+                        <td>0.0%</td>
+                        <td>0.6%</td>
+                        <td>running</td>
+                        <td>2025-02-22 12:35:34</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>2188</td>
+                        <td>svchost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.1%</td>
+                        <td>running</td>
+                        <td>2025-02-20 16:32:36</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>2208</td>
+                        <td>svchost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.1%</td>
+                        <td>running</td>
+                        <td>2025-02-20 16:30:26</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>2212</td>
+                        <td>brave.exe</td>
+                        <td>0.0%</td>
+                        <td>0.5%</td>
+                        <td>running</td>
+                        <td>2025-02-22 17:11:13</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>2220</td>
+                        <td>svchost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.1%</td>
+                        <td>running</td>
+                        <td>2025-02-20 16:30:26</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>2268</td>
+                        <td>svchost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.1%</td>
+                        <td>running</td>
+                        <td>2025-02-20 16:30:26</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>2312</td>
+                        <td>ArmourySwAgent.exe</td>
+                        <td>0.0%</td>
+                        <td>0.2%</td>
+                        <td>running</td>
+                        <td>2025-02-22 13:40:21</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>2316</td>
+                        <td>svchost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>running</td>
+                        <td>2025-02-20 16:30:26</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>2336</td>
+                        <td>svchost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.1%</td>
+                        <td>running</td>
+                        <td>2025-02-20 16:30:26</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>2376</td>
+                        <td>csrss.exe</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>running</td>
+                        <td>2025-02-21 18:48:37</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>2408</td>
+                        <td>svchost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.1%</td>
+                        <td>running</td>
+                        <td>2025-02-20 16:30:26</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>2416</td>
+                        <td>svchost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.1%</td>
+                        <td>running</td>
+                        <td>2025-02-20 16:30:26</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>2432</td>
+                        <td>svchost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.1%</td>
+                        <td>running</td>
+                        <td>2025-02-20 16:30:26</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>2444</td>
+                        <td>svchost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>running</td>
+                        <td>2025-02-20 16:30:26</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>2640</td>
+                        <td>conhost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>running</td>
+                        <td>2025-02-22 13:37:51</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>2652</td>
+                        <td>ipf_helper.exe</td>
+                        <td>0.0%</td>
+                        <td>0.1%</td>
+                        <td>running</td>
+                        <td>2025-02-22 11:38:35</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>2656</td>
+                        <td>svchost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.1%</td>
+                        <td>running</td>
+                        <td>2025-02-20 16:30:26</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>2664</td>
+                        <td>IntelCpHDCPSvc.exe</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>running</td>
+                        <td>2025-02-20 16:30:26</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>2692</td>
+                        <td>svchost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.1%</td>
+                        <td>running</td>
+                        <td>2025-02-20 16:30:26</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>2752</td>
+                        <td>svchost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>running</td>
+                        <td>2025-02-20 16:30:26</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>2768</td>
+                        <td>svchost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>running</td>
+                        <td>2025-02-20 16:30:26</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>2776</td>
+                        <td>svchost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.1%</td>
+                        <td>running</td>
+                        <td>2025-02-20 16:30:26</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>2808</td>
+                        <td>WidgetService.exe</td>
+                        <td>0.0%</td>
+                        <td>0.1%</td>
+                        <td>running</td>
+                        <td>2025-02-22 13:13:02</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>2992</td>
+                        <td>MemCompression</td>
+                        <td>0.0%</td>
+                        <td>2.6%</td>
+                        <td>running</td>
+                        <td>2025-02-20 16:30:27</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>3064</td>
+                        <td>brave.exe</td>
+                        <td>0.0%</td>
+                        <td>3.5%</td>
+                        <td>running</td>
+                        <td>2025-02-22 12:09:38</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>3112</td>
+                        <td>SecurityHealthService.exe</td>
+                        <td>0.0%</td>
+                        <td>0.1%</td>
+                        <td>running</td>
+                        <td>2025-02-20 16:31:05</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>3128</td>
+                        <td>PowerToys.MouseWithoutBordersHelper.exe</td>
+                        <td>0.0%</td>
+                        <td>0.3%</td>
+                        <td>running</td>
+                        <td>2025-02-22 16:03:29</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>3160</td>
+                        <td>svchost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>running</td>
+                        <td>2025-02-20 16:30:26</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>3200</td>
+                        <td>asus_framework.exe</td>
+                        <td>0.0%</td>
+                        <td>0.3%</td>
+                        <td>running</td>
+                        <td>2025-02-22 13:40:25</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>3316</td>
+                        <td>svchost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.1%</td>
+                        <td>running</td>
+                        <td>2025-02-20 16:30:27</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>3520</td>
+                        <td>Cursor.exe</td>
+                        <td>0.0%</td>
+                        <td>1.3%</td>
+                        <td>running</td>
+                        <td>2025-02-22 12:22:13</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>3532</td>
+                        <td>ArmouryCrate.exe</td>
+                        <td>0.0%</td>
+                        <td>0.4%</td>
+                        <td>stopped</td>
+                        <td>2025-02-22 15:24:30</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>3564</td>
+                        <td>svchost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.1%</td>
+                        <td>running</td>
+                        <td>2025-02-20 16:30:27</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>3604</td>
+                        <td>conhost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>running</td>
+                        <td>2025-02-22 12:24:54</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>3648</td>
+                        <td>NVDisplay.Container.exe</td>
+                        <td>0.0%</td>
+                        <td>0.3%</td>
+                        <td>running</td>
+                        <td>2025-02-20 16:30:27</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>3664</td>
+                        <td>Send Anywhere.exe</td>
+                        <td>0.0%</td>
+                        <td>0.2%</td>
+                        <td>running</td>
+                        <td>2025-02-22 11:55:00</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>3680</td>
+                        <td>svchost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>running</td>
+                        <td>2025-02-20 16:30:27</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>3728</td>
+                        <td>PowerToys.MouseWithoutBorders.exe</td>
+                        <td>0.0%</td>
+                        <td>0.3%</td>
+                        <td>running</td>
+                        <td>2025-02-22 11:38:44</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>3752</td>
+                        <td>svchost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>running</td>
+                        <td>2025-02-20 16:30:27</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>3784</td>
+                        <td>svchost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>running</td>
+                        <td>2025-02-20 16:30:27</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>3836</td>
+                        <td>AsusCertService.exe</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>running</td>
+                        <td>2025-02-20 16:30:27</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>3844</td>
+                        <td>svchost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.1%</td>
+                        <td>running</td>
+                        <td>2025-02-20 16:30:27</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>3856</td>
+                        <td>svchost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.1%</td>
+                        <td>running</td>
+                        <td>2025-02-20 16:30:27</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>3904</td>
+                        <td>svchost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.1%</td>
+                        <td>running</td>
+                        <td>2025-02-20 16:30:27</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>3928</td>
+                        <td>svchost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.1%</td>
+                        <td>running</td>
+                        <td>2025-02-20 16:30:27</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>3972</td>
+                        <td>svchost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.1%</td>
+                        <td>running</td>
+                        <td>2025-02-20 16:30:27</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>3980</td>
+                        <td>svchost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>running</td>
+                        <td>2025-02-20 16:30:27</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>3988</td>
+                        <td>svchost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>running</td>
+                        <td>2025-02-20 16:30:27</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>4028</td>
+                        <td>svchost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.1%</td>
+                        <td>running</td>
+                        <td>2025-02-20 16:35:00</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>4112</td>
+                        <td>svchost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.2%</td>
+                        <td>running</td>
+                        <td>2025-02-20 16:30:27</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>4380</td>
+                        <td>svchost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>running</td>
+                        <td>2025-02-20 16:30:27</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>4388</td>
+                        <td>PowerToys.PowerLauncher.exe</td>
+                        <td>0.0%</td>
+                        <td>0.9%</td>
+                        <td>running</td>
+                        <td>2025-02-22 11:38:45</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>4456</td>
+                        <td>powershell.exe</td>
+                        <td>0.0%</td>
+                        <td>0.3%</td>
+                        <td>running</td>
+                        <td>2025-02-22 12:24:54</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>4540</td>
+                        <td>svchost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>running</td>
+                        <td>2025-02-20 16:30:27</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>4560</td>
+                        <td>Cursor.exe</td>
+                        <td>0.0%</td>
+                        <td>0.7%</td>
+                        <td>running</td>
+                        <td>2025-02-22 12:23:16</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>4580</td>
+                        <td>dllhost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.1%</td>
+                        <td>running</td>
+                        <td>2025-02-22 13:06:27</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>4584</td>
+                        <td>svchost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.1%</td>
+                        <td>running</td>
+                        <td>2025-02-20 16:30:27</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>4596</td>
+                        <td>dllhost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.1%</td>
+                        <td>running</td>
+                        <td>2025-02-22 14:32:05</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>4624</td>
+                        <td>svchost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.2%</td>
+                        <td>running</td>
+                        <td>2025-02-20 16:30:27</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>4632</td>
+                        <td>AsusOptimization.exe</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>running</td>
+                        <td>2025-02-20 16:30:27</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>4640</td>
+                        <td>svchost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.1%</td>
+                        <td>running</td>
+                        <td>2025-02-20 16:30:27</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>4848</td>
+                        <td>svchost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.2%</td>
+                        <td>running</td>
+                        <td>2025-02-20 16:30:27</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>4920</td>
+                        <td>spoolsv.exe</td>
+                        <td>0.0%</td>
+                        <td>0.1%</td>
+                        <td>running</td>
+                        <td>2025-02-20 16:30:27</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>4948</td>
+                        <td>svchost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>running</td>
+                        <td>2025-02-20 16:30:27</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>5052</td>
+                        <td>svchost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>running</td>
+                        <td>2025-02-20 16:30:27</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>5076</td>
+                        <td>RtkAudUService64.exe</td>
+                        <td>0.0%</td>
+                        <td>0.1%</td>
+                        <td>running</td>
+                        <td>2025-02-22 11:39:04</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>5132</td>
+                        <td>svchost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.1%</td>
+                        <td>running</td>
+                        <td>2025-02-22 11:38:35</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>5160</td>
+                        <td>AsMonitorControl.exe</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>running</td>
+                        <td>2025-02-22 11:38:34</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>5164</td>
+                        <td>ArmouryCrateControlInterface.exe</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>running</td>
+                        <td>2025-02-20 16:30:27</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>5180</td>
+                        <td>AsusAppService.exe</td>
+                        <td>0.0%</td>
+                        <td>0.1%</td>
+                        <td>running</td>
+                        <td>2025-02-20 16:30:27</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>5220</td>
+                        <td>AuraWallpaperService.exe</td>
+                        <td>0.0%</td>
+                        <td>0.1%</td>
+                        <td>running</td>
+                        <td>2025-02-20 16:30:27</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>5260</td>
+                        <td>AsusSwitch.exe</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>running</td>
+                        <td>2025-02-20 16:30:27</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>5276</td>
+                        <td>AsusSystemDiagnosis.exe</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>running</td>
+                        <td>2025-02-20 16:30:28</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>5288</td>
+                        <td>vmnetdhcp.exe</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>running</td>
+                        <td>2025-02-20 16:30:28</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>5308</td>
+                        <td>svchost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.1%</td>
+                        <td>running</td>
+                        <td>2025-02-20 16:30:28</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>5316</td>
+                        <td>AsusPTPService.exe</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>running</td>
+                        <td>2025-02-20 16:30:28</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>5324</td>
+                        <td>OneApp.IGCC.WinService.exe</td>
+                        <td>0.0%</td>
+                        <td>0.2%</td>
+                        <td>running</td>
+                        <td>2025-02-20 16:30:28</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>5332</td>
+                        <td>IntelAudioService.exe</td>
+                        <td>0.0%</td>
+                        <td>0.1%</td>
+                        <td>running</td>
+                        <td>2025-02-20 16:30:28</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>5344</td>
+                        <td>svchost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.1%</td>
+                        <td>running</td>
+                        <td>2025-02-20 16:30:28</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>5352</td>
+                        <td>RtkAudUService64.exe</td>
+                        <td>0.0%</td>
+                        <td>0.1%</td>
+                        <td>running</td>
+                        <td>2025-02-20 16:30:28</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>5368</td>
+                        <td>ipfsvc.exe</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>running</td>
+                        <td>2025-02-20 16:30:28</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>5384</td>
+                        <td>svchost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>running</td>
+                        <td>2025-02-20 16:30:28</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>5392</td>
+                        <td>svchost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.1%</td>
+                        <td>running</td>
+                        <td>2025-02-20 16:30:28</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>5408</td>
+                        <td>RstMwService.exe</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>running</td>
+                        <td>2025-02-20 16:30:28</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>5416</td>
+                        <td>AsusSoftwareManager.exe</td>
+                        <td>0.0%</td>
+                        <td>0.1%</td>
+                        <td>running</td>
+                        <td>2025-02-20 16:30:28</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>5424</td>
+                        <td>svchost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.2%</td>
+                        <td>running</td>
+                        <td>2025-02-20 16:30:28</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>5432</td>
+                        <td>AsusSystemAnalysis.exe</td>
+                        <td>0.0%</td>
+                        <td>0.1%</td>
+                        <td>running</td>
+                        <td>2025-02-20 16:30:28</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>5440</td>
+                        <td>jhi_service.exe</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>running</td>
+                        <td>2025-02-20 16:30:28</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>5476</td>
+                        <td>svchost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.3%</td>
+                        <td>running</td>
+                        <td>2025-02-20 16:30:28</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>5484</td>
+                        <td>DAX3API.exe</td>
+                        <td>0.0%</td>
+                        <td>0.1%</td>
+                        <td>running</td>
+                        <td>2025-02-20 16:30:28</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>5492</td>
+                        <td>GameSDK.exe</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>running</td>
+                        <td>2025-02-20 16:30:28</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>5500</td>
+                        <td>svchost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.1%</td>
+                        <td>running</td>
+                        <td>2025-02-20 16:30:28</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>5512</td>
+                        <td>svchost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.1%</td>
+                        <td>running</td>
+                        <td>2025-02-20 16:32:35</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>5520</td>
+                        <td>nvcontainer.exe</td>
+                        <td>0.0%</td>
+                        <td>0.2%</td>
+                        <td>running</td>
+                        <td>2025-02-20 16:30:28</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>5528</td>
+                        <td>vmnat.exe</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>running</td>
+                        <td>2025-02-20 16:30:28</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>5536</td>
+                        <td>MsMpEng.exe</td>
+                        <td>0.0%</td>
+                        <td>2.1%</td>
+                        <td>running</td>
+                        <td>2025-02-20 16:30:28</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>5544</td>
+                        <td>OfficeClickToRun.exe</td>
+                        <td>0.0%</td>
+                        <td>0.2%</td>
+                        <td>running</td>
+                        <td>2025-02-20 16:30:28</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>5552</td>
+                        <td>WMIRegistrationService.exe</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>running</td>
+                        <td>2025-02-20 16:30:28</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>5560</td>
+                        <td>MpDefenderCoreService.exe</td>
+                        <td>0.0%</td>
+                        <td>0.1%</td>
+                        <td>running</td>
+                        <td>2025-02-20 16:30:28</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>5604</td>
+                        <td>msedgewebview2.exe</td>
+                        <td>0.0%</td>
+                        <td>0.1%</td>
+                        <td>running</td>
+                        <td>2025-02-22 11:38:37</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>5616</td>
+                        <td>brave.exe</td>
+                        <td>0.0%</td>
+                        <td>0.3%</td>
+                        <td>running</td>
+                        <td>2025-02-22 12:09:39</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>5624</td>
+                        <td>RuntimeBroker.exe</td>
+                        <td>0.0%</td>
+                        <td>0.3%</td>
+                        <td>running</td>
+                        <td>2025-02-22 11:38:36</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>5636</td>
+                        <td>ipf_uf.exe</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>running</td>
+                        <td>2025-02-20 16:30:28</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>5680</td>
+                        <td>Cursor.exe</td>
+                        <td>0.0%</td>
+                        <td>2.0%</td>
+                        <td>running</td>
+                        <td>2025-02-22 12:24:55</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>5980</td>
+                        <td>NgcIso.exe</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>running</td>
+                        <td>2025-02-20 16:30:30</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>6184</td>
+                        <td>svchost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.1%</td>
+                        <td>running</td>
+                        <td>2025-02-20 16:32:36</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>6236</td>
+                        <td>vmware-usbarbitrator64.exe</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>running</td>
+                        <td>2025-02-20 16:30:28</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>6248</td>
+                        <td>vmware-authd.exe</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>running</td>
+                        <td>2025-02-20 16:30:28</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>6408</td>
+                        <td>svchost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.1%</td>
+                        <td>running</td>
+                        <td>2025-02-22 11:41:00</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>6640</td>
+                        <td>Cursor.exe</td>
+                        <td>0.0%</td>
+                        <td>1.1%</td>
+                        <td>running</td>
+                        <td>2025-02-22 12:22:12</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>6652</td>
+                        <td>LightingService.exe</td>
+                        <td>0.0%</td>
+                        <td>0.1%</td>
+                        <td>running</td>
+                        <td>2025-02-22 13:18:36</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>6656</td>
+                        <td>Intel_PIE_Service.exe</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>running</td>
+                        <td>2025-02-20 16:30:28</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>6692</td>
+                        <td>audiodg.exe</td>
+                        <td>0.0%</td>
+                        <td>0.5%</td>
+                        <td>running</td>
+                        <td>2025-02-22 16:15:19</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>6712</td>
+                        <td>svchost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.3%</td>
+                        <td>running</td>
+                        <td>2025-02-22 11:38:35</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>6728</td>
+                        <td>PowerToys.CropAndLock.exe</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>running</td>
+                        <td>2025-02-22 11:38:44</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>6748</td>
+                        <td>brave.exe</td>
+                        <td>0.0%</td>
+                        <td>2.2%</td>
+                        <td>running</td>
+                        <td>2025-02-22 12:09:39</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>6924</td>
+                        <td>svchost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>running</td>
+                        <td>2025-02-20 16:30:28</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>7488</td>
+                        <td>svchost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.3%</td>
+                        <td>running</td>
+                        <td>2025-02-22 11:38:34</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>7496</td>
+                        <td>WmiPrvSE.exe</td>
+                        <td>0.0%</td>
+                        <td>0.3%</td>
+                        <td>running</td>
+                        <td>2025-02-20 16:30:28</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>7672</td>
+                        <td>msedgewebview2.exe</td>
+                        <td>0.0%</td>
+                        <td>0.6%</td>
+                        <td>stopped</td>
+                        <td>2025-02-22 11:38:36</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>7816</td>
+                        <td>wlanext.exe</td>
+                        <td>0.0%</td>
+                        <td>0.1%</td>
+                        <td>running</td>
+                        <td>2025-02-20 16:30:28</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>7844</td>
+                        <td>PhoneExperienceHost.exe</td>
+                        <td>0.0%</td>
+                        <td>1.1%</td>
+                        <td>running</td>
+                        <td>2025-02-22 16:54:09</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>7900</td>
+                        <td>nvsphelper64.exe</td>
+                        <td>0.0%</td>
+                        <td>0.1%</td>
+                        <td>running</td>
+                        <td>2025-02-22 13:15:42</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>7904</td>
+                        <td>RuntimeBroker.exe</td>
+                        <td>0.0%</td>
+                        <td>0.3%</td>
+                        <td>running</td>
+                        <td>2025-02-22 11:38:36</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>8040</td>
+                        <td>fontdrvhost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>running</td>
+                        <td>2025-02-21 18:48:37</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>8104</td>
+                        <td>StartMenuExperienceHost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.7%</td>
+                        <td>running</td>
+                        <td>2025-02-22 11:38:35</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>8108</td>
+                        <td>svchost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.1%</td>
+                        <td>running</td>
+                        <td>2025-02-20 16:31:10</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>8288</td>
+                        <td>svchost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.1%</td>
+                        <td>running</td>
+                        <td>2025-02-22 11:39:35</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>8360</td>
+                        <td>svchost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.1%</td>
+                        <td>running</td>
+                        <td>2025-02-22 11:45:10</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>8364</td>
+                        <td>FvContainer.exe</td>
+                        <td>0.0%</td>
+                        <td>0.2%</td>
+                        <td>running</td>
+                        <td>2025-02-22 13:15:47</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>8480</td>
+                        <td>Cursor.exe</td>
+                        <td>0.0%</td>
+                        <td>1.6%</td>
+                        <td>running</td>
+                        <td>2025-02-22 12:23:16</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>8572</td>
+                        <td>PowerToys.AlwaysOnTop.exe</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>running</td>
+                        <td>2025-02-22 11:38:44</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>8620</td>
+                        <td>PowerToys.FancyZones.exe</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>running</td>
+                        <td>2025-02-22 11:38:44</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>8908</td>
+                        <td>ShellExperienceHost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.6%</td>
+                        <td>stopped</td>
+                        <td>2025-02-22 11:38:49</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>8944</td>
+                        <td>Cursor.exe</td>
+                        <td>0.0%</td>
+                        <td>0.6%</td>
+                        <td>running</td>
+                        <td>2025-02-22 12:22:15</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>9044</td>
+                        <td>svchost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.1%</td>
+                        <td>running</td>
+                        <td>2025-02-22 11:38:36</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>9256</td>
+                        <td>Send Anywhere.exe</td>
+                        <td>0.0%</td>
+                        <td>0.2%</td>
+                        <td>running</td>
+                        <td>2025-02-22 11:55:00</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>9468</td>
+                        <td>svchost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.1%</td>
+                        <td>running</td>
+                        <td>2025-02-20 16:30:29</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>9604</td>
+                        <td>Cursor.exe</td>
+                        <td>0.0%</td>
+                        <td>0.2%</td>
+                        <td>running</td>
+                        <td>2025-02-22 12:22:13</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>9632</td>
+                        <td>nvcontainer.exe</td>
+                        <td>0.0%</td>
+                        <td>0.4%</td>
+                        <td>running</td>
+                        <td>2025-02-22 11:38:34</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>9956</td>
+                        <td>brave.exe</td>
+                        <td>0.0%</td>
+                        <td>0.1%</td>
+                        <td>running</td>
+                        <td>2025-02-22 12:09:40</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>10016</td>
+                        <td>PowerToys.exe</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>running</td>
+                        <td>2025-02-22 11:38:38</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>10076</td>
+                        <td>svchost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>running</td>
+                        <td>2025-02-20 16:35:00</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>10172</td>
+                        <td>NVIDIA Overlay.exe</td>
+                        <td>0.0%</td>
+                        <td>0.3%</td>
+                        <td>running</td>
+                        <td>2025-02-22 13:15:44</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>10400</td>
+                        <td>svchost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.1%</td>
+                        <td>running</td>
+                        <td>2025-02-20 16:30:29</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>10652</td>
+                        <td>winlogon.exe</td>
+                        <td>0.0%</td>
+                        <td>0.1%</td>
+                        <td>running</td>
+                        <td>2025-02-21 18:48:37</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>10700</td>
+                        <td>svchost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.1%</td>
+                        <td>running</td>
+                        <td>2025-02-20 16:30:30</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>10860</td>
+                        <td>AggregatorHost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.1%</td>
+                        <td>running</td>
+                        <td>2025-02-20 16:30:30</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>10936</td>
+                        <td>conhost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>running</td>
+                        <td>2025-02-22 12:55:52</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>10968</td>
+                        <td>svchost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>running</td>
+                        <td>2025-02-20 16:30:30</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>11236</td>
+                        <td>nvfvsdksvc_x64.exe</td>
+                        <td>0.0%</td>
+                        <td>0.1%</td>
+                        <td>running</td>
+                        <td>2025-02-22 13:15:47</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>11260</td>
+                        <td>brave.exe</td>
+                        <td>0.0%</td>
+                        <td>0.3%</td>
+                        <td>running</td>
+                        <td>2025-02-22 13:34:04</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>11488</td>
+                        <td>svchost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.1%</td>
+                        <td>running</td>
+                        <td>2025-02-20 16:30:32</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>11572</td>
+                        <td>ArmouryCrate.UserSessionHelper.exe</td>
+                        <td>0.0%</td>
+                        <td>0.5%</td>
+                        <td>running</td>
+                        <td>2025-02-22 13:37:51</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>11592</td>
+                        <td>AsDeviceHelper.exe</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>running</td>
+                        <td>2025-02-22 11:38:34</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>11860</td>
+                        <td>RtkAudUService64.exe</td>
+                        <td>0.0%</td>
+                        <td>0.1%</td>
+                        <td>running</td>
+                        <td>2025-02-22 11:38:49</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>12016</td>
+                        <td>brave.exe</td>
+                        <td>0.0%</td>
+                        <td>0.1%</td>
+                        <td>running</td>
+                        <td>2025-02-22 12:09:38</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>12052</td>
+                        <td>NVDisplay.Container.exe</td>
+                        <td>0.0%</td>
+                        <td>0.3%</td>
+                        <td>running</td>
+                        <td>2025-02-21 18:48:45</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>12532</td>
+                        <td>svchost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>running</td>
+                        <td>2025-02-20 16:31:25</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>12540</td>
+                        <td>PowerToys.Peek.UI.exe</td>
+                        <td>0.0%</td>
+                        <td>0.1%</td>
+                        <td>running</td>
+                        <td>2025-02-22 11:38:45</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>12684</td>
+                        <td>conhost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>running</td>
+                        <td>2025-02-22 12:24:54</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>12796</td>
+                        <td>PowerToys.Awake.exe</td>
+                        <td>0.0%</td>
+                        <td>0.1%</td>
+                        <td>running</td>
+                        <td>2025-02-22 11:38:44</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>12844</td>
+                        <td>Cursor.exe</td>
+                        <td>0.0%</td>
+                        <td>0.3%</td>
+                        <td>running</td>
+                        <td>2025-02-22 12:22:13</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>12908</td>
+                        <td>ApplicationFrameHost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.3%</td>
+                        <td>running</td>
+                        <td>2025-02-22 11:39:36</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>13212</td>
+                        <td>SecurityHealthSystray.exe</td>
+                        <td>0.0%</td>
+                        <td>0.1%</td>
+                        <td>running</td>
+                        <td>2025-02-22 11:39:08</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>13284</td>
+                        <td>ArmouryCrate.Service.exe</td>
+                        <td>0.0%</td>
+                        <td>0.4%</td>
+                        <td>running</td>
+                        <td>2025-02-22 13:37:50</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>13308</td>
+                        <td>dllhost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.1%</td>
+                        <td>running</td>
+                        <td>2025-02-22 13:23:34</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>13428</td>
+                        <td>ctfmon.exe</td>
+                        <td>0.0%</td>
+                        <td>0.3%</td>
+                        <td>running</td>
+                        <td>2025-02-22 11:38:38</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>13480</td>
+                        <td>BraveCrashHandler.exe</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>running</td>
+                        <td>2025-02-20 16:30:34</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>13652</td>
+                        <td>svchost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.1%</td>
+                        <td>running</td>
+                        <td>2025-02-22 17:03:25</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>13724</td>
+                        <td>brave.exe</td>
+                        <td>0.0%</td>
+                        <td>0.1%</td>
+                        <td>running</td>
+                        <td>2025-02-22 13:34:02</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>13736</td>
+                        <td>powershell.exe</td>
+                        <td>0.0%</td>
+                        <td>0.5%</td>
+                        <td>running</td>
+                        <td>2025-02-22 16:50:13</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>13776</td>
+                        <td>BraveCrashHandler64.exe</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>running</td>
+                        <td>2025-02-20 16:30:34</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>13812</td>
+                        <td>AsusSoftwareManagerAgent.exe</td>
+                        <td>0.0%</td>
+                        <td>0.3%</td>
+                        <td>running</td>
+                        <td>2025-02-22 11:39:33</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>13880</td>
+                        <td>svchost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.1%</td>
+                        <td>running</td>
+                        <td>2025-02-20 16:30:34</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>13920</td>
+                        <td>AsusOSD.exe</td>
+                        <td>0.0%</td>
+                        <td>0.1%</td>
+                        <td>running</td>
+                        <td>2025-02-22 11:38:53</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>13928</td>
+                        <td>svchost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>running</td>
+                        <td>2025-02-22 11:38:35</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>14012</td>
+                        <td>AcPowerNotification.exe</td>
+                        <td>0.0%</td>
+                        <td>0.4%</td>
+                        <td>running</td>
+                        <td>2025-02-22 13:40:21</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>14176</td>
+                        <td>brave.exe</td>
+                        <td>0.0%</td>
+                        <td>0.4%</td>
+                        <td>running</td>
+                        <td>2025-02-22 12:09:44</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>14228</td>
+                        <td>SystemSettings.exe</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>stopped</td>
+                        <td>2025-02-22 13:38:21</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>14452</td>
+                        <td>svchost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>running</td>
+                        <td>2025-02-21 14:36:27</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>14792</td>
+                        <td>msedgewebview2.exe</td>
+                        <td>0.0%</td>
+                        <td>0.1%</td>
+                        <td>stopped</td>
+                        <td>2025-02-22 14:25:36</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>14952</td>
+                        <td>svchost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.1%</td>
+                        <td>running</td>
+                        <td>2025-02-20 16:32:36</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>14980</td>
+                        <td>ASUSSmartDisplayControl.exe</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>running</td>
+                        <td>2025-02-22 11:38:34</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>15008</td>
+                        <td>PowerToys.MouseJumpUI.exe</td>
+                        <td>0.0%</td>
+                        <td>0.1%</td>
+                        <td>running</td>
+                        <td>2025-02-22 11:38:44</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>15152</td>
+                        <td>SDXHelper.exe</td>
+                        <td>0.0%</td>
+                        <td>0.2%</td>
+                        <td>running</td>
+                        <td>2025-02-22 13:21:38</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>15272</td>
+                        <td>msedgewebview2.exe</td>
+                        <td>0.0%</td>
+                        <td>0.4%</td>
+                        <td>stopped</td>
+                        <td>2025-02-22 11:38:37</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>15284</td>
+                        <td>NVIDIA Overlay.exe</td>
+                        <td>0.0%</td>
+                        <td>0.4%</td>
+                        <td>running</td>
+                        <td>2025-02-22 13:15:45</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>15432</td>
+                        <td>msedgewebview2.exe</td>
+                        <td>0.0%</td>
+                        <td>0.1%</td>
+                        <td>stopped</td>
+                        <td>2025-02-22 11:38:37</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>15472</td>
+                        <td>dllhost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.1%</td>
+                        <td>running</td>
+                        <td>2025-02-22 13:17:06</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>15524</td>
+                        <td>svchost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.2%</td>
+                        <td>running</td>
+                        <td>2025-02-22 11:38:34</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>15656</td>
+                        <td>taskhostw.exe</td>
+                        <td>0.0%</td>
+                        <td>0.1%</td>
+                        <td>running</td>
+                        <td>2025-02-22 11:38:34</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>15776</td>
+                        <td>UserOOBEBroker.exe</td>
+                        <td>0.0%</td>
+                        <td>0.1%</td>
+                        <td>running</td>
+                        <td>2025-02-22 13:38:23</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>16300</td>
+                        <td>svchost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.1%</td>
+                        <td>running</td>
+                        <td>2025-02-22 17:10:40</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>16320</td>
+                        <td>RuntimeBroker.exe</td>
+                        <td>0.0%</td>
+                        <td>0.2%</td>
+                        <td>running</td>
+                        <td>2025-02-22 11:38:50</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>16392</td>
+                        <td>NisSrv.exe</td>
+                        <td>0.0%</td>
+                        <td>0.1%</td>
+                        <td>running</td>
+                        <td>2025-02-20 16:30:39</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>16572</td>
+                        <td>powershell.exe</td>
+                        <td>0.0%</td>
+                        <td>0.3%</td>
+                        <td>running</td>
+                        <td>2025-02-22 12:55:52</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>16624</td>
+                        <td>AacAmbientLighting.exe</td>
+                        <td>0.0%</td>
+                        <td>0.2%</td>
+                        <td>running</td>
+                        <td>2025-02-22 13:17:23</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>16636</td>
+                        <td>FvContainer.System.exe</td>
+                        <td>0.0%</td>
+                        <td>0.2%</td>
+                        <td>running</td>
+                        <td>2025-02-22 13:15:47</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>16640</td>
+                        <td>pet.exe</td>
+                        <td>0.0%</td>
+                        <td>0.1%</td>
+                        <td>running</td>
+                        <td>2025-02-22 12:24:54</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>16756</td>
+                        <td>SearchIndexer.exe</td>
+                        <td>0.0%</td>
+                        <td>0.2%</td>
+                        <td>running</td>
+                        <td>2025-02-20 16:30:41</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>16808</td>
+                        <td>AsusOptimizationStartupTask.exe</td>
+                        <td>0.0%</td>
+                        <td>0.1%</td>
+                        <td>running</td>
+                        <td>2025-02-22 11:38:34</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>16900</td>
+                        <td>ROGLiveService.exe</td>
+                        <td>0.0%</td>
+                        <td>0.2%</td>
+                        <td>running</td>
+                        <td>2025-02-22 13:14:39</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>16972</td>
+                        <td>PowerToys.KeyboardManagerEngine.exe</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>running</td>
+                        <td>2025-02-22 11:38:44</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>17036</td>
+                        <td>NVIDIA Overlay.exe</td>
+                        <td>0.0%</td>
+                        <td>0.1%</td>
+                        <td>running</td>
+                        <td>2025-02-22 13:15:45</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>17496</td>
+                        <td>svchost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.2%</td>
+                        <td>running</td>
+                        <td>2025-02-20 16:30:47</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>17640</td>
+                        <td>svchost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.1%</td>
+                        <td>running</td>
+                        <td>2025-02-20 16:31:06</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>17764</td>
+                        <td>Send Anywhere.exe</td>
+                        <td>0.0%</td>
+                        <td>0.2%</td>
+                        <td>running</td>
+                        <td>2025-02-22 11:55:00</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>17792</td>
+                        <td>nvrla.exe</td>
+                        <td>0.0%</td>
+                        <td>0.1%</td>
+                        <td>running</td>
+                        <td>2025-02-22 13:15:47</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>17992</td>
+                        <td>SearchHost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.7%</td>
+                        <td>stopped</td>
+                        <td>2025-02-22 11:38:35</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>18076</td>
+                        <td>svchost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.1%</td>
+                        <td>running</td>
+                        <td>2025-02-20 16:45:30</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>18112</td>
+                        <td>svchost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>running</td>
+                        <td>2025-02-20 16:35:39</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>18188</td>
+                        <td>svchost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.1%</td>
+                        <td>running</td>
+                        <td>2025-02-22 11:39:31</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>18364</td>
+                        <td>AsHotplugCtrl.exe</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>running</td>
+                        <td>2025-02-22 11:38:34</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>18440</td>
+                        <td>brave.exe</td>
+                        <td>0.0%</td>
+                        <td>1.3%</td>
+                        <td>running</td>
+                        <td>2025-02-22 12:09:40</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>18688</td>
+                        <td>asus_framework.exe</td>
+                        <td>0.0%</td>
+                        <td>0.2%</td>
+                        <td>running</td>
+                        <td>2025-02-22 13:40:41</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>18976</td>
+                        <td>Send Anywhere.exe</td>
+                        <td>0.0%</td>
+                        <td>0.3%</td>
+                        <td>running</td>
+                        <td>2025-02-22 11:55:00</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>19028</td>
+                        <td>Cursor.exe</td>
+                        <td>0.0%</td>
+                        <td>0.8%</td>
+                        <td>running</td>
+                        <td>2025-02-22 12:24:54</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>19084</td>
+                        <td>nvcontainer.exe</td>
+                        <td>0.0%</td>
+                        <td>0.2%</td>
+                        <td>running</td>
+                        <td>2025-02-21 18:48:45</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>19252</td>
+                        <td>nvcontainer.exe</td>
+                        <td>0.0%</td>
+                        <td>0.2%</td>
+                        <td>running</td>
+                        <td>2025-02-22 13:15:40</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>19264</td>
+                        <td>NVIDIA Overlay.exe</td>
+                        <td>0.0%</td>
+                        <td>0.2%</td>
+                        <td>running</td>
+                        <td>2025-02-22 13:15:45</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>19640</td>
+                        <td>svchost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>running</td>
+                        <td>2025-02-22 13:06:42</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>19656</td>
+                        <td>Cursor.exe</td>
+                        <td>0.0%</td>
+                        <td>0.6%</td>
+                        <td>running</td>
+                        <td>2025-02-22 13:26:00</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>19716</td>
+                        <td>msedgewebview2.exe</td>
+                        <td>0.0%</td>
+                        <td>0.2%</td>
+                        <td>stopped</td>
+                        <td>2025-02-22 11:38:37</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>19764</td>
+                        <td>svchost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.1%</td>
+                        <td>running</td>
+                        <td>2025-02-22 11:38:34</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>19820</td>
+                        <td>ShellHost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.8%</td>
+                        <td>running</td>
+                        <td>2025-02-22 16:40:30</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>19956</td>
+                        <td>svchost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>running</td>
+                        <td>2025-02-21 17:49:07</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>20152</td>
+                        <td>svchost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.1%</td>
+                        <td>running</td>
+                        <td>2025-02-22 11:40:34</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>20172</td>
+                        <td>unsecapp.exe</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>running</td>
+                        <td>2025-02-20 16:32:31</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>20212</td>
+                        <td>TextInputHost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.8%</td>
+                        <td>running</td>
+                        <td>2025-02-22 11:38:45</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>20340</td>
+                        <td>svchost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.1%</td>
+                        <td>running</td>
+                        <td>2025-02-22 11:39:31</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>20364</td>
+                        <td>sihost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.3%</td>
+                        <td>running</td>
+                        <td>2025-02-22 11:38:34</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>20532</td>
+                        <td>asus_framework.exe</td>
+                        <td>0.0%</td>
+                        <td>0.2%</td>
+                        <td>running</td>
+                        <td>2025-02-22 13:40:42</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>20544</td>
+                        <td>brave.exe</td>
+                        <td>0.0%</td>
+                        <td>0.4%</td>
+                        <td>running</td>
+                        <td>2025-02-22 16:42:06</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>20576</td>
+                        <td>explorer.exe</td>
+                        <td>0.0%</td>
+                        <td>2.2%</td>
+                        <td>running</td>
+                        <td>2025-02-22 11:38:34</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>20680</td>
+                        <td>Cursor.exe</td>
+                        <td>0.0%</td>
+                        <td>4.0%</td>
+                        <td>running</td>
+                        <td>2025-02-22 12:23:03</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>20920</td>
+                        <td>Send Anywhere.exe</td>
+                        <td>0.0%</td>
+                        <td>0.6%</td>
+                        <td>running</td>
+                        <td>2025-02-22 11:54:58</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>21112</td>
+                        <td>conhost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.0%</td>
+                        <td>running</td>
+                        <td>2025-02-22 16:50:13</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>21296</td>
+                        <td>brave.exe</td>
+                        <td>0.0%</td>
+                        <td>0.1%</td>
+                        <td>running</td>
+                        <td>2025-02-22 12:09:39</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>21340</td>
+                        <td>RuntimeBroker.exe</td>
+                        <td>0.0%</td>
+                        <td>0.3%</td>
+                        <td>running</td>
+                        <td>2025-02-22 13:17:33</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>21356</td>
+                        <td>AsusSystemAnalysis.exe</td>
+                        <td>0.0%</td>
+                        <td>0.1%</td>
+                        <td>running</td>
+                        <td>2025-02-22 16:05:27</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>21408</td>
+                        <td>taskhostw.exe</td>
+                        <td>0.0%</td>
+                        <td>0.2%</td>
+                        <td>running</td>
+                        <td>2025-02-22 12:32:35</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>21416</td>
+                        <td>msedgewebview2.exe</td>
+                        <td>0.0%</td>
+                        <td>0.4%</td>
+                        <td>stopped</td>
+                        <td>2025-02-22 11:38:37</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>21456</td>
+                        <td>Cursor.exe</td>
+                        <td>0.0%</td>
+                        <td>0.7%</td>
+                        <td>running</td>
+                        <td>2025-02-22 12:23:31</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>21556</td>
+                        <td>NVIDIA Overlay.exe</td>
+                        <td>0.0%</td>
+                        <td>0.7%</td>
+                        <td>running</td>
+                        <td>2025-02-22 13:15:42</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>21604</td>
+                        <td>WmiApSrv.exe</td>
+                        <td>0.0%</td>
+                        <td>0.1%</td>
+                        <td>running</td>
+                        <td>2025-02-22 17:07:08</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>22516</td>
+                        <td>WmiPrvSE.exe</td>
+                        <td>0.0%</td>
+                        <td>0.1%</td>
+                        <td>running</td>
+                        <td>2025-02-22 16:03:23</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>22580</td>
+                        <td>brave.exe</td>
+                        <td>0.0%</td>
+                        <td>10.1%</td>
+                        <td>running</td>
+                        <td>2025-02-22 16:15:14</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>22800</td>
+                        <td>python3.12.exe</td>
+                        <td>0.0%</td>
+                        <td>2.0%</td>
+                        <td>running</td>
+                        <td>2025-02-22 17:10:42</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>22924</td>
+                        <td>WhatsApp.exe</td>
+                        <td>0.0%</td>
+                        <td>1.6%</td>
+                        <td>running</td>
+                        <td>2025-02-22 16:07:24</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>23632</td>
+                        <td>brave.exe</td>
+                        <td>0.0%</td>
+                        <td>0.2%</td>
+                        <td>running</td>
+                        <td>2025-02-22 17:11:19</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>23724</td>
+                        <td>python3.12.exe</td>
+                        <td>0.0%</td>
+                        <td>2.0%</td>
+                        <td>running</td>
+                        <td>2025-02-22 17:10:45</td>
+                    </tr>
+                    
+                    <tr>
+                        <td>23736</td>
+                        <td>svchost.exe</td>
+                        <td>0.0%</td>
+                        <td>0.1%</td>
+                        <td>running</td>
+                        <td>2025-02-22 17:05:07</td>
+                    </tr>
+                    
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Network Analysis -->
+    <div class="section">
+        <h2>Network Analysis</h2>
+        <div class="subsection">
+            <h3>Network Traffic Patterns</h3>
+            <p><strong>Peak Activity Time:</strong> 17:11:53</p>
+            <p><strong>Average Bandwidth Usage:</strong> 0.00 MB/s</p>
+            <p><strong>Most Active Process:</strong> Chrome</p>
+            <p><strong>Unusual Patterns:</strong> None detected</p>
+        </div>
+    </div>
+
+    <!-- Log Analysis -->
+    <div class="section">
+        <h2>Log Analysis</h2>
+        <div class="grid">
+            <div class="stat-card">
+                <div class="stat-value">190</div>
+                <div class="stat-label">Total Events</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">0</div>
+                <div class="stat-label">Critical Events</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">0</div>
+                <div class="stat-label">Warning Events</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value">0</div>
+                <div class="stat-label">Info Events</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Detected Threats -->
+    <div class="section">
+        <h2>Detected Threats</h2>
+        
+
+        
+
+        
+    </div>
+
+    <!-- Recommendations -->
+    <div class="section">
+        <h2>Security Recommendations</h2>
+        
+        <div class="recommendation high">
+            <h3>Update System Software</h3>
+            <p><strong>Priority:</strong> High</p>
+            <p>Several critical system components require updates.</p>
+        </div>
+        
+        <div class="recommendation medium">
+            <h3>Review Network Connections</h3>
+            <p><strong>Priority:</strong> Medium</p>
+            <p>Unusual network activity detected from certain processes.</p>
+        </div>
+        
+        <div class="recommendation low">
+            <h3>Enhance System Monitoring</h3>
+            <p><strong>Priority:</strong> Low</p>
+            <p>Consider implementing additional security monitoring tools.</p>
+        </div>
+        
+    </div>
+
+</body>
+</html>
