@@ -21,6 +21,8 @@ python-json-logger
 
 # Image Processing
 Pillow
+matplotlib
+seaborn
 
 # Security & Cryptography
 cryptography
