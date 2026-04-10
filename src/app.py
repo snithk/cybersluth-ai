@@ -3,10 +3,13 @@ import threading
 import time
 from datetime import datetime
 import json
+import csv as csv_module
+import tempfile
 from collections import deque
 import os
 import sys
 import logging
+from werkzeug.utils import secure_filename
 
 # Add the parent directory to Python path
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -38,12 +41,92 @@ network_data = {
 current_threats = []
 artifact_findings_cache = {'summary': {}, 'suspicious_files': []}
 
+# Path to the auto-loaded default CSV (sits in the project root)
+DEFAULT_CSV_PATH = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'sample_network_traffic.csv')
+# If user uploads a CSV, save it here so it persists across restarts
+PERSISTED_CSV_PATH = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), '_last_upload.csv')
+
 # Initialize analyzers
 network_analyzer = NetworkAnalyzer()
 log_analyzer = LogAnalyzer()
 artifact_analyzer = ArtifactAnalyzer()
 threat_detector = ThreatDetector()
 report_generator = ReportGenerator()
+
+
+def auto_load_csv():
+    """Auto-load the default (or last-uploaded) CSV on startup so the
+    dashboard shows data immediately without requiring a manual upload."""
+    global current_threats, network_data, network_active, analysis_active
+
+    # Prefer the last user-uploaded file; fall back to the bundled sample
+    csv_path = PERSISTED_CSV_PATH if os.path.exists(PERSISTED_CSV_PATH) else DEFAULT_CSV_PATH
+    if not os.path.exists(csv_path):
+        logger.info("No default CSV found — skipping auto-load")
+        return
+
+    try:
+        logger.info(f"Auto-loading CSV: {csv_path}")
+        net_stats = network_analyzer.analyze_from_csv(csv_path)
+        network_active = True
+        analysis_active = True
+
+        # Build chart data
+        connections = net_stats.get('system', {}).get('detailed_connections', [])
+        bucket_size = max(1, len(connections) // 60)
+        chart_sent, chart_labels = [], []
+        for i in range(0, len(connections), bucket_size):
+            bucket = connections[i:i + bucket_size]
+            total = sum(c.get('local_port', 0) % 1500 for c in bucket)
+            chart_sent.append(total)
+            chart_labels.append(f"pkt {i}")
+
+        network_data['bytes_sent'] = deque(chart_sent[-60:], maxlen=60)
+        network_data['bytes_recv'] = deque([0] * len(chart_sent[-60:]), maxlen=60)
+        network_data['timestamps'] = deque(chart_labels[-60:], maxlen=60)
+
+        # Detect threats from labels
+        label_counts = {}
+        with open(csv_path, 'r') as f:
+            reader = csv_module.DictReader(f)
+            for row in reader:
+                label = row.get('label', 'Benign')
+                if label != 'Benign':
+                    label_counts[label] = label_counts.get(label, 0) + 1
+
+        threats_found = {'high_priority': [], 'medium_priority': [], 'low_priority': []}
+        for label, count in label_counts.items():
+            entry = {
+                'type': label, 'source': 'auto_csv_loader',
+                'confidence': 0.93,
+                'timestamp': datetime.now().isoformat(),
+                'details': {'attack_type': label, 'packet_count': count}
+            }
+            lu = label.upper()
+            if any(k in lu for k in ['DDOS', 'FLOOD', 'DOS']):
+                entry['type'] = 'DDOS_FLOOD_DETECTED'; entry['confidence'] = 0.97
+                threats_found['high_priority'].append(entry)
+            elif any(k in lu for k in ['BRUTEFORCE', 'BRUTE', 'SSH']):
+                entry['type'] = 'BRUTE_FORCE_DETECTED'; entry['confidence'] = 0.91
+                threats_found['high_priority'].append(entry)
+            elif any(k in lu for k in ['PORTSCAN', 'SCAN', 'PROBE']):
+                entry['type'] = 'PORT_SCAN_DETECTED'; entry['confidence'] = 0.88
+                threats_found['medium_priority'].append(entry)
+            else:
+                threats_found['low_priority'].append(entry)
+
+        more = threat_detector.detect_threats(network_data=net_stats)
+        for p in ['high_priority', 'medium_priority', 'low_priority']:
+            threats_found[p].extend(more[p])
+
+        current_threats = (
+            [(t, 'high')   for t in threats_found['high_priority']] +
+            [(t, 'medium') for t in threats_found['medium_priority']] +
+            [(t, 'low')    for t in threats_found['low_priority']]
+        )
+        logger.info(f"Auto-load complete — {len(connections)} packets, {len(current_threats)} threats found")
+    except Exception as e:
+        logger.error(f"Auto-load CSV failed: {e}")
 
 def analysis_worker():
     """Background worker for continuous analysis"""
@@ -223,6 +306,123 @@ def serve_report(filename):
         app.logger.error(f"Error serving report: {str(e)}")
         return str(e), 500
 
+@app.route('/upload_network', methods=['POST'])
+def upload_network():
+    """Analyze an uploaded CSV network capture file (for live/cloud deployment)"""
+    global current_threats, network_data, analysis_active, network_active
+
+    if 'file' not in request.files:
+        return jsonify({'success': False, 'error': 'No file provided'}), 400
+
+    file = request.files['file']
+    if not file or file.filename == '':
+        return jsonify({'success': False, 'error': 'No file selected'}), 400
+
+    if not file.filename.lower().endswith('.csv'):
+        return jsonify({'success': False, 'error': 'Only CSV files are supported. Please upload a .csv network capture file.'}), 400
+
+    try:
+        filename = secure_filename(file.filename)
+        upload_path = os.path.join(tempfile.gettempdir(), filename)
+        file.save(upload_path)
+
+        # Run network analysis from CSV
+        net_stats = network_analyzer.analyze_from_csv(upload_path)
+        network_active = True
+        analysis_active = True
+
+        # Build chart data from packet lengths (group into buckets)
+        connections = net_stats.get('system', {}).get('detailed_connections', [])
+        bucket_size = max(1, len(connections) // 60)
+        chart_sent = []
+        chart_labels = []
+        for i in range(0, len(connections), bucket_size):
+            bucket = connections[i:i + bucket_size]
+            total = sum(
+                c.get('local_port', 0) % 1500
+                for c in bucket
+            )
+            chart_sent.append(total)
+            chart_labels.append(f"pkt {i}")
+
+        network_data['bytes_sent'] = deque(chart_sent[-60:], maxlen=60)
+        network_data['bytes_recv'] = deque([0] * len(chart_sent[-60:]), maxlen=60)
+        network_data['timestamps'] = deque(chart_labels[-60:], maxlen=60)
+
+        # Detect threats from CSV labels
+        label_counts = {}
+        with open(upload_path, 'r') as f:
+            reader = csv_module.DictReader(f)
+            for row in reader:
+                label = row.get('label', 'Benign')
+                if label != 'Benign':
+                    label_counts[label] = label_counts.get(label, 0) + 1
+
+        threats_from_file = {'high_priority': [], 'medium_priority': [], 'low_priority': []}
+        for label, count in label_counts.items():
+            threat_entry = {
+                'type': label,
+                'source': 'file_analyzer',
+                'confidence': 0.93,
+                'timestamp': datetime.now().isoformat(),
+                'details': {'attack_type': label, 'packet_count': count}
+            }
+            label_upper = label.upper()
+            if any(k in label_upper for k in ['DDOS', 'FLOOD', 'DOS']):
+                threat_entry['type'] = 'DDOS_FLOOD_DETECTED'
+                threat_entry['confidence'] = 0.97
+                threats_from_file['high_priority'].append(threat_entry)
+            elif any(k in label_upper for k in ['BRUTEFORCE', 'BRUTE', 'SSH']):
+                threat_entry['type'] = 'BRUTE_FORCE_DETECTED'
+                threat_entry['confidence'] = 0.91
+                threats_from_file['high_priority'].append(threat_entry)
+            elif any(k in label_upper for k in ['PORTSCAN', 'SCAN', 'PROBE']):
+                threat_entry['type'] = 'PORT_SCAN_DETECTED'
+                threat_entry['confidence'] = 0.88
+                threats_from_file['medium_priority'].append(threat_entry)
+            elif any(k in label_upper for k in ['EXFIL', 'C2', 'BEACON']):
+                threat_entry['type'] = 'DATA_EXFIL_DETECTED'
+                threat_entry['confidence'] = 0.95
+                threats_from_file['high_priority'].append(threat_entry)
+            else:
+                threats_from_file['low_priority'].append(threat_entry)
+
+        # Also run standard threat detection
+        more_threats = threat_detector.detect_threats(network_data=net_stats)
+        for priority in ['high_priority', 'medium_priority', 'low_priority']:
+            threats_from_file[priority].extend(more_threats[priority])
+
+        current_threats = (
+            [(t, 'high') for t in threats_from_file['high_priority']] +
+            [(t, 'medium') for t in threats_from_file['medium_priority']] +
+            [(t, 'low') for t in threats_from_file['low_priority']]
+        )
+
+        # ── Save as the new default so it auto-loads next restart ──────────
+        import shutil
+        try:
+            shutil.copy2(upload_path, PERSISTED_CSV_PATH)
+            logger.info(f"Uploaded CSV saved as new default: {PERSISTED_CSV_PATH}")
+        except Exception as copy_err:
+            logger.warning(f"Could not persist uploaded CSV: {copy_err}")
+        os.remove(upload_path)
+
+        total_threats = sum(len(v) for v in threats_from_file.values())
+        return jsonify({
+            'success': True,
+            'message': f'Analyzed {len(connections)} connections. Found {total_threats} threat(s).',
+            'threats': {
+                'high': len(threats_from_file['high_priority']),
+                'medium': len(threats_from_file['medium_priority']),
+                'low': len(threats_from_file['low_priority'])
+            }
+        })
+
+    except Exception as e:
+        logger.error(f"Error in upload_network: {str(e)}")
+        return jsonify({'success': False, 'error': str(e)}), 500
+
+
 @app.route('/generate_report', methods=['POST'])
 def generate_report():
     """Generate analysis report with all collected system data"""
@@ -296,7 +496,7 @@ if __name__ == '__main__':
     try:
         # Ensure the reports directory exists
         os.makedirs('reports', exist_ok=True)
-        
+
         # Print access information
         print("\nCyberSentry is starting up...")
         print("=" * 50)

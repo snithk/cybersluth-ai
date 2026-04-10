@@ -440,11 +440,48 @@
             <button class="btn btn-outline" id="reportBtn" onclick="generateReport()">
                 <i class="fas fa-file-export"></i> EXPORT REPORT
             </button>
+            <button class="btn btn-outline" onclick="openUpload()" style="border-color: var(--accent-primary); color: var(--accent-primary);">
+                <i class="fas fa-upload"></i> UPLOAD CAPTURE
+            </button>
             <button class="btn" onclick="openSim()" style="background:linear-gradient(90deg,#ff4d4d,#c0392b);color:#fff;box-shadow:0 4px 18px rgba(255,77,77,0.3);">
                 <i class="fas fa-bolt"></i> LIVE ATTACK SIM
             </button>
         </div>
     </nav>
+
+    <!-- ====== FILE UPLOAD MODAL ====== -->
+    <div id="upload-overlay" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.85); backdrop-filter:blur(8px); z-index:9000; align-items:center; justify-content:center;">
+        <div style="background:rgba(17,25,40,0.98); border:1px solid rgba(0,210,255,0.3); border-radius:1.25rem; padding:2rem; max-width:480px; width:90%; box-shadow:0 0 60px rgba(0,210,255,0.15);">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1.5rem;">
+                <div style="font-size:1.2rem; font-weight:700; background:linear-gradient(90deg,#00d2ff,#3a7bd5); -webkit-background-clip:text; -webkit-text-fill-color:transparent;">
+                    <i class="fas fa-file-upload" style="-webkit-text-fill-color:#00d2ff;"></i> &nbsp;UPLOAD NETWORK CAPTURE
+                </div>
+                <button onclick="closeUpload()" style="background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); color:var(--text-dim); padding:6px 14px; border-radius:8px; cursor:pointer; font-family:inherit;">✕ CLOSE</button>
+            </div>
+            <div id="upload-dropzone"
+                style="border:2px dashed rgba(0,210,255,0.35); border-radius:1rem; padding:2.5rem 1.5rem; text-align:center; cursor:pointer; transition:0.2s;"
+                onclick="document.getElementById('upload-file-input').click()"
+                ondragover="event.preventDefault(); this.style.borderColor='#00d2ff'; this.style.background='rgba(0,210,255,0.05)';"
+                ondragleave="this.style.borderColor='rgba(0,210,255,0.35)'; this.style.background='';"
+                ondrop="handleFileDrop(event)">
+                <i class="fas fa-cloud-upload-alt" style="font-size:2.5rem; color:var(--accent-primary); opacity:0.6; margin-bottom:1rem; display:block;"></i>
+                <div style="font-weight:600; margin-bottom:0.5rem;">Drop your CSV file here</div>
+                <div style="font-size:0.8rem; color:var(--text-dim);">or click to browse &nbsp;·&nbsp; .csv network capture files</div>
+                <input type="file" id="upload-file-input" accept=".csv" style="display:none;" onchange="handleFileSelect(this)">
+            </div>
+            <div id="upload-filename" style="margin-top:1rem; font-size:0.85rem; color:var(--accent-primary); font-family:'JetBrains Mono',monospace; min-height:1.2rem;"></div>
+            <div id="upload-status" style="margin-top:0.75rem; font-size:0.85rem; color:var(--text-dim); min-height:1.2rem;"></div>
+            <div style="margin-top:1.25rem; display:flex; gap:0.75rem;">
+                <button id="upload-btn" onclick="submitUpload()" disabled
+                    style="flex:1; padding:0.75rem; border-radius:0.75rem; border:none; background:linear-gradient(90deg,#00d2ff,#3a7bd5); color:#fff; font-family:inherit; font-weight:700; cursor:pointer; opacity:0.4; transition:0.2s;">
+                    <i class="fas fa-search"></i> &nbsp;ANALYSE FILE
+                </button>
+                <div style="font-size:0.75rem; color:var(--text-dim); align-self:center; max-width:140px; line-height:1.4;">
+                    Supports the <code style="color:var(--accent-primary);">sample_network_traffic.csv</code> format
+                </div>
+            </div>
+        </div>
+    </div>
 
     <div class="container">
         <div id="genProgress" class="progress-container">
@@ -531,11 +568,10 @@
                         <tbody>
                             {% for conn in network_connections %}
                             <tr>
-                                <td>{{ conn.process_name }} <span style="color: var(--text-dim); font-size: 0.7rem;">({{
-                                        conn.pid }})</span></td>
-                                <td>{{ conn.local_address }}:{{ conn.local_port }}</td>
-                                <td>{{ conn.remote_address }}:{{ conn.remote_port }}</td>
-                                <td><span class="tag tag-{{ 'low' if conn.status == 'ESTABLISHED' else 'med' }}">{{
+                                <td>{{ conn.process_name }}</td>
+                                <td>{{ conn.local_ip }}:{{ conn.local_port }}</td>
+                                <td>{{ conn.remote_ip }}:{{ conn.remote_port }}</td>
+                                <td><span class="tag tag-{{ 'high' if conn.status == 'ATTACK' else 'low' if conn.status == 'ESTABLISHED' else 'med' }}">{{
                                         conn.status }}</span></td>
                             </tr>
                             {% endfor %}
@@ -720,12 +756,13 @@
                 const connTable = document.querySelector('#connTable tbody');
                 let connHtml = '';
                 data.network_connections.forEach(conn => {
+                    const tagClass = conn.status === 'ATTACK' ? 'high' : conn.status === 'ESTABLISHED' ? 'low' : 'med';
                     connHtml += `
                         <tr>
-                            <td>${conn.process_name} <span style="color: var(--text-dim); font-size: 0.7rem;">(${conn.pid})</span></td>
-                            <td>${conn.local_address}:${conn.local_port}</td>
-                            <td>${conn.remote_address}:${conn.remote_port}</td>
-                            <td><span class="tag tag-${conn.status === 'ESTABLISHED' ? 'low' : 'med'}">${conn.status}</span></td>
+                            <td>${conn.process_name || 'Unknown'}</td>
+                            <td>${conn.local_ip || conn.local_address || ''}:${conn.local_port}</td>
+                            <td>${conn.remote_ip || conn.remote_address || ''}:${conn.remote_port}</td>
+                            <td><span class="tag tag-${tagClass}">${conn.status}</span></td>
                         </tr>
                     `;
                 });
@@ -738,10 +775,8 @@
             }
         }
 
-        // Start polling if analysis is active
-        {% if analysis_active %}
-        setInterval(updateDashboard, 2000);
-        {% endif %}
+        // Start polling (always on so file-upload results refresh automatically)
+        setInterval(updateDashboard, 3000);
 
         function generateReport() {
             const btn = document.getElementById('reportBtn');
@@ -773,6 +808,105 @@
                     btn.innerHTML = '<i class="fas fa-file-export"></i> EXPORT REPORT';
                 });
         }
+
+        // ====== FILE UPLOAD ENGINE ======
+        let selectedUploadFile = null;
+
+        function openUpload() {
+            const overlay = document.getElementById('upload-overlay');
+            overlay.style.display = 'flex';
+            resetUploadState();
+        }
+
+        function closeUpload() {
+            document.getElementById('upload-overlay').style.display = 'none';
+            resetUploadState();
+        }
+
+        function resetUploadState() {
+            selectedUploadFile = null;
+            document.getElementById('upload-filename').textContent = '';
+            document.getElementById('upload-status').textContent = '';
+            document.getElementById('upload-btn').disabled = true;
+            document.getElementById('upload-btn').style.opacity = '0.4';
+            document.getElementById('upload-file-input').value = '';
+        }
+
+        function handleFileSelect(input) {
+            if (input.files && input.files[0]) {
+                setUploadFile(input.files[0]);
+            }
+        }
+
+        function handleFileDrop(event) {
+            event.preventDefault();
+            const dropzone = document.getElementById('upload-dropzone');
+            dropzone.style.borderColor = 'rgba(0,210,255,0.35)';
+            dropzone.style.background = '';
+            const file = event.dataTransfer.files[0];
+            if (file) setUploadFile(file);
+        }
+
+        function setUploadFile(file) {
+            if (!file.name.toLowerCase().endsWith('.csv')) {
+                document.getElementById('upload-status').textContent = '⚠ Only .csv files are supported.';
+                document.getElementById('upload-status').style.color = '#ff4d4d';
+                return;
+            }
+            selectedUploadFile = file;
+            document.getElementById('upload-filename').textContent = '📄 ' + file.name + '  (' + (file.size / 1024).toFixed(1) + ' KB)';
+            document.getElementById('upload-status').textContent = 'Ready to analyse.';
+            document.getElementById('upload-status').style.color = 'var(--low-safe)';
+            const btn = document.getElementById('upload-btn');
+            btn.disabled = false;
+            btn.style.opacity = '1';
+        }
+
+        async function submitUpload() {
+            if (!selectedUploadFile) return;
+            const btn = document.getElementById('upload-btn');
+            const status = document.getElementById('upload-status');
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> &nbsp;ANALYSING...';
+            status.textContent = 'Uploading and analysing file...';
+            status.style.color = 'var(--accent-primary)';
+
+            const formData = new FormData();
+            formData.append('file', selectedUploadFile);
+
+            try {
+                const res = await fetch('/upload_network', { method: 'POST', body: formData });
+                const data = await res.json();
+                if (data.success) {
+                    status.textContent = '✅ ' + data.message;
+                    status.style.color = 'var(--low-safe)';
+                    btn.innerHTML = '<i class="fas fa-check"></i> &nbsp;DONE';
+                    // Refresh the dashboard after 1 second
+                    setTimeout(() => { updateDashboard(); closeUpload(); }, 1200);
+                    // Start live polling
+                    if (!window._uploadPolling) {
+                        window._uploadPolling = setInterval(updateDashboard, 3000);
+                    }
+                } else {
+                    status.textContent = '❌ ' + data.error;
+                    status.style.color = '#ff4d4d';
+                    btn.disabled = false;
+                    btn.style.opacity = '1';
+                    btn.innerHTML = '<i class="fas fa-search"></i> &nbsp;ANALYSE FILE';
+                }
+            } catch (err) {
+                status.textContent = '❌ Upload failed: ' + err.message;
+                status.style.color = '#ff4d4d';
+                btn.disabled = false;
+                btn.style.opacity = '1';
+                btn.innerHTML = '<i class="fas fa-search"></i> &nbsp;ANALYSE FILE';
+            }
+        }
+
+        // Close upload modal when clicking outside
+        document.getElementById('upload-overlay').addEventListener('click', function(e) {
+            if (e.target === this) closeUpload();
+        });
 
         // ====== LIVE ATTACK SIMULATION ENGINE ======
         const SIM = {

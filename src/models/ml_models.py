@@ -1,12 +1,22 @@
 import pickle
 import logging
 import numpy as np
-import torch
-import torch.nn as nn
-import torch.nn.functional as F
 from pathlib import Path
 from sklearn.ensemble import IsolationForest, RandomForestClassifier
 from sklearn.preprocessing import StandardScaler
+
+# torch is optional — app works fully without it (only legacy classes need it)
+try:
+    import torch
+    import torch.nn as nn
+    import torch.nn.functional as F
+    TORCH_AVAILABLE = True
+except ImportError:
+    TORCH_AVAILABLE = False
+    logging.getLogger(__name__).warning(
+        "PyTorch not installed — LogAnomalyDetector / ImageAnalyzer / TextAnalyzer "
+        "are disabled. Core network analysis works fine."
+    )
 
 logger = logging.getLogger(__name__)
 
@@ -68,15 +78,22 @@ class AnomalyDetector:
                 data = data.reshape(1, -1)
 
             if not self.is_trained:
-                logger.warning("AnomalyDetector: not trained yet — training on first sample")
                 self.train(data)
                 return False        # first sample used for training
 
-            scaled      = self.scaler.transform(data)
+            # If saved scaler was trained on a different feature count, retrain
+            try:
+                scaled = self.scaler.transform(data)
+            except ValueError:
+                logger.info("AnomalyDetector: feature mismatch with saved model — retraining on live data")
+                self.is_trained = False
+                self.train(data)
+                return False
+
             predictions = self.model.predict(scaled)
             return bool(np.any(predictions == -1))
         except Exception as e:
-            logger.error(f"Error detecting anomalies: {e}")
+            logger.debug(f"AnomalyDetector skipped: {e}")
             return False
 
 
@@ -184,165 +201,173 @@ class ThreatClassifier:
 # Legacy classes kept for backward compatibility
 # ─────────────────────────────────────────────────────────────────────────────
 
-class LogAnomalyDetector:
-    def __init__(self):
-        self.model = nn.Sequential(
-            nn.Linear(10, 64),
-            nn.ReLU(),
-            nn.Linear(64, 32),
-            nn.ReLU(),
-            nn.Linear(32, 2),
-        )
-        self.scaler     = StandardScaler()
-        self.is_trained = False
+if TORCH_AVAILABLE:
+    class LogAnomalyDetector:
+        def __init__(self):
+            self.model = nn.Sequential(
+                nn.Linear(10, 64), nn.ReLU(),
+                nn.Linear(64, 32), nn.ReLU(),
+                nn.Linear(32, 2),
+            )
+            self.scaler     = StandardScaler()
+            self.is_trained = False
 
-    def _prepare_features(self, log_data):
-        features = np.zeros((len(log_data), 10))
-        for i, entry in enumerate(log_data):
-            features[i] = [
-                entry.get("event_frequency",       0),
-                entry.get("time_of_day",           0),
-                entry.get("severity_level",        0),
-                entry.get("source_ip_count",       0),
-                entry.get("destination_ip_count",  0),
-                entry.get("unique_users",          0),
-                entry.get("error_count",           0),
-                entry.get("warning_count",         0),
-                entry.get("critical_count",        0),
-                entry.get("authentication_failures", 0),
-            ]
-        return features
+        def _prepare_features(self, log_data):
+            features = np.zeros((len(log_data), 10))
+            for i, entry in enumerate(log_data):
+                features[i] = [
+                    entry.get("event_frequency",        0),
+                    entry.get("time_of_day",            0),
+                    entry.get("severity_level",         0),
+                    entry.get("source_ip_count",        0),
+                    entry.get("destination_ip_count",   0),
+                    entry.get("unique_users",           0),
+                    entry.get("error_count",            0),
+                    entry.get("warning_count",          0),
+                    entry.get("critical_count",         0),
+                    entry.get("authentication_failures",0),
+                ]
+            return features
 
-    def train(self, log_data, labels):
-        try:
-            features        = self._prepare_features(log_data)
-            scaled_features = self.scaler.fit_transform(features)
-            X = torch.FloatTensor(scaled_features)
-            y = torch.LongTensor(labels)
+        def train(self, log_data, labels):
+            try:
+                features        = self._prepare_features(log_data)
+                scaled_features = self.scaler.fit_transform(features)
+                X = torch.FloatTensor(scaled_features)
+                y = torch.LongTensor(labels)
+                criterion = nn.CrossEntropyLoss()
+                optimizer = torch.optim.Adam(self.model.parameters())
+                for _ in range(100):
+                    optimizer.zero_grad()
+                    outputs = self.model(X)
+                    loss    = criterion(outputs, y)
+                    loss.backward()
+                    optimizer.step()
+                self.is_trained = True
+            except Exception as e:
+                logger.error(f"Error training log anomaly detector: {e}")
 
-            criterion = nn.CrossEntropyLoss()
-            optimizer = torch.optim.Adam(self.model.parameters())
+        def detect(self, log_data):
+            try:
+                features = self._prepare_features([log_data])
+                if not self.is_trained:
+                    self.scaler.fit(features)
+                    self.train([log_data], [0])
+                scaled = self.scaler.transform(features)
+                X      = torch.FloatTensor(scaled)
+                with torch.no_grad():
+                    outputs = F.softmax(self.model(X), dim=1)
+                return outputs[0][1].item() > 0.5
+            except Exception as e:
+                logger.error(f"Error detecting log anomalies: {e}")
+                return False
 
-            for _ in range(100):
-                optimizer.zero_grad()
-                outputs = self.model(X)
-                loss    = criterion(outputs, y)
-                loss.backward()
-                optimizer.step()
+    class ImageAnalyzer:
+        def __init__(self):
+            self.model = nn.Sequential(
+                nn.Linear(5, 32), nn.ReLU(),
+                nn.Linear(32, 16), nn.ReLU(),
+                nn.Linear(16, 2),
+            )
+            self.scaler = StandardScaler()
 
-            self.is_trained = True
-        except Exception as e:
-            logger.error(f"Error training log anomaly detector: {e}")
+        def preprocess_image(self, image):
+            try:
+                if len(image.shape) == 3:
+                    image = np.mean(image, axis=2)
+                return image.flatten()
+            except Exception as e:
+                logger.error(f"Error preprocessing image: {e}")
+                return None
 
-    def detect(self, log_data):
-        try:
-            features = self._prepare_features([log_data])
-            if not self.is_trained:
-                self.scaler.fit(features)
-                self.train([log_data], [0])
-
-            scaled = self.scaler.transform(features)
-            X      = torch.FloatTensor(scaled)
-            with torch.no_grad():
-                outputs = F.softmax(self.model(X), dim=1)
-            return outputs[0][1].item() > 0.5
-        except Exception as e:
-            logger.error(f"Error detecting log anomalies: {e}")
-            return False
-
-
-class ImageAnalyzer:
-    def __init__(self):
-        self.model = nn.Sequential(
-            nn.Linear(5, 32), nn.ReLU(),
-            nn.Linear(32, 16), nn.ReLU(),
-            nn.Linear(16, 2),
-        )
-        self.scaler = StandardScaler()
-
-    def preprocess_image(self, image):
-        try:
-            if len(image.shape) == 3:
-                image = np.mean(image, axis=2)
-            return image.flatten()
-        except Exception as e:
-            logger.error(f"Error preprocessing image: {e}")
-            return None
-
-    def analyze(self, image):
-        try:
-            processed = self.preprocess_image(image)
-            if processed is None:
+        def analyze(self, image):
+            try:
+                processed = self.preprocess_image(image)
+                if processed is None:
+                    return {"suspicious": False, "confidence": 0}
+                features = self._extract_image_features(processed)
+                X = torch.FloatTensor([list(features.values())])
+                with torch.no_grad():
+                    outputs = F.softmax(self.model(X), dim=1)
+                prediction = outputs[0][1].item()
+                return {
+                    "suspicious":        bool(prediction > 0.5),
+                    "confidence":        float(prediction),
+                    "features_detected": features,
+                }
+            except Exception as e:
+                logger.error(f"Error analyzing image: {e}")
                 return {"suspicious": False, "confidence": 0}
-            features = self._extract_image_features(processed)
-            X = torch.FloatTensor([list(features.values())])
-            with torch.no_grad():
-                outputs = F.softmax(self.model(X), dim=1)
-            prediction = outputs[0][1].item()
-            return {
-                "suspicious":       bool(prediction > 0.5),
-                "confidence":       float(prediction),
-                "features_detected": features,
-            }
-        except Exception as e:
-            logger.error(f"Error analyzing image: {e}")
-            return {"suspicious": False, "confidence": 0}
 
-    def _extract_image_features(self, image):
-        try:
-            return {
-                "mean":   np.mean(image),
-                "std":    np.std(image),
-                "min":    np.min(image),
-                "max":    np.max(image),
-                "median": np.median(image),
-            }
-        except Exception as e:
-            logger.error(f"Error extracting image features: {e}")
-            return {}
+        def _extract_image_features(self, image):
+            try:
+                return {
+                    "mean":   np.mean(image),
+                    "std":    np.std(image),
+                    "min":    np.min(image),
+                    "max":    np.max(image),
+                    "median": np.median(image),
+                }
+            except Exception as e:
+                logger.error(f"Error extracting image features: {e}")
+                return {}
 
+    class TextAnalyzer:
+        def __init__(self):
+            self.model = nn.Sequential(
+                nn.Linear(5, 32), nn.ReLU(),
+                nn.Linear(32, 16), nn.ReLU(),
+                nn.Linear(16, 2),
+            )
 
-class TextAnalyzer:
-    def __init__(self):
-        self.model = nn.Sequential(
-            nn.Linear(5, 32), nn.ReLU(),
-            nn.Linear(32, 16), nn.ReLU(),
-            nn.Linear(16, 2),
-        )
+        def analyze(self, text):
+            try:
+                features = self._extract_text_features(text)
+                X = torch.FloatTensor([list(features.values())])
+                with torch.no_grad():
+                    outputs = F.softmax(self.model(X), dim=1)
+                prediction = outputs[0][1].item()
+                return {
+                    "suspicious": bool(prediction > 0.5),
+                    "confidence": float(prediction),
+                    "features":   features,
+                }
+            except Exception as e:
+                logger.error(f"Error analyzing text: {e}")
+                return {"suspicious": False, "confidence": 0}
 
-    def analyze(self, text):
-        try:
-            features = self._extract_text_features(text)
-            X = torch.FloatTensor([list(features.values())])
-            with torch.no_grad():
-                outputs = F.softmax(self.model(X), dim=1)
-            prediction = outputs[0][1].item()
-            return {
-                "suspicious": bool(prediction > 0.5),
-                "confidence": float(prediction),
-                "features":   features,
-            }
-        except Exception as e:
-            logger.error(f"Error analyzing text: {e}")
-            return {"suspicious": False, "confidence": 0}
+        def _preprocess_text(self, text):
+            try:
+                return text.lower()
+            except Exception as e:
+                logger.error(f"Error preprocessing text: {e}")
+                return ""
 
-    def _preprocess_text(self, text):
-        try:
-            return text.lower()
-        except Exception as e:
-            logger.error(f"Error preprocessing text: {e}")
-            return ""
+        def _extract_text_features(self, text):
+            try:
+                preprocessed = self._preprocess_text(text)
+                return {
+                    "length":        len(preprocessed),
+                    "word_count":    len(preprocessed.split()),
+                    "unique_words":  len(set(preprocessed.split())),
+                    "special_chars": sum(not c.isalnum() for c in preprocessed),
+                    "numeric_count": sum(c.isdigit() for c in preprocessed),
+                }
+            except Exception as e:
+                logger.error(f"Error extracting text features: {e}")
+                return {}
 
-    def _extract_text_features(self, text):
-        try:
-            preprocessed = self._preprocess_text(text)
-            return {
-                "length":        len(preprocessed),
-                "word_count":    len(preprocessed.split()),
-                "unique_words":  len(set(preprocessed.split())),
-                "special_chars": sum(not c.isalnum() for c in preprocessed),
-                "numeric_count": sum(c.isdigit() for c in preprocessed),
-            }
-        except Exception as e:
-            logger.error(f"Error extracting text features: {e}")
-            return {}
+else:
+    # Stub classes used when torch is not installed
+    class LogAnomalyDetector:
+        def __init__(self): pass
+        def train(self, *a, **kw): pass
+        def detect(self, *a, **kw): return False
+
+    class ImageAnalyzer:
+        def __init__(self): pass
+        def analyze(self, *a, **kw): return {"suspicious": False, "confidence": 0}
+
+    class TextAnalyzer:
+        def __init__(self): pass
+        def analyze(self, *a, **kw): return {"suspicious": False, "confidence": 0}
