@@ -41,10 +41,15 @@ network_data = {
 current_threats = []
 artifact_findings_cache = {'summary': {}, 'suspicious_files': []}
 
+# Resolve project root from this file (robust on Render / gunicorn where CWD may differ)
+PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+REPORTS_DIR = os.path.join(PROJECT_ROOT, 'reports')
+os.makedirs(REPORTS_DIR, exist_ok=True)
+
 # Path to the auto-loaded default CSV (sits in the project root)
-DEFAULT_CSV_PATH = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'sample_network_traffic.csv')
+DEFAULT_CSV_PATH = os.path.join(PROJECT_ROOT, 'sample_network_traffic.csv')
 # If user uploads a CSV, save it here so it persists across restarts
-PERSISTED_CSV_PATH = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), '_last_upload.csv')
+PERSISTED_CSV_PATH = os.path.join(PROJECT_ROOT, '_last_upload.csv')
 
 # Initialize analyzers
 network_analyzer = NetworkAnalyzer()
@@ -286,21 +291,21 @@ def stop_analysis():
 def serve_report(filename):
     """Serve generated reports"""
     try:
-        # Get the absolute path to the reports directory
-        reports_dir = os.path.abspath(os.path.join(os.getcwd(), 'reports'))
-        
-        # Split the filename into directory and file components
-        report_path = os.path.join(reports_dir, filename)
-        
+        # Use the fixed project-level reports directory (works on Render/gunicorn)
+        reports_dir = REPORTS_DIR
+
+        # Prevent path traversal by keeping only the basename component(s)
+        safe_name = os.path.normpath(filename).lstrip(os.sep)
+        report_path = os.path.join(reports_dir, safe_name)
+
         # Check if the file exists
         if not os.path.exists(report_path):
             app.logger.error(f"Report not found at path: {report_path}")
             return "Report not found", 404
-            
-        # Get the directory containing the report
+
         report_directory = os.path.dirname(report_path)
         report_filename = os.path.basename(report_path)
-        
+
         return send_from_directory(report_directory, report_filename)
     except Exception as e:
         app.logger.error(f"Error serving report: {str(e)}")
@@ -427,8 +432,8 @@ def upload_network():
 def generate_report():
     """Generate analysis report with all collected system data"""
     try:
-        # Create reports directory if it doesn't exist
-        reports_dir = os.path.abspath(os.path.join(os.getcwd(), 'reports'))
+        # Use the fixed project-level reports directory (works on Render/gunicorn)
+        reports_dir = REPORTS_DIR
         os.makedirs(reports_dir, exist_ok=True)
         
         # Prepare threats data from current_threats

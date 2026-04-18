@@ -41,6 +41,9 @@ class ReportGenerator:
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cyber Forensics Analysis Report</title>
     <style>
+        /* ── Base reset ─────────────────────────────────────────────── */
+        *, *::before, *::after { box-sizing: border-box; }
+        html { -webkit-text-size-adjust: 100%; }
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             line-height: 1.6;
@@ -49,7 +52,14 @@ class ReportGenerator:
             margin: 0 auto;
             padding: 20px;
             background-color: #f5f5f5;
+            overflow-x: hidden;
+            word-wrap: break-word;
         }
+        h1, h2, h3, h4 { line-height: 1.25; margin-top: 0; }
+        h1 { font-size: clamp(1.4rem, 4vw, 2rem); }
+        h2 { font-size: clamp(1.2rem, 3vw, 1.6rem); }
+        h3 { font-size: clamp(1.05rem, 2.4vw, 1.25rem); }
+
         .header {
             background: linear-gradient(135deg, #1a237e, #0d47a1);
             color: white;
@@ -58,6 +68,8 @@ class ReportGenerator:
             margin-bottom: 30px;
             box-shadow: 0 4px 6px rgba(0,0,0,0.1);
         }
+        .header p { margin: 4px 0; font-size: clamp(0.85rem, 2.2vw, 1rem); }
+
         .section {
             background: white;
             padding: 20px;
@@ -71,10 +83,12 @@ class ReportGenerator:
             background: #f8f9fa;
             border-radius: 5px;
         }
+
+        /* ── Responsive grid of stat cards ──────────────────────────── */
         .grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 16px;
             margin: 20px 0;
         }
         .stat-card {
@@ -83,72 +97,71 @@ class ReportGenerator:
             border-radius: 8px;
             box-shadow: 0 2px 4px rgba(0,0,0,0.05);
             text-align: center;
+            min-width: 0;
         }
         .stat-value {
-            font-size: 24px;
+            font-size: clamp(1.1rem, 3.5vw, 1.6rem);
             font-weight: bold;
             color: #1a237e;
+            word-break: break-word;
         }
         .stat-label {
             color: #666;
-            font-size: 14px;
+            font-size: clamp(0.75rem, 2vw, 0.9rem);
         }
+
+        /* ── Responsive tables: horizontal scroll on narrow screens ─── */
         table {
             width: 100%;
             border-collapse: collapse;
             margin: 10px 0;
+            font-size: clamp(0.8rem, 2vw, 0.95rem);
         }
         th, td {
-            padding: 12px;
+            padding: 10px 12px;
             text-align: left;
             border-bottom: 1px solid #ddd;
+            vertical-align: top;
+            word-break: break-word;
         }
-        th {
-            background-color: #f8f9fa;
-            font-weight: 600;
+        th { background-color: #f8f9fa; font-weight: 600; }
+
+        /* Any table placed in a scroll-container OR any table inside a
+           subsection scrolls horizontally on small screens */
+        .process-list,
+        .subsection,
+        .threat-details {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
         }
-        .threat-high {
-            color: #d32f2f;
-        }
-        .threat-medium {
-            color: #f57c00;
-        }
-        .threat-low {
-            color: #388e3c;
-        }
+        .process-list { max-height: 300px; overflow-y: auto; }
+
+        .threat-high   { color: #d32f2f; }
+        .threat-medium { color: #f57c00; }
+        .threat-low    { color: #388e3c; }
+
         .recommendation {
             border-left: 4px solid #1a237e;
             padding: 10px 20px;
             margin: 10px 0;
             background: #f8f9fa;
         }
-        .recommendation.high {
-            border-left-color: #d32f2f;
-        }
-        .recommendation.medium {
-            border-left-color: #f57c00;
-        }
-        .recommendation.low {
-            border-left-color: #388e3c;
-        }
-        .process-list {
-            max-height: 300px;
-            overflow-y: auto;
-        }
+        .recommendation.high   { border-left-color: #d32f2f; }
+        .recommendation.medium { border-left-color: #f57c00; }
+        .recommendation.low    { border-left-color: #388e3c; }
+
         .badge {
+            display: inline-block;
             padding: 4px 8px;
             border-radius: 4px;
             font-size: 12px;
             font-weight: bold;
+            white-space: nowrap;
         }
-        .badge-secure {
-            background-color: #c8e6c9;
-            color: #388e3c;
-        }
-        .badge-risk {
-            background-color: #ffcdd2;
-            color: #d32f2f;
-        }
+        .badge-secure  { background-color: #c8e6c9; color: #388e3c; }
+        .badge-risk    { background-color: #ffcdd2; color: #d32f2f; }
+        .badge-warning { background-color: #fff3c4; color: #8a6d00; }
+
         .threat-details {
             margin: 20px 0;
             padding: 15px;
@@ -162,17 +175,44 @@ class ReportGenerator:
             background: #f8f9fa;
             border-radius: 5px;
         }
-        .mitigation-steps h4 {
-            color: #1a237e;
-            margin-top: 0;
+        .mitigation-steps h4 { color: #1a237e; margin-top: 0; }
+        .mitigation-steps ol { margin: 10px 0; padding-left: 20px; }
+        .mitigation-steps li { margin: 5px 0; color: #333; }
+
+        /* ── Tablet (≤ 900px) ───────────────────────────────────────── */
+        @media (max-width: 900px) {
+            body { padding: 14px; }
+            .section { padding: 16px; }
+            .grid { grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; }
+            th, td { padding: 8px; }
         }
-        .mitigation-steps ol {
-            margin: 10px 0;
-            padding-left: 20px;
+
+        /* ── Mobile (≤ 600px) ───────────────────────────────────────── */
+        @media (max-width: 600px) {
+            body { padding: 10px; }
+            .header { padding: 14px; margin-bottom: 18px; border-radius: 8px; }
+            .section { padding: 12px; margin-bottom: 14px; border-radius: 8px; }
+            .subsection { padding: 8px; }
+            .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+            .stat-card { padding: 10px; }
+            .stat-value { font-size: 1.1rem; }
+            .stat-label { font-size: 0.75rem; }
+            th, td { padding: 6px 8px; font-size: 0.8rem; }
+            .mitigation-steps { padding: 10px; }
+            .mitigation-steps ol { padding-left: 18px; }
         }
-        .mitigation-steps li {
-            margin: 5px 0;
-            color: #333;
+
+        /* ── Very small (≤ 380px) single column stats ───────────────── */
+        @media (max-width: 380px) {
+            .grid { grid-template-columns: 1fr; }
+        }
+
+        /* ── Print ──────────────────────────────────────────────────── */
+        @media print {
+            body { background: #fff; padding: 0; max-width: 100%; }
+            .section, .stat-card, .threat-details { box-shadow: none; break-inside: avoid; }
+            .process-list { max-height: none; overflow: visible; }
+            .subsection, .threat-details, .process-list { overflow: visible; }
         }
     </style>
 </head>
@@ -264,7 +304,7 @@ class ReportGenerator:
                     {% for process in system_info.processes %}
                     <tr>
                         <td>{{ process.pid }}</td>
-                        <td>{{ process.name }}</td>
+                        <td style="word-break:break-all;">{{ process.name }}</td>
                         <td>{{ "%.1f"|format(process.cpu_percent) }}%</td>
                         <td>{{ "%.1f"|format(process.memory_percent) }}%</td>
                         <td>{{ process.status }}</td>
@@ -650,8 +690,10 @@ class ReportGenerator:
     def generate_report(self, threats=None, network_data=None, log_findings=None, artifact_findings=None):
         """Generate HTML report"""
         try:
-            # Create reports directory if it doesn't exist
-            reports_dir = os.path.abspath(os.path.join(os.getcwd(), 'reports'))
+            # Resolve the project-level reports directory from this file's location.
+            # This is robust under Render / gunicorn where CWD may not be the project root.
+            project_root = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+            reports_dir = os.path.join(project_root, 'reports')
             os.makedirs(reports_dir, exist_ok=True)
             
             # Generate timestamp for the report
@@ -672,10 +714,19 @@ class ReportGenerator:
 
             try:
                 # Get system information with faster sampling
+                # disk_usage path differs per-OS; try root then fall back gracefully
+                try:
+                    disk_pct = psutil.disk_usage('/').percent
+                except Exception:
+                    try:
+                        disk_pct = psutil.disk_usage(os.path.abspath(os.sep)).percent
+                    except Exception:
+                        disk_pct = 0
+
                 system_info = {
                     'cpu_usage': psutil.cpu_percent(interval=0),  # non-blocking
                     'memory_usage': psutil.virtual_memory().percent,
-                    'disk_usage': psutil.disk_usage('/').percent,
+                    'disk_usage': disk_pct,
                     'os_name': platform.system(),
                     'os_version': platform.version(),
                     'architecture': platform.machine(),
@@ -733,8 +784,12 @@ class ReportGenerator:
                 total_bytes = bytes_sent + bytes_received
                 avg_packet_size = total_bytes / total_packets if total_packets > 0 else 0
 
-                # Get active connections - cache result to avoid calling twice
-                all_net_conns = psutil.net_connections()
+                # Get active connections - cache result to avoid calling twice.
+                # On cloud hosts (Render, etc.) this can raise AccessDenied; fall back to [].
+                try:
+                    all_net_conns = psutil.net_connections()
+                except (psutil.AccessDenied, PermissionError, OSError):
+                    all_net_conns = []
                 active_connections = len(all_net_conns)
 
                 network_analysis = {
@@ -1129,11 +1184,12 @@ class ReportGenerator:
             # and often require admin rights. Use summary stats where possible.
             file_ops = system_calls['total_calls'] // 2 # Simulated based on thread count
             
-            # Count network operations (active connections)
+            # Count network operations (active connections).
+            # On cloud/containerised hosts this may be restricted; treat as 0 when denied.
             try:
-                system_calls['network_operations'] = len([conn for conn in psutil.net_connections() 
+                system_calls['network_operations'] = len([conn for conn in psutil.net_connections()
                                                         if conn.status == 'ESTABLISHED'])
-            except (psutil.AccessDenied):
+            except (psutil.AccessDenied, PermissionError, OSError):
                 system_calls['network_operations'] = 0
             
             # Count process operations - use thread count as a fast proxy
