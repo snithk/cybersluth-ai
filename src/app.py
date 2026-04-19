@@ -133,6 +133,13 @@ def auto_load_csv():
     except Exception as e:
         logger.error(f"Auto-load CSV failed: {e}")
 
+
+# Auto-load CSV at import time so gunicorn workers populate data on startup
+try:
+    auto_load_csv()
+except Exception as _e:
+    logger.warning(f"Startup auto-load skipped: {_e}")
+
 def analysis_worker():
     """Background worker for continuous analysis"""
     global analysis_active, network_active, network_data, current_threats
@@ -509,16 +516,15 @@ if __name__ == '__main__':
         print("  http://127.0.0.1:5000")
         print("  http://localhost:5000")
         print("=" * 50)
-        
+
         # Start the Flask server
         # Exclude the virtual-env directory to stop hot-reloads caused by
-        # library internals (e.g. torch) modifying their own files.
+        # library internals modifying their own files.
         app.run(
             host='0.0.0.0',  # Allow connections from any interface
-            port=5000,
-            debug=True,
-            exclude_patterns=['env/*', 'env/**/*', '*.pyc', '__pycache__/*']
+            port=int(os.environ.get('PORT', 5000)),
+            debug=False,
         )
     except Exception as e:
         print(f"Error starting CyberSentry: {str(e)}")
-        raise 
+        raise
